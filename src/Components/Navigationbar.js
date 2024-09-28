@@ -5,6 +5,7 @@ import { Button, Form, FormControl, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 
+import logo from './Assets/logo.png'
 function Navigationbar() {
     const { loggedIn, handleLogout, role } = useContext(AuthContext);
 
@@ -14,7 +15,7 @@ function Navigationbar() {
                 // Main Navbar
                 <Navbar bg="white" variant="light" expand="lg" style={{ height: 80, paddingLeft: "20px", zIndex: "1000", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
                     <Navbar.Brand as={Link} to="/">
-                        <img src="Images/navbar_logo.png" height={50} alt="Logo" />
+                        <img src={logo} height={50} alt="Logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
@@ -53,7 +54,7 @@ function Navigationbar() {
                 // Admin-specific Links
                 <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "#EF5B2B" }}>
                     <Navbar.Brand as={Link} to="/">
-                        <img src="Images/navbar_logo.png" height={50} alt="Logo" />
+                        <img src={logo} height={50} alt="Logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -73,7 +74,7 @@ function Navigationbar() {
                 // Admin-specific Links
                 <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "#EF5B2B" }}>
                     <Navbar.Brand as={Link} to="/">
-                        <img src="Images/navbar_logo.png" height={50} alt="Logo" />
+                        <img src={logo} height={50} alt="Logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Footer from '../Components/footer.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Category from './Category.js';
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -56,6 +57,8 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                <Category></Category>
                 <br />
                 <section className="featured-products">
     <div className="container-fluid" style={{ paddingTop: "40px", width: "80%" }}>

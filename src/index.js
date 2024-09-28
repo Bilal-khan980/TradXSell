@@ -21,6 +21,7 @@ import UserDashboard from './Components/UserDashboard.js'
 import Mensproducts from './Components/Mens_products.js';
 import WomensProducts from './Components/WomensProducts.js';
 import NewArrivals from './Components/NewArrivals.js';
+import CheckProducts from './Components/MainAdmin/CheckProducts.js';
 
 
 
@@ -55,6 +56,8 @@ root.render(
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/order' element={<Order />} />
           <Route path='/myorders' element={<Userorders />} />
+          <Route path='/admin/checkproducts' element={<CheckProducts />} />
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>

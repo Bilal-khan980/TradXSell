@@ -22,7 +22,7 @@ class Home extends React.Component {
 
     fetchProducts = async () => {
         try {
-            const response = await axios.get('/products/featured');
+            const response = await axios.get('http://localhost:5000/products/approved/xx');
             console.log('Fetched products:', response.data);
             this.setState({ products: response.data });
         } catch (error) {

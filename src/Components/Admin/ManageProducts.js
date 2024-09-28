@@ -170,6 +170,7 @@ class ManageProducts extends Component {
                                         <div className="card-body">
                                             <h5 className="card-title">{product.name}</h5>
                                             <p className="card-text">{product.price}</p>
+                                            <p className="card-text">{product.status}</p>
                                             <Link to={`/adminproducts/${product.id}`} className="btn btn-secondary mr-2">View Details</Link>
 
                                             <button className="btn btn-danger ml-3" onClick={() => this.handleDeleteProduct(product.id)}>

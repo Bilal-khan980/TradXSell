@@ -176,4 +176,38 @@ router.get('/most-sold', async (req, res) => {
     }
 });
 
+router.patch('/updatestatus/:id', async (req, res) => {
+    try {
+      const { status } = req.body; // Expecting the new status from the frontend
+      const updatedProduct = await Product.findByIdAndUpdate(req.params.id, { status: status }, { new: true });
+      
+      if (!updatedProduct) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+  
+      res.status(200).json(updatedProduct);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
+
+
+  router.get('/approved/xx', async (req, res) => {
+    try {
+        // Query the database for products with status 'approved'
+        const approvedProducts = await Product.find({ status: 'approved' });
+        
+        if (approvedProducts.length === 0) {
+            return res.status(404).json({ message: 'No approved products found' });
+        }
+
+        // Respond with the approved products
+        res.status(200).json(approvedProducts);
+    } catch (err) {
+        console.error('Error fetching approved products:', err);
+        res.status(500).json({ error: 'Failed to fetch approved products' });
+    }
+});
+
 module.exports = router;

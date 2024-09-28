@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useContext } from 'react';
-import { Button, Form, FormControl, Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 
@@ -25,17 +25,7 @@ function Navigationbar() {
                             <Nav.Link as={Link} to="/cart">CART</Nav.Link>
                             <Nav.Link as={Link} to="/myorders">ORDERS</Nav.Link>
                         </Nav>
-                        <Form className="d-flex w-50 mx-auto" style={{ position: "relative" }}>
-                            <FormControl
-                                type="search"
-                                placeholder="What are you looking for?"
-                                className="mr-sm-2"
-                                style={{ borderRadius: "50px", paddingLeft: "40px", width: "100%" }}
-                            />
-                            <Button variant="outline-none" style={{ position: "absolute", top: "1px" }}>
-                                <i className="fas fa-search"></i>
-                            </Button>
-                        </Form>
+                        
                         <Nav className="ml-auto">
                             {loggedIn ? (
                                 <>
@@ -43,7 +33,21 @@ function Navigationbar() {
                                     <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
                                 </>
                             ) : (
-                                <Nav.Link as={Link} to="/loginpage">LOGIN/REGISTER</Nav.Link>
+                                <>
+                                <button style={{border : 'white' , backgroundColor : 'white'}}>
+                                    
+                                    <Nav.Link as={Link} to="/loginpage" style={{color : '#EF5B2B'}}><i class="fa-solid fa-user" style={{color : '#EF5B2B'}} ></i> SIGN IN</Nav.Link>
+                                    
+                                </button>
+
+                                <div style={{paddingLeft : 20}}></div>
+                                <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
+                                <Nav.Link as={Link} to="/registerpage" style={{color : 'white'}}>SIGN UP</Nav.Link>
+                                
+                            </button>
+                            <div style={{paddingRight : 20}}>  </div>
+                            </>
+                                
                             )}
                         </Nav>
                     </Navbar.Collapse>

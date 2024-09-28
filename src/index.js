@@ -22,6 +22,7 @@ import Mensproducts from './Components/Mens_products.js';
 import WomensProducts from './Components/WomensProducts.js';
 import NewArrivals from './Components/NewArrivals.js';
 import CheckProducts from './Components/MainAdmin/CheckProducts.js';
+import Register from './Components/RegisterPage.js';
 
 
 
@@ -45,6 +46,9 @@ root.render(
           <Route path="/products/:id" element={<Details />} />
           <Route path="/adminproducts/:id" element={<ProductDetails />} />
           <Route path="/loginpage" element={<Login />} />
+          <Route path="/registerpage" element={<Register />} />
+
+
           <Route path="/cart" element={<Cart />} />
           {/* <Route path='/account' element={<Admin />} /> */}
           <Route path='/admindashboard' element={<UserDashboard />} />

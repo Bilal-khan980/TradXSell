@@ -22,7 +22,7 @@
     font-family: "Roboto Condensed", sans-serif;
 }
 
-.nav-link {
+/* .nav-link {
     position: relative;
     color: white;
     text-decoration: none;
@@ -45,7 +45,7 @@
 
 .nav-link:hover::after {
     width: 100%;
-}
+} */
 
 
 .dropdown-content {
@@ -232,6 +232,7 @@ input {
 input:focus {
     border-bottom: 2px solid #000; /* Ensures the bottom border stays the same on focus */
 }
+
 
 
 

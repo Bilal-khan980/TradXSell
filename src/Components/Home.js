@@ -1,12 +1,12 @@
-import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Footer from '../Components/footer.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import Category from './Category.js';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import hero from '../Components/Assets/hero.png';
 import logo from '../Components/Assets/herologo.png';
+import Footer from '../Components/footer.js';
+import Category from './Category.js';
 
 class Home extends React.Component {
     constructor(props) {
@@ -127,7 +127,7 @@ class Home extends React.Component {
                                     <div className="product-details">
                                         <h3>{product.name}</h3>
                                         <p>${product.price.toFixed(2)}</p>
-                                        <Link to={`/products/${product.id}`} className="btn btn-secondary view-details-btn">
+                                        <Link to={`/products/${product.id}`} className="btn btn-secondary view-details-btn" style={{backgroundColor:'#EF5B2B'}}>
                                             View Details
                                         </Link>
                                     </div>

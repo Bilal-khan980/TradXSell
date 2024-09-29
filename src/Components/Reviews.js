@@ -1,10 +1,11 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../AuthContext.js';
 
 function Reviews(props) {
     const { email, username } = useContext(AuthContext);
 
     const [review, setReview] = useState('');
+    const [rating, setRating] = useState(1); // State for star rating
     const [message, setMessage] = useState('');
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ function Reviews(props) {
             setMessage('');
             setLoading(false);
         }, 3000);
-    }
+    };
 
     useEffect(() => {
         fetchReviews();
@@ -41,7 +42,8 @@ function Reviews(props) {
         const reviewData = {
             userEmail: email,
             username: username,
-            review: review
+            review: review,
+            rating: rating // Include rating in the data
         };
 
         try {
@@ -58,9 +60,8 @@ function Reviews(props) {
                 await response.json();
                 setLoading(true);
                 setMessage("Thanks for leaving a review.");
-
-
                 setReview('');
+                setRating(1); // Reset rating to default
                 removemessage();
                 fetchReviews(); // Refresh reviews after submitting
             } else {
@@ -74,28 +75,43 @@ function Reviews(props) {
     };
 
     return (
-        <div style={{ paddingLeft: "20px" }}>
-            <div style={{ color: "yellow", fontWeight: "bold", fontSize: "30px" }}>REVIEWS</div>
-            <form onSubmit={handleSubmit} >
-                <input
-                    placeholder='Leave a review.....'
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                    style={{ color: "white", backgroundColor: "black", border: "none", borderBottom: "2px solid yellow" }}
-                />
+        <div style={{ padding: "20px", backgroundColor: "white", color: "#EF5B2B" }}>
+            <div style={{ fontWeight: "bold", fontSize: "30px", marginBottom: "20px" }}>REVIEWS</div>
+            <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+                <div>
+                    <input
+                        type="text"
+                        placeholder='Leave a review...'
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                        style={{ color: "black", backgroundColor: "lightgrey", border: "none", borderBottom: "2px solid #EF5B2B", width: "300px", padding: "10px" }}
+                    />
+                </div>
+                <div style={{ marginTop: "10px" }}>
+                    <label style={{ marginRight: "10px" }}>Rating:</label>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                            key={star}
+                            style={{ cursor: 'pointer', color: star <= rating ? '#EF5B2B' : 'lightgrey' }}
+                            onClick={() => setRating(star)}
+                        >
+                            ★
+                        </span>
+                    ))}
+                </div>
+                <button type="submit" style={{ marginTop: "10px", backgroundColor: "#EF5B2B", color: "white", border: "none", padding: "10px 20px", cursor: "pointer" }}>
+                    Submit Review
+                </button>
             </form>
             {loading && (
                 <div className="alert alert-success mt-3" role="alert" style={{ width: "300px" }}>
                     {message}
                 </div>
             )}
-
             <div style={{ paddingTop: "20px" }}>
                 {reviews.map((rev, index) => (
-                    <div key={index} style={{ color: "white" }}>
-
-                        {rev.username} : {rev.review}
-
+                    <div key={index} style={{ marginBottom: "15px", border: "1px solid #EF5B2B", padding: "10px", borderRadius: "5px" }}>
+                        <strong>{rev.username}</strong> <span style={{ color: '#EF5B2B' }}>({rev.rating} ★)</span>: {rev.review}
                     </div>
                 ))}
             </div>

@@ -35,12 +35,23 @@ function CategoryCarousel() {
 
     // Handle previous page navigation
     const handlePrev = () => {
-        setCurrentPage((prevPage) => (prevPage === 0 ? chunkedCategories.length - 1 : prevPage - 1));
+        setCurrentPage((prevPage) => {
+            // Go to last page if at first page
+            if (prevPage === 0) {
+                return chunkedCategories.length - 1;
+            }
+            return prevPage - 1; // Otherwise go to the previous page
+        });
     };
 
     // Handle next page navigation
     const handleNext = () => {
-        setCurrentPage((prevPage) => (prevPage === chunkedCategories.length - 1 ? 0 : prevPage + 1));
+        setCurrentPage((prevPage) => {
+            if (prevPage < chunkedCategories.length - 1) {
+                return prevPage + 1; // Go to the next page
+            }
+            return prevPage; // Prevent going above the last page
+        });
     };
 
     return (
@@ -85,7 +96,7 @@ function CategoryCarousel() {
                         style={{
                             display: 'flex',
                             transition: 'transform 0.5s ease-in-out',
-                            transform: `translateX(-${currentPage * 100}%)`, // Corrected string interpolation
+                            transform: `translateX(-${currentPage * 100}%)`,
                         }}
                     >
                         {chunkedCategories.map((categoryGroup, groupIndex) => (
@@ -121,7 +132,7 @@ function CategoryCarousel() {
                                                 }}
                                             >
                                                 <i
-                                                    className={`fa ${category.icon} category-icon`} // Corrected FontAwesome icon syntax
+                                                    className={`fa ${category.icon} category-icon`}
                                                     style={{ fontSize: "32px", color: "#EF5B2B" }}
                                                 ></i>
                                             </div>
@@ -138,56 +149,60 @@ function CategoryCarousel() {
             </div>
 
             {/* Left Arrow */}
-            <button
-                onClick={handlePrev}
-                style={{
-                    marginLeft: '50px',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '0',
-                    transform: 'translateY(-50%)',
-                    background: 'linear-gradient(135deg, #EF5B2B, #FF8E53)',
-                    borderRadius: '50%',
-                    border: 'none',
-                    width: '50px',
-                    height: '50px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    color: '#fff',
-                    opacity: 0.85,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.85)}
-            >
-                <i className="fa fa-chevron-left" style={{ fontSize: '22px' }}></i>
-            </button>
+            {currentPage > 0 && ( // Show left button only if not on the first page
+                <button
+                    onClick={handlePrev}
+                    style={{
+                        marginLeft: '50px',
+                        position: 'absolute',
+                        top: '50%',
+                        left: '0',
+                        transform: 'translateY(-50%)',
+                        background: 'linear-gradient(135deg, #EF5B2B, #FF8E53)',
+                        borderRadius: '50%',
+                        border: 'none',
+                        width: '50px',
+                        height: '50px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        color: '#fff',
+                        opacity: 0.85,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
+                    onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.85)}
+                >
+                    <i className="fa fa-chevron-left" style={{ fontSize: '22px' }}></i>
+                </button>
+            )}
 
             {/* Right Arrow */}
-            <button
-                onClick={handleNext}
-                style={{
-                    marginRight: '50px',
-                    position: 'absolute',
-                    top: '50%',
-                    right: '0',
-                    transform: 'translateY(-50%)',
-                    background: 'linear-gradient(135deg, #EF5B2B, #FF8E53)',
-                    borderRadius: '50%',
-                    border: 'none',
-                    width: '50px',
-                    height: '50px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    color: '#fff',
-                    opacity: 0.85,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.85)}
-            >
-                <i className="fa fa-chevron-right" style={{ fontSize: '22px' }}></i>
-            </button>
+            {currentPage < chunkedCategories.length - 1 && ( // Show right button only if not on the last page
+                <button
+                    onClick={handleNext}
+                    style={{
+                        marginRight: '50px',
+                        position: 'absolute',
+                        top: '50%',
+                        right: '0',
+                        transform: 'translateY(-50%)',
+                        background: 'linear-gradient(135deg, #EF5B2B, #FF8E53)',
+                        borderRadius: '50%',
+                        border: 'none',
+                        width: '50px',
+                        height: '50px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        color: '#fff',
+                        opacity: 0.85,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
+                    onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.85)}
+                >
+                    <i className="fa fa-chevron-right" style={{ fontSize: '22px' }}></i>
+                </button>
+            )}
         </div>
     );
 }

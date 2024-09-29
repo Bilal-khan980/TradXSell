@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { AuthContext } from '../AuthContext.js';
 import Footer from '../Components/footer.js';
-import { AuthContext } from '../AuthContext.js'; // Adjust the path according to your file structure
 import Reviews from './Reviews.js';
 
 function Details() {
@@ -10,7 +10,8 @@ function Details() {
     const [product, setProduct] = useState(null);
     const [error, setError] = useState('');
     const [checkinstock, setCheckinstock] = useState(false);
-    const { email, username } = useContext(AuthContext); // Assuming the user's email is stored in userName
+    const [quantity, setQuantity] = useState(1); // State to manage quantity
+    const { email, username } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -37,7 +38,7 @@ function Details() {
                 name: product.name,
                 price: product.price,
                 imageUrl: product.imageUrl,
-                quantity: 1 // Or the selected quantity
+                quantity: quantity // Use the state variable for quantity
             });
 
             if (response.data.success) {
@@ -51,6 +52,11 @@ function Details() {
         }
     };
 
+    const handleQuantityChange = (e) => {
+        const value = Math.max(1, e.target.value); // Ensure quantity is at least 1
+        setQuantity(value);
+    };
+
     if (error) {
         return <div>Error: {error}</div>;
     }
@@ -60,69 +66,77 @@ function Details() {
     }
 
     return (
-        <>
-            <div className="home-container" style={{ backgroundColor: "black", paddingBottom: "30px" }}>
-                <div className="container" style={{ paddingTop: "60px", display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
-                    <div className="product-card" key={product.id} style={{ backgroundColor: "black", padding: "20px", maxWidth: "600px" }}>
-                        <img src={product.imageUrl} alt={product.name} style={{ width: "100%", borderRadius: "20px", backgroundColor: "black" }} />
-                    </div>
-                    <div style={{ padding: "20px", maxWidth: "600px", color: "white" }}>
-                        <Link to="/productspage" style={{ color: "yellow" }}>
-                            <i className="fa-solid fa-arrow-left" style={{ color: "yellow", fontSize: "40px" }}></i>
-                        </Link>
-                        <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold", paddingTop: "10px" }}>{product.name}</h1>
-                        <p style={{ color: "white", textAlign: "center" }}>{product._id}</p>
-                        <p style={{ color: "white", fontSize: "25px", textAlign: "center" }}>({product.category})</p>
-                        <p style={{ color: "yellow", fontSize: "30px", textAlign: "center" }}>{product.price}</p>
-                        <div style={{ paddingTop: "150px" }}>
-
-                        </div>
-                        <hr style={{ borderColor: "white" }} />
-                        {/* <p style={{ color: "white", fontSize: "25px", textAlign: "center" }}>COLORS</p> */}
-                        {/* <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-                            {product.colors.map((color, index) => (
-                                <div key={index} style={{ width: "50px", height: "50px", backgroundColor: color, borderRadius: "50%", border: "4px solid white" }}></div>
-                            ))}
-                        </div>
-                        <br />
-                        <br />
-                        <p style={{ color: "white", fontSize: "25px", textAlign: "center" }}>SIZE</p>
-                        <div style={{ display: "flex", justifyContent: "center", gap: "20px", fontSize: "20px" }}>
-                            {product.sizes.map((size, index) => (
-                                <div key={index} style={{ border: "1px solid white", borderRadius: "50%", width: "50px", height: "50px", display: "flex", alignItems: "center", justifyContent: "center" }}>{size}</div>
-                            ))}
-                        </div> */}
-                        <div style={{ paddingtop: "200px", width: "100%", display: "flex", justifyContent: "center" }}>
-                            {checkinstock ? (
-                                <p style={{ color: "white", fontSize: "25px", textAlign: "center" }}>In Stock</p>
-                            ) : (
-                                <p style={{ color: "red", fontSize: "25px", textAlign: "center" }}>Out of Stock</p>
-                            )}
-                        </div>
-                        <div style={{ paddingTop: "20px", width: "100%", display: "flex", justifyContent: "center" }}>
-                            <button
-                                onClick={addToCart}
-                                style={{
-                                    width: "200px",
-                                    height: "50px",
-                                    backgroundColor: checkinstock ? "yellow" : "grey",
-                                    color: "black",
-                                    fontWeight: "bold",
-                                    border: "none",
-                                    borderRadius: "10px",
-                                    cursor: checkinstock ? "pointer" : "not-allowed"
-                                }}
-                                disabled={!checkinstock}
-                            >
-                                ADD TO CART
-                            </button>
-                        </div>
+        <div className="home-container" style={{ backgroundColor: "white", padding: "20px" }}>
+            <div className="container" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", maxWidth: "1200px", margin: "0 auto" }}>
+                <div className="product-images" style={{ flex: "1 1 50%", maxWidth: "600px" }}>
+                    <img src={product.imageUrl} alt={product.name} style={{ width: "100%", borderRadius: "8px" }} />
+                    <div style={{ display: "flex", justifyContent: "start", marginTop: "20px" }}>
+                        {[1, 2, 3, 4].map((_, index) => (
+                            <img key={index} src={product.imageUrl} alt={`${product.name} thumbnail`} style={{ width: "60px", height: "60px", marginRight: "10px", borderRadius: "4px" }} />
+                        ))}
                     </div>
                 </div>
-                <Reviews id={product.id}></Reviews>
-                <Footer />
+                <div className="product-details" style={{ flex: "1 1 40%", maxWidth: "500px" }}>
+                    <h1 style={{ color: "#000", fontSize: "24px", marginBottom: "10px" }}>{product.name}</h1>
+                   
+                    <p style={{ color: "#EF5B2B", fontSize: "24px", fontWeight: "bold", marginBottom: "20px" }}>${product.price.toFixed(2)} <span style={{ textDecoration: "line-through", color: "#666", fontSize: "18px", marginLeft: "10px" }}>${(product.price * 1.2).toFixed(2)}</span></p>
+                    <p style={{ color: "#666", marginBottom: "20px" }}>{product.description}</p>
+                    
+                    {/* Dropdown for Color */}
+                    <div style={{ marginBottom: "20px" }}>
+                        <p style={{ color: "#000", marginBottom: "10px" }}>Color:</p>
+                        <select
+                            style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
+                        >
+                            {product.colors && product.colors.map((color, index) => (
+                                <option key={index} value={color}>{color}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    {/* Dropdown for Size */}
+                    <div style={{ marginBottom: "20px" }}>
+                        <p style={{ color: "#000", marginBottom: "10px" }}>Size:</p>
+                        <select
+                            style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
+                        >
+                            {product.sizes && product.sizes.map((size, index) => (
+                                <option key={index} value={size}>{size}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+                        <input
+                            type="number"
+                            value={quantity} // Controlled input
+                            min="1"
+                            onChange={handleQuantityChange} // Update quantity state on change
+                            style={{ padding: "10px", width: "60px", marginRight: "10px", border: "1px solid #ccc", borderRadius: "4px" }}
+                        />
+                        <button
+                            onClick={addToCart}
+                            style={{
+                                padding: "12px 20px",
+                                backgroundColor: "#EF5B2B",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontSize: "16px"
+                            }}
+                        >
+                            Add to cart
+                        </button>
+                    </div>
+                    <p style={{ color: checkinstock ? "green" : "red", fontWeight: "bold" }}>
+                        {checkinstock ? "In Stock" : "Out of Stock"}
+                    </p>
+                </div>
             </div>
-        </>
+            <Reviews id={product.id} />
+            <Footer />
+        </div>
     );
 }
 

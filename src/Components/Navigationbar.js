@@ -5,7 +5,7 @@ import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 
-import logo from './Assets/logo.png'
+import logo from './Assets/logo.png';
 function Navigationbar() {
     const { loggedIn, handleLogout, role } = useContext(AuthContext);
 

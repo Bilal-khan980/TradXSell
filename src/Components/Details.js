@@ -10,7 +10,7 @@ function Details() {
     const [product, setProduct] = useState(null);
     const [error, setError] = useState('');
     const [checkinstock, setCheckinstock] = useState(false);
-    const [quantity, setQuantity] = useState(1); // State to manage quantity
+    const [quantity, setQuantity] = useState(1);
     const { email, username } = useContext(AuthContext);
     const [averageRating, setAverageRating] = useState(0);
     const [reviewCount, setReviewCount] = useState(0);
@@ -22,13 +22,18 @@ function Details() {
                 console.log('Fetched product:', response.data);
                 setProduct(response.data);
                 setCheckinstock(response.data.quantity > 0);
-                
-                // Calculate average rating and review count
-                if (response.data.reviews && response.data.reviews.length > 0) {
-                    const ratings = response.data.reviews.map(review => review.rating);
-                    const totalRatings = ratings.reduce((acc, curr) => acc + curr, 0);
-                    setReviewCount(ratings.length);
-                    setAverageRating((totalRatings / ratings.length).toFixed(1)); // Average rating rounded to 1 decimal
+
+                // Improved logic to calculate review count and average rating
+                const reviews = response.data.reviews || [];
+                const totalReviews = reviews.length;
+                setReviewCount(totalReviews);
+
+                if (totalReviews > 0) {
+                    const totalRatings = reviews.reduce((acc, review) => acc + review.rating, 0);
+                    const avgRating = totalRatings / totalReviews;
+                    setAverageRating(avgRating.toFixed(1)); // Average rating rounded to 1 decimal
+                } else {
+                    setAverageRating(0);
                 }
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -48,7 +53,7 @@ function Details() {
                 name: product.name,
                 price: product.price,
                 imageUrl: product.imageUrl,
-                quantity: quantity // Use the state variable for quantity
+                quantity: quantity
             });
 
             if (response.data.success) {
@@ -63,7 +68,7 @@ function Details() {
     };
 
     const handleQuantityChange = (e) => {
-        const value = Math.max(1, e.target.value); // Ensure quantity is at least 1
+        const value = Math.max(1, e.target.value);
         setQuantity(value);
     };
 
@@ -75,19 +80,14 @@ function Details() {
         return <div>Loading...</div>;
     }
 
-    // Function to generate star ratings based on average rating
     const renderStars = (average) => {
         const totalStars = 5;
         const filledStars = Math.round(average);
-        const stars = [];
-        for (let i = 1; i <= totalStars; i++) {
-            stars.push(
-                <span key={i} style={{ color: i <= filledStars ? '#FFA500' : '#ccc' }}>
-                    ★
-                </span>
-            );
-        }
-        return stars;
+        return Array.from({ length: totalStars }, (_, index) => (
+            <span key={index} style={{ color: index < filledStars ? '#FFA500' : '#ccc' }}>
+                ★
+            </span>
+        ));
     };
 
     return (

@@ -1,85 +1,253 @@
-// src/Components/Cart.js
-
-import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../AuthContext';
-import Footer from './footer';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../AuthContext.js';
 
-const Cart = () => {
-    const { loggedIn, email } = useContext(AuthContext);
+function Cart() {
+    const { email } = useContext(AuthContext);
     const [cartItems, setCartItems] = useState([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (loggedIn) {
-            const fetchCartItems = async () => {
-                try {
-                    const response = await axios.get(`/cart/${email}`);
-                    setCartItems(response.data);
-                } catch (error) {
-                    console.error('Error fetching cart items:', error);
-                    setError('Failed to fetch cart items');
-                }
-            };
+        const fetchCartItems = async () => {
+            try {
+                const response = await axios.get(`/cart/${email}`);
+                setCartItems(response.data);
+            } catch (err) {
+                setError('Failed to fetch cart items');
+                console.error(err);
+            }
+        };
 
-            fetchCartItems();
+        fetchCartItems();
+    }, [email]);
+
+    const increaseQuantity = async (productId) => {
+        try {
+            await axios.post('/cart/increase', { email, productId });
+            setCartItems(prevItems =>
+                prevItems.map(item =>
+                    item.productId === productId
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                )
+            );
+        } catch (err) {
+            console.error('Error increasing quantity:', err);
         }
-    }, [loggedIn, email]);
+    };
+
+    const decreaseQuantity = async (productId) => {
+        try {
+            await axios.post('/cart/decrease', { email, productId });
+            setCartItems(prevItems =>
+                prevItems.map(item =>
+                    item.productId === productId && item.quantity > 1
+                        ? { ...item, quantity: item.quantity - 1 }
+                        : item
+                )
+            );
+        } catch (err) {
+            console.error('Error decreasing quantity:', err);
+        }
+    };
+
+    const removeFromCart = async (productId) => {
+        try {
+            await axios.delete(`/cart/remove/${email}/${productId}`);
+            setCartItems(prevItems =>
+                prevItems.filter(item => item.productId !== productId)
+            );
+        } catch (err) {
+            console.error('Error removing item:', err);
+        }
+    };
 
     if (error) {
         return <div>Error: {error}</div>;
     }
 
-    if (!loggedIn) {
-        return (
-            <div style={{ backgroundColor: "black", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold" }}>PLEASE LOGIN</h1>
-            </div>
-        );
-    }
-
-    if (cartItems.length === 0) {
-        return (
-            <div style={{ backgroundColor: "black", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold" }}>CART IS EMPTY</h1>
-            </div>
-        );
-    }
-
-    const calculateTotalBill = () => {
-        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    };
-
     return (
-        <div style={{ backgroundColor: "black", height: "100vh" }}>
-            <div className="cart-container" style={{ backgroundColor: "black", height: "100vh" }}>
-                <div className="container" style={{ paddingTop: "60px" }}>
-                    <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold" }}>CART</h1>
-                    {cartItems.map(item => (
-                        <div key={item._id} className="cart-item" style={{ display: "flex", justifyContent: "left", padding: "20px", borderBottom: "1px solid white" }}>
-                            <img src={item.imageUrl} alt={item.name} style={{ width: "100px", borderRadius: "10px" }} />
-                            <div style={{ color: "white", textAlign: "left", paddingLeft: "100px" }}>
-                                <h3>{item.name}</h3>
-                                <p>{item.price}</p>
-                                <p>Quantity: {item.quantity}</p>
-                            </div>
-                        </div>
-                    ))}
-                    <div style={{ color: "white", textAlign: "right", padding: "20px", fontWeight: "bold" }}>
-                        Total Bill: ${calculateTotalBill().toFixed(2)}
-                    </div>
-                    <div style={{ backgroundColor: "black", paddingLeft: "1170px", width: "300px" }}>
-                        <Link to="/checkout" className="btn btn-primary" style={{ fontSize: "20px", fontWeight: "bold", color: "yellow", backgroundColor: "black", border: "2px solid white" }}>CHECKOUT</Link>
-                    </div>
+        <div style={styles.container}>
+            <h2 style={styles.title}>Your Cart</h2>
+            {cartItems.length === 0 ? (
+                <p style={styles.emptyCart}>Your cart is empty</p>
+            ) : (
+                <table style={styles.cartTable}>
+                    <thead>
+                        <tr>
+                            <th style={styles.header}>Product</th>
+                            <th style={styles.header}>Price</th>
+                            <th style={styles.header}>Quantity</th>
+                            <th style={styles.header}>Subtotal</th>
+                            <th style={styles.header}>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {cartItems.map(item => (
+                            <tr key={item.productId} style={styles.cartItemRow}>
+                                <td style={styles.productInfo}>
+                                    <img
+                                        src={item.imageUrl}
+                                        alt={item.name}
+                                        style={styles.productImage}
+                                    />
+                                    <span style={styles.productName}>{item.name}</span>
+                                </td>
+                                <td style={styles.productPrice}>${item.price.toFixed(2)}</td>
+                                <td style={styles.quantityContainer}>
+                                    <button
+                                        style={styles.quantityButton}
+                                        onClick={() => decreaseQuantity(item.productId)}
+                                    >
+                                        -
+                                    </button>
+                                    <span style={styles.quantityText}>{item.quantity}</span>
+                                    <button
+                                        style={styles.quantityButton}
+                                        onClick={() => increaseQuantity(item.productId)}
+                                    >
+                                        +
+                                    </button>
+                                </td>
+                                <td style={styles.subtotal}>
+                                    ${(item.price * item.quantity).toFixed(2)}
+                                </td>
+                                <td style={styles.removeCell}>
+                                    <button
+                                        style={{ ...styles.button, ...styles.removeButton }}
+                                        onClick={() => removeFromCart(item.productId)}
+                                    >
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+            {cartItems.length > 0 && (
+                <div style={styles.summary}>
+                    <p style={styles.total}>
+                        Subtotal: ${cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+                    </p>
+                    <p style={styles.total}>
+                        Tax: ${(cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 0.1).toFixed(2)}
+                    </p>
+                    <p style={styles.total}>
+                        Total: ${(cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.1).toFixed(2)}
+                    </p>
+                    <button style={styles.checkoutButton}>Proceed to Checkout</button>
                 </div>
-
-                <div style={{ backgroundColor: "black", paddingTop: "70px" }}>
-                    <Footer />
-                </div>
-            </div>
+            )}
         </div>
     );
+}
+
+const styles = {
+    container: {
+        width: '90%',
+        margin: '40px auto',
+        padding: '20px',
+        backgroundColor: '#fff',
+        borderRadius: '8px',
+        boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+    },
+    title: {
+        textAlign: 'center',
+        marginBottom: '20px',
+        color: '#EF5B2B',
+        fontSize: '24px',
+    },
+    emptyCart: {
+        textAlign: 'center',
+        fontStyle: 'italic',
+    },
+    cartTable: {
+        width: '100%',
+        borderCollapse: 'collapse',
+        marginBottom: '30px',
+    },
+    header: {
+        backgroundColor: '#EF5B2B',
+        color: '#fff',
+        padding: '12px',
+        fontSize: '16px',
+        textAlign: 'left',
+    },
+    cartItemRow: {
+        borderBottom: '1px solid #ddd',
+        padding: '15px 0',
+    },
+    productInfo: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    productImage: {
+        width: '80px',
+        height: '80px',
+        objectFit: 'cover',
+        borderRadius: '8px',
+        marginRight: '15px',
+    },
+    productName: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+    },
+    productPrice: {
+        fontSize: '16px',
+        padding: '12px',
+    },
+    quantityContainer: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    quantityButton: {
+        padding: '5px 10px',
+        backgroundColor: '#EF5B2B',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+    },
+    quantityText: {
+        padding: '0 10px',
+        fontSize: '16px',
+    },
+    subtotal: {
+        fontSize: '16px',
+        padding: '12px',
+        fontWeight: 'bold',
+    },
+    removeCell: {
+        padding: '12px',
+    },
+    button: {
+        padding: '10px 15px',
+        backgroundColor: '#EF5B2B',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+    },
+    removeButton: {
+        backgroundColor: '#dc3545',
+    },
+    summary: {
+        textAlign: 'right',
+    },
+    total: {
+        fontSize: '18px',
+        marginBottom: '10px',
+    },
+    checkoutButton: {
+        padding: '12px 20px',
+        backgroundColor: '#EF5B2B',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '16px',
+    },
 };
 
 export default Cart;

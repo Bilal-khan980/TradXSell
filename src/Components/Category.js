@@ -36,11 +36,10 @@ function CategoryCarousel() {
     // Handle previous page navigation
     const handlePrev = () => {
         setCurrentPage((prevPage) => {
-            // Go to last page if at first page
             if (prevPage === 0) {
                 return chunkedCategories.length - 1;
             }
-            return prevPage - 1; // Otherwise go to the previous page
+            return prevPage - 1;
         });
     };
 
@@ -48,9 +47,9 @@ function CategoryCarousel() {
     const handleNext = () => {
         setCurrentPage((prevPage) => {
             if (prevPage < chunkedCategories.length - 1) {
-                return prevPage + 1; // Go to the next page
+                return prevPage + 1;
             }
-            return prevPage; // Prevent going above the last page
+            return prevPage;
         });
     };
 
@@ -59,12 +58,12 @@ function CategoryCarousel() {
             <style>{`
                 .category-icon-wrapper {
                     transition: background-color 0.3s ease, transform 0.3s ease;
-                    overflow: hidden; /* Prevent overflow */
+                    overflow: hidden;
                 }
 
                 .category-icon-wrapper:hover {
                     background-color: #EF5B2B;
-                    transform: scale(0.9); /* Scale effect */
+                    transform: scale(0.9);
                 }
 
                 .category-icon {
@@ -72,7 +71,7 @@ function CategoryCarousel() {
                 }
 
                 .category-icon:hover {
-                    color: #fff; /* Change icon color on hover */
+                    color: #fff;
                 }
 
                 .category-name {
@@ -84,13 +83,12 @@ function CategoryCarousel() {
                 }
 
                 .category-item:hover .category-name {
-                    color: #EF5B2B; /* Change category name color on hover */
+                    color: #EF5B2B;
                 }
             `}</style>
 
             <div className="container">
                 <div className="carousel-wrapper" style={{ overflow: 'hidden', position: 'relative' }}>
-                    {/* Categories container with sliding effect */}
                     <div
                         className="categories-container"
                         style={{
@@ -112,7 +110,7 @@ function CategoryCarousel() {
                                 {categoryGroup.map((category, index) => (
                                     <div className="col-6 col-sm-4 col-md-3 col-lg-2 mb-4" key={index}>
                                         <Link
-                                            to={`/category/${category.name}`} // Corrected to use template literals
+                                            to={`/category/${encodeURIComponent(category.name)}`} // Encode category name for URL
                                             className="category-item"
                                             style={{ textDecoration: "none", color: "#333" }}
                                         >
@@ -149,7 +147,7 @@ function CategoryCarousel() {
             </div>
 
             {/* Left Arrow */}
-            {currentPage > 0 && ( // Show left button only if not on the first page
+            {currentPage > 0 && (
                 <button
                     onClick={handlePrev}
                     style={{
@@ -177,7 +175,7 @@ function CategoryCarousel() {
             )}
 
             {/* Right Arrow */}
-            {currentPage < chunkedCategories.length - 1 && ( // Show right button only if not on the last page
+            {currentPage < chunkedCategories.length - 1 && (
                 <button
                     onClick={handleNext}
                     style={{

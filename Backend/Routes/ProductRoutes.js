@@ -31,13 +31,17 @@ router.post('/', upload.single('image'), async (req, res) => {
             return res.status(400).json({ error: 'Product with this id already exists' });
         }
 
+        // Remove spaces from category
+        const sanitizedCategory = category.toLowerCase().replace(/\s+/g, '');
+
+
         const newProduct = new Product({
             id,
             name,
             price,
             imageUrl,
             latest,
-            category,
+            category: sanitizedCategory, // Use the sanitized category
             featured,
             sizes: sizes.split(','),
             colors: colors.split(','),
@@ -211,5 +215,21 @@ router.patch('/updatestatus/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch approved products' });
     }
 });
+
+router.get('/category/:categoryName', async (req, res) => {
+    const categoryName = req.params.categoryName.toLowerCase(); // Convert to lowercase
+    try {
+        const products = await Product.find({ category: categoryName });
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'No products found in this category.' });
+        }
+        res.status(200).json(products);
+    } catch (err) {
+        console.error('Error fetching products by category:', err);
+        res.status(500).json({ error: 'Failed to fetch products' });
+    }
+});
+
+
 
 module.exports = router;

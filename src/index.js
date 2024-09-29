@@ -24,8 +24,10 @@ import NewArrivals from './Components/NewArrivals.js';
 import CheckProducts from './Components/MainAdmin/CheckProducts.js';
 import Register from './Components/RegisterPage.js';
 
+import CategoryCarousel from './Components/Category.js';
 
-
+import CategoryPage
+ from './Components/CaterogyPage.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -52,6 +54,9 @@ root.render(
           <Route path="/cart" element={<Cart />} />
           {/* <Route path='/account' element={<Admin />} /> */}
           <Route path='/admindashboard' element={<UserDashboard />} />
+
+          <Route path="/" element={<CategoryCarousel />} />
+                <Route path="/category/:categoryName" element={<CategoryPage />} />
 
 
           <Route path='/userdashboard' element={<UserDashboard />} />

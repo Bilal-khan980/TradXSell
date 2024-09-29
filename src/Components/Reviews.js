@@ -109,11 +109,21 @@ function Reviews(props) {
                 </div>
             )}
             <div style={{ paddingTop: "20px" }}>
-                {reviews.map((rev, index) => (
-                    <div key={index} style={{ marginBottom: "15px", border: "1px solid #EF5B2B", padding: "10px", borderRadius: "5px" }}>
-                        <strong>{rev.username}</strong> <span style={{ color: '#EF5B2B' }}>({rev.rating} ★)</span>: {rev.review}
-                    </div>
-                ))}
+                {reviews.length > 0 ? (
+                    reviews.map((rev, index) => (
+                        <div key={index} style={{ marginBottom: "15px", border: "1px solid #EF5B2B", padding: "10px", borderRadius: "5px" }}>
+                            <strong>{rev.username}</strong>: {rev.review}
+                            <div>
+                                {/* Render the stars based on the rating */}
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span key={star} style={{ color: star <= rev.rating ? '#EF5B2B' : 'lightgrey' }}>★</span>
+                                ))}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div>No reviews available for this product.</div>
+                )}
             </div>
         </div>
     );

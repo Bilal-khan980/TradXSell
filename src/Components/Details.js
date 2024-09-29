@@ -12,6 +12,8 @@ function Details() {
     const [checkinstock, setCheckinstock] = useState(false);
     const [quantity, setQuantity] = useState(1); // State to manage quantity
     const { email, username } = useContext(AuthContext);
+    const [averageRating, setAverageRating] = useState(0);
+    const [reviewCount, setReviewCount] = useState(0);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -20,6 +22,14 @@ function Details() {
                 console.log('Fetched product:', response.data);
                 setProduct(response.data);
                 setCheckinstock(response.data.quantity > 0);
+                
+                // Calculate average rating and review count
+                if (response.data.reviews && response.data.reviews.length > 0) {
+                    const ratings = response.data.reviews.map(review => review.rating);
+                    const totalRatings = ratings.reduce((acc, curr) => acc + curr, 0);
+                    setReviewCount(ratings.length);
+                    setAverageRating((totalRatings / ratings.length).toFixed(1)); // Average rating rounded to 1 decimal
+                }
             } catch (error) {
                 console.error('Error fetching product:', error);
                 setError('Failed to fetch product');
@@ -65,6 +75,21 @@ function Details() {
         return <div>Loading...</div>;
     }
 
+    // Function to generate star ratings based on average rating
+    const renderStars = (average) => {
+        const totalStars = 5;
+        const filledStars = Math.round(average);
+        const stars = [];
+        for (let i = 1; i <= totalStars; i++) {
+            stars.push(
+                <span key={i} style={{ color: i <= filledStars ? '#FFA500' : '#ccc' }}>
+                    ★
+                </span>
+            );
+        }
+        return stars;
+    };
+
     return (
         <div className="home-container" style={{ backgroundColor: "white", padding: "20px" }}>
             <div className="container" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", maxWidth: "1200px", margin: "0 auto" }}>
@@ -78,7 +103,10 @@ function Details() {
                 </div>
                 <div className="product-details" style={{ flex: "1 1 40%", maxWidth: "500px" }}>
                     <h1 style={{ color: "#000", fontSize: "24px", marginBottom: "10px" }}>{product.name}</h1>
-                   
+                    <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                        <span style={{ marginRight: "5px" }}>{renderStars(averageRating)}</span>
+                        <span style={{ color: "#666", fontSize: "14px" }}>({reviewCount} customer reviews)</span>
+                    </div>
                     <p style={{ color: "#EF5B2B", fontSize: "24px", fontWeight: "bold", marginBottom: "20px" }}>${product.price.toFixed(2)} <span style={{ textDecoration: "line-through", color: "#666", fontSize: "18px", marginLeft: "10px" }}>${(product.price * 1.2).toFixed(2)}</span></p>
                     <p style={{ color: "#666", marginBottom: "20px" }}>{product.description}</p>
                     
@@ -134,7 +162,7 @@ function Details() {
                     </p>
                 </div>
             </div>
-            <Reviews id={product.id} />
+            <Reviews id={product.id} averageRating={averageRating} reviewCount={reviewCount} />
             <Footer />
         </div>
     );

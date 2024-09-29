@@ -16,6 +16,12 @@ const reviewSchema = new mongoose.Schema({
     review: {
         type: String,
         required: true
+    },
+    rating: { // Add this field for storing the rating
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5
     }
 }, {
     timestamps: true

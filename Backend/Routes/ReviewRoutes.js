@@ -3,13 +3,15 @@ const router = express.Router();
 const Review = require('../Schemas/ReviewsSchema.js');
 
 // Add a new review
+// Add a new review
 router.post('/addnew/:id', async (req, res) => {
   try {
     const review = new Review({
       productId: req.params.id,
       username: req.body.username,
       userEmail: req.body.userEmail,
-      review: req.body.review
+      review: req.body.review,
+      rating: req.body.rating // Include rating here
     });
     await review.save();
     res.status(201).json({ success: true, review });
@@ -18,6 +20,7 @@ router.post('/addnew/:id', async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 });
+
 
 
 router.get('/getreviews', async (req, res) => {

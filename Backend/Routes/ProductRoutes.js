@@ -20,7 +20,7 @@ const upload = multer({ storage });
 
 
 router.post('/', upload.single('image'), async (req, res) => {
-    const { id, name, price, latest, category, featured, sizes, colors, quantity } = req.body;
+    const { id, name, price, latest, category, featured, sizes, colors, quantity, description } = req.body;
     const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : null;
     const sellerEmail = req.body.sellerEmail; // Get the seller's email from the request
 
@@ -42,7 +42,8 @@ router.post('/', upload.single('image'), async (req, res) => {
             sizes: sizes.split(','),
             colors: colors.split(','),
             quantity,
-            sellerEmail // Add sellerEmail to the product
+            sellerEmail,
+            description // Include the description in the product creation
         });
 
         await newProduct.save();
@@ -51,6 +52,7 @@ router.post('/', upload.single('image'), async (req, res) => {
         return res.status(500).json({ error: 'Error saving product' });
     }
 });
+
 
 router.use('/uploads/images', express.static(path.join(__dirname, '../uploads/images')));
 

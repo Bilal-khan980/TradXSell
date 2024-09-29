@@ -12,8 +12,10 @@ const productSchema = new mongoose.Schema({
     colors: [String],
     quantity: { type: Number, required: true },
     sellerEmail: { type: String, required: true },
-    status: { type: String, enum: ['approved', 'not approved'], default: 'not approved' } // Add status field
+    status: { type: String, enum: ['approved', 'not approved'], default: 'not approved' },
+    description: { type: String } // New description field
 });
 
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;
+

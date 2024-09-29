@@ -19,7 +19,8 @@ class ManageProducts extends Component {
         featured: false,
         sizes: '',
         colors: '',
-        quantity: ''
+        quantity: '',
+        description: '' // Add description field to state
     };
 
     componentDidMount() {
@@ -28,23 +29,13 @@ class ManageProducts extends Component {
 
     fetchProducts = async () => {
         const { email } = this.context; // Get seller's email from AuthContext
-        console.log('Seller Email:', email);
-    
         try {
             const response = await axios.get(`/products/seller/${email}`);
-            console.log('Fetched products:', response.data);
-    
-            if (response.data.length === 0) {
-                console.warn('No products found for this seller.');
-            }
-    
             this.setState({ products: response.data });
         } catch (error) {
-            console.error('Error fetching products:', error);
             this.setState({ error: 'Failed to fetch products' });
         }
     };
-    
 
     handleChange = (e) => {
         const { name, value, type, checked, files } = e.target;
@@ -57,8 +48,9 @@ class ManageProducts extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { id, name, price, imageFile, latest, category, featured, sizes, colors, quantity } = this.state;
-        const { email } = this.context; // Get seller's email from AuthContext
+        const { id, name, price, imageFile, latest, category, featured, sizes, colors, quantity, description } = this.state; // Include description
+
+        const { email } = this.context;
 
         const formData = new FormData();
         formData.append('id', id);
@@ -71,7 +63,8 @@ class ManageProducts extends Component {
         formData.append('sizes', sizes);
         formData.append('colors', colors);
         formData.append('quantity', quantity);
-        formData.append('sellerEmail', email); // Attach seller's email to formData
+        formData.append('description', description); // Append description
+        formData.append('sellerEmail', email);
 
         try {
             await axios.post('/products', formData, {
@@ -90,11 +83,11 @@ class ManageProducts extends Component {
                 featured: false,
                 sizes: '',
                 colors: '',
-                quantity: ''
+                quantity: '',
+                description: '' // Reset description field
             });
             this.fetchProducts();
         } catch (error) {
-            console.error('Error adding product:', error);
             this.setState({ error: 'Failed to add product' });
         }
     };
@@ -102,16 +95,32 @@ class ManageProducts extends Component {
     handleDeleteProduct = async (productId) => {
         try {
             await axios.delete(`/api/products/${productId}`);
-            alert('Product deleted successfully');
             this.fetchProducts();
         } catch (error) {
-            console.error('Error deleting product:', error);
             this.setState({ error: 'Failed to delete product' });
         }
     };
 
     render() {
-        const { products, error, id, name, price, latest, category, featured, sizes, colors, quantity } = this.state;
+        const { products, error, id, name, price, latest, category, featured, sizes, colors, quantity, description } = this.state; // Include description in state destructuring
+        const categories = [
+            'Jewelry, Eyewear',
+            'Vehicle Parts & Accessories',
+            'Industrial Machinery',
+            'Luggage, Bags & Cases',
+            'Construction & Real Estate',
+            'Personal Care & Household',
+            'Lights & Lighting',
+            'Renewable Energy',
+            'Shoes & Accessories',
+            'Furniture',
+            'Tools & Hardware',
+            'Home Appliances',
+            'Vehicles & Transportation',
+            'Vehicle Accessories',
+            'Gifts & Crafts',
+            'Health Care'
+        ];
 
         if (error) {
             return <div>Error: {error}</div>;
@@ -126,31 +135,66 @@ class ManageProducts extends Component {
                             <div className="form-group">
                                 <input type="text" className="form-control" name="id" value={id} onChange={this.handleChange} placeholder="Product ID" required />
                             </div>
+                            <br />
                             <div className="form-group">
                                 <input type="text" className="form-control" name="name" value={name} onChange={this.handleChange} placeholder="Product Name" required />
                             </div>
+                            <br />
                             <div className="form-group">
                                 <input type="number" className="form-control" name="price" value={price} onChange={this.handleChange} placeholder="Product Price" required />
                             </div>
+                            <br />
                             <div className="form-group">
                                 <input type="file" className="form-control" name="image" onChange={this.handleChange} required />
                             </div>
+                            <br />
+                            {/* Category dropdown */}
                             <div className="form-group">
-                                <input type="text" className="form-control" name="category" value={category} onChange={this.handleChange} placeholder="Category" required />
+                                <select
+                                    className="form-control"
+                                    id="category"
+                                    name="category"
+                                    value={category}
+                                    onChange={this.handleChange}
+                                    required
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories.map((category, index) => (
+                                        <option key={index} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
+                            <br />
                             <div className="form-group">
                                 <input type="text" className="form-control" name="sizes" value={sizes} onChange={this.handleChange} placeholder="Sizes" required />
                             </div>
+                            <br />
                             <div className="form-group">
                                 <input type="text" className="form-control" name="colors" value={colors} onChange={this.handleChange} placeholder="Colors" required />
                             </div>
+                            <br />
                             <div className="form-group">
                                 <input type="number" className="form-control" name="quantity" value={quantity} onChange={this.handleChange} placeholder="Quantity" required />
                             </div>
+                            <br />
+                            <div className="form-group">
+                                <textarea
+                                    className="form-control"
+                                    name="description"
+                                    value={description}
+                                    onChange={this.handleChange}
+                                    placeholder="Product Description"
+                                    required
+                                />
+                            </div>
+                            <br />
                             <div className="form-check">
                                 <input type="checkbox" className="form-check-input" name="latest" checked={latest} onChange={this.handleChange} />
                                 <label className="form-check-label">Latest</label>
                             </div>
+
                             <div className="form-check">
                                 <input type="checkbox" className="form-check-input" name="featured" checked={featured} onChange={this.handleChange} />
                                 <label className="form-check-label">Featured</label>
@@ -170,9 +214,8 @@ class ManageProducts extends Component {
                                         <div className="card-body">
                                             <h5 className="card-title">{product.name}</h5>
                                             <p className="card-text">{product.price}</p>
-                                            <p className="card-text">{product.status}</p>
+                                            <p className="card-text">{product.description}</p> {/* Display product description */}
                                             <Link to={`/adminproducts/${product.id}`} className="btn btn-secondary mr-2">View Details</Link>
-
                                             <button className="btn btn-danger ml-3" onClick={() => this.handleDeleteProduct(product.id)}>
                                                 <i className="fas fa-trash"></i> Delete
                                             </button>

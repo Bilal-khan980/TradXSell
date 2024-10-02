@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext.js';
 
-
 function Cart() {
     const { email } = useContext(AuthContext);
     const [cartItems, setCartItems] = useState([]);
@@ -72,24 +71,24 @@ function Cart() {
 
     return (
         <div style={styles.container}>
-            <h2 style={styles.title}>Your Cart</h2>
+            <h2 style={styles.title}>YOUR CART</h2>
             {cartItems.length === 0 ? (
                 <p style={styles.emptyCart}>Your cart is empty</p>
             ) : (
                 <table style={styles.cartTable}>
                     <thead>
                         <tr>
-                            <th style={styles.header}>Product</th>
-                            <th style={styles.header}>Price</th>
-                            <th style={styles.header}>Quantity</th>
-                            <th style={styles.header}>Subtotal</th>
-                            <th style={styles.header}>Action</th>
+                        <th style={{...styles.header, paddingLeft: 55}}>PRODUCT</th>
+                            <th style={styles.header}>PRICE</th>
+                            <th style={{...styles.header, paddingLeft: 55}}>QUANTITY</th>
+                            {/* <th style={styles.header}>Subtotal</th> */}
+                            <th style={{...styles.header, paddingLeft: 10}}>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
                         {cartItems.map(item => (
                             <tr key={item.productId} style={styles.cartItemRow}>
-                                <td style={styles.productInfo}>
+                                <td style={{...styles.productInfo, paddingTop: 10}}>
                                     <img
                                         src={item.imageUrl}
                                         alt={item.name}
@@ -97,7 +96,8 @@ function Cart() {
                                     />
                                     <span style={styles.productName}>{item.name}</span>
                                 </td>
-                                <td style={styles.productPrice}>${item.price.toFixed(2)}</td>
+                                
+                                {/* <td style={styles.productPrice}>${item.price.toFixed(2)}</td>
                                 <td style={styles.quantityContainer}>
                                     <button
                                         style={styles.quantityButton}
@@ -112,21 +112,27 @@ function Cart() {
                                     >
                                         +
                                     </button>
-                                </td>
+                                </td> */}
+                                
                                 <td style={styles.subtotal}>
+                                    
                                     ${(item.price * item.quantity).toFixed(2)}
                                 </td>
-                                <td style={styles.removeCell}>
-                                <button
-    style={styles.removeButton}
-    onClick={() => removeFromCart(item.productId)}
->
-    <span style={{ ...styles.icon, marginRight: '8px' }}>
-        <FontAwesomeIcon icon={faTrash} />
-    </span>
-    Remove
-</button>
-
+                                <td style={{paddingLeft: 40}}>
+                                <button style={styles.quantityButton}  onClick={() => increaseQuantity(item.productId)}>+</button>
+                                <div style={{paddingRight : 10, display: 'inline-block'}}></div>
+                                    {item.quantity}
+                                    <div style={{paddingRight : 10, display: 'inline-block'}}></div>
+                                    <button style={styles.quantityButton} onClick={() => decreaseQuantity(item.productId)}>-</button>
+                                </td>
+                                <td style={{...styles.removeCell, paddingRight: 50}}>
+                                    <button
+                                        style={styles.removeButton}
+                                        onClick={() => removeFromCart(item.productId)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} style={{...styles.icon, paddingLeft: 4}} />
+                                        
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -144,20 +150,21 @@ function Cart() {
                     <p style={styles.total}>
                         Total: ${(cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.1).toFixed(2)}
                     </p>
-                    <Link to="/checkout" className="btn btn-primary" style={{ fontSize: "20px", fontWeight: "bold", color: "white", backgroundColor: "#EF5B2B", border: "2px solid white" }}>CHECKOUT</Link>
+                    <Link to="/checkout" className="btn btn-primary" style={styles.checkoutButton}>
+                        CHECKOUT
+                    </Link>
                 </div>
             )}
         </div>
     );
 }
-
 const styles = {
     container: {
         width: '90%',
         margin: '40px auto',
         padding: '20px',
         backgroundColor: '#fff',
-        borderRadius: '8px',
+        borderRadius: '10px',
         boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
     },
     title: {
@@ -165,10 +172,13 @@ const styles = {
         marginBottom: '20px',
         color: '#EF5B2B',
         fontSize: '24px',
+        fontWeight: 'bold',
     },
     emptyCart: {
         textAlign: 'center',
         fontStyle: 'italic',
+        fontSize: '18px',
+        color: '#666',
     },
     cartTable: {
         width: '100%',
@@ -178,21 +188,22 @@ const styles = {
     header: {
         backgroundColor: '#EF5B2B',
         color: '#fff',
-        padding: '12px',
+        padding: '15px',
         fontSize: '16px',
         textAlign: 'left',
     },
     cartItemRow: {
         borderBottom: '1px solid #ddd',
-        padding: '15px 0',
+        padding: '20px 0',
+        height: '120px',
     },
     productInfo: {
         display: 'flex',
         alignItems: 'center',
     },
     productImage: {
-        width: '80px',
-        height: '80px',
+        width: '100px',
+        height: '100px',
         objectFit: 'cover',
         borderRadius: '8px',
         marginRight: '15px',
@@ -208,20 +219,23 @@ const styles = {
     quantityContainer: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '-10px', // Adjusting the position to move it up
+        justifyContent: 'center', // Centering quantity buttons
+        padding: '12px',
     },
     quantityButton: {
-        padding: '5px 10px',
+        padding: '8px 12px',
         backgroundColor: '#EF5B2B',
         color: 'white',
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
+        fontWeight: 'bold',
+        width: '40px',
     },
     quantityText: {
-        padding: '0 10px',
+        padding: '0 15px',
         fontSize: '16px',
+        fontWeight: 'bold',
     },
     subtotal: {
         fontSize: '16px',
@@ -231,19 +245,19 @@ const styles = {
     removeCell: {
         padding: '12px',
     },
-    trashIcon: {
-        marginRight: '5px',
-    },
     removeButton: {
         display: 'flex',
         alignItems: 'center',
         padding: '10px 15px',
-        backgroundColor: '#ff4d4d', // Changed color to a softer red
+        backgroundColor: '#ff4d4d',
         color: 'white',
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
         fontWeight: 'bold',
+    },
+    icon: {
+        marginRight: '8px',
     },
     summary: {
         textAlign: 'right',
@@ -251,6 +265,7 @@ const styles = {
     total: {
         fontSize: '18px',
         marginBottom: '10px',
+        color: '#333',
     },
     checkoutButton: {
         padding: '12px 20px',
@@ -260,6 +275,7 @@ const styles = {
         borderRadius: '4px',
         cursor: 'pointer',
         fontSize: '16px',
+        fontWeight: 'bold',
     },
 };
 

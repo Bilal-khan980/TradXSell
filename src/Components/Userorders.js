@@ -21,12 +21,6 @@ function UserOrders() {
         fetchOrders();
     }, [email]);
 
-    // const calculateDeliveryDate = (orderDate) => {
-    //     const deliveryDate = new Date(orderDate);
-    //     deliveryDate.setDate(deliveryDate.getDate() + 5);
-    //     return deliveryDate.toDateString();
-    // };
-
     if (error) {
         return <div style={{ color: 'white', textAlign: 'center', paddingTop: '20px' }}>Error: {error}</div>;
     }
@@ -43,51 +37,52 @@ function UserOrders() {
         return (
             <div style={{ backgroundColor: "black", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold" }}>NO ORDER PLACED</h1>
-            </div>);
+            </div>
+        );
     }
 
-
-
-
     return (
-        <div className="container-fluid" style={{ backgroundColor: 'black', minHeight: '100vh', color: 'white' }}>
-            <div className="container py-5">
-                <h2 className="mb-4" style={{ color: 'yellow', fontWeight: 'bold', textAlign: 'center' }}>ORDERS</h2>
+        <div className="container-fluid" style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', paddingTop: '50px' }}>
+            <div className="container">
+                <h2 className="mb-4" style={{ color: '#EF5B2B', fontWeight: 'bold', textAlign: 'center', fontSize: '2.5rem' }}>Your Orders</h2>
                 {orders.map(order => (
-                    <div key={order._id} className="card mb-4" style={{ backgroundColor: 'black', border: '4px solid white', borderRadius: '10px' }}>
-                        <div className="card-header" style={{ backgroundColor: 'black', color: 'yellow' }}>
-                            <h5 className="card-title" style={{ color: 'yellow', fontWeight: 'bold' }}>Order #{order._id}</h5>
-                            <p>Order Date: {new Date(order.orderDate).toDateString()}</p>
-                            {/* <p>Delivery Date: {calculateDeliveryDate(order.orderDate)}</p> */}
-                            {/* <p>Status: {order.status}</p> */}
+                    <div key={order._id} className="card mb-4 shadow-sm" style={{ border: 'none', borderRadius: '12px' }}>
+                        <div className="card-header d-flex justify-content-between align-items-center" style={{ backgroundColor: '#EF5B2B', color: 'white', borderRadius: '12px 12px 0 0' }}>
+                            <h5 className="card-title mb-0">Order #{order._id}</h5>
+                            <p className="mb-0">Order Date: {new Date(order.orderDate).toLocaleDateString()}</p>
                         </div>
-                        <div className="card-body" style={{ backgroundColor: 'black', color: 'white' }}>
-                            <ul className="list-group list-group-flush">
-                                {order.items.map(item => (
-                                    <li key={item.productId} className="list-group-item" style={{ backgroundColor: 'black', color: 'white', borderBottom: '1px solid white' }}>
-                                        <div className="row">
-                                            <div className="col-2">
-                                                <img src={item.imageUrl} alt={item.name} className="img-fluid" style={{ maxHeight: '100px' }} />
-                                            </div>
-                                            <div className="col-4 d-flex align-items-center" style={{ color: 'white', fontWeight: 'bold' }}>
-                                                {item.name}
-                                            </div>
-                                            <div className="col-2 d-flex align-items-center">
-                                                Quantity: {item.quantity}
-                                            </div>
-                                            <div className="col-2 d-flex align-items-center">
-                                                ${item.price * item.quantity}
-                                            </div>
-                                            <div className="col-2 d-flex align-items-center">
-                                                {item.status}
-                                            </div>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
+                        <div className="card-body" style={{ backgroundColor: 'white', borderRadius: '0 0 12px 12px' }}>
+                            <table className="table table-bordered text-center">
+                                <thead style={{ backgroundColor: '#EF5B2B', color: 'white' }}>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {order.items.map(item => (
+                                        <tr key={item.productId}>
+                                            <td>
+                                                <div className="d-flex align-items-center">
+                                                    <img src={item.imageUrl} alt={item.name} className="img-fluid rounded" style={{ maxHeight: '60px', marginRight: '10px' }} />
+                                                    <span style={{ fontWeight: 'bold', color: '#333' }}>{item.name}</span>
+                                                </div>
+                                            </td>
+                                            <td style={{paddingTop : 20}}>{item.quantity}</td>
+                                            <td style={{paddingTop : 20}}>${item.price * item.quantity}</td>
+                                            <td>
+                                                <span className={`badge ${item.status === 'Delivered' ? 'badge-success' : 'badge-warning'}`}>
+                                                    {item.status}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
                 ))}
             </div>
         </div>

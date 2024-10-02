@@ -29,8 +29,14 @@ function Navigationbar() {
                         <Nav className="ml-auto">
                             {loggedIn ? (
                                 <>
-                                    <Nav.Link as={Link} to="/userdashboard">ACCOUNT</Nav.Link>
+                                <button style={{border : 'white' , backgroundColor : 'white'}}>
+                                    <Nav.Link as={Link} to="/userdashboard" style={{color : '#EF5B2B'}}><i class="fa-solid fa-user" style={{color : '#EF5B2B'}} ></i> ACCOUNT</Nav.Link>
+                                    </button>
+                                    <div style={{paddingLeft : 20}}></div>
+                                    <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
                                     <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
+                                    </button>
+                                    <div style={{paddingRight : 20}}></div>
                                 </>
                             ) : (
                                 <>
@@ -68,7 +74,9 @@ function Navigationbar() {
                         </Nav>
                         <Nav className="ml-auto">
                             <Nav.Link as={Link} to="/user">ACCOUNT</Nav.Link>
+                            <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
                             <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
+                            </button>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -87,7 +95,9 @@ function Navigationbar() {
                         </Nav>
                         <Nav className="ml-auto">
                             <Nav.Link as={Link} to="/user">ACCOUNT</Nav.Link>
+                            <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
                             <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
+                            </button>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

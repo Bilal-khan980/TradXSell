@@ -26,12 +26,12 @@ function Checkout() {
   }, [loggedIn, email]);
 
   // Calculate delivery date (5 days from today)
-  const getDeliveryDate = () => {
-    const today = new Date();
-    const deliveryDate = new Date(today);
-    deliveryDate.setDate(deliveryDate.getDate() + 5);
-    return deliveryDate.toDateString();
-  };
+  // const getDeliveryDate = () => {
+  //   const today = new Date();
+  //   const deliveryDate = new Date(today);
+  //   deliveryDate.setDate(deliveryDate.getDate() + 5);
+  //   return deliveryDate.toDateString();
+  // };
 
   const handleOrder = async () => {
     try {
@@ -76,34 +76,36 @@ function Checkout() {
   };
 
   return (
-    <div className="container-fluid" style={{ backgroundColor: "black", color: "white", minHeight: "100vh", paddingTop: "60px" }}>
+    <div className="container-fluid" style={{ backgroundColor: "white", color: "white", minHeight: "100vh", paddingTop: "60px" , alignContent : 'center' , paddingLeft : 400}}>
       <div className="container">
         <div className="row">
           <div className="col-md-8">
-            <div className="card" style={{ backgroundColor: "black", color: "white" }}>
+            <div className="card" style={{ backgroundColor: "white", color: "black" }}>
               <div className="card-header">
-                <h5 className="card-title">Order Summary</h5>
+                <h5 className="card-title">ORDER SUMMARY</h5>
               </div>
               <div className="card-body">
                 <ul className="list-group list-group-flush">
                   {cartItems.map(item => (
-                    <li key={item._id} className="list-group-item" style={{ backgroundColor: "black", color: "white" }}>
+                    <li key={item._id} className="list-group-item" style={{ backgroundColor: "white", color: "black" }}>
                       <div className="row">
-                        <div className="col">{item.name}</div>
-                        <div className="col">Quantity: {item.quantity}</div>
-                        <div className="col">${item.price * item.quantity}</div>
+                      <div className="col"><img src={item.imageUrl} alt={item.name} style={{height : 100 }}></img></div>
+
+                        <div className="col" style={{paddingTop : 35}}>{item.name}</div>
+                        <div className="col"style={{paddingTop : 35}}>Quantity: {item.quantity}</div>
+                        <div className="col"style={{paddingTop : 35}}>${item.price * item.quantity}</div>
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="card-footer" style={{ backgroundColor: "black", color: "white", fontWeight: "bold", paddingBottom: "60px" }}>
+              <div className="card-footer" style={{ backgroundColor: "white", color: "black", fontWeight: "bold", paddingBottom: "60px" }}>
                 Total Bill: ${calculateTotalBill().toFixed(2)}
               </div>
-              <Link to="/order" className="btn btn-primary" onClick={handleOrder} style={{ fontSize: "20px", fontWeight: "bold", color: "yellow", backgroundColor: "black", border: "2px solid white" }}>PLACE ORDER</Link>
+              <Link to="/order" className="btn btn-primary" onClick={handleOrder} style={{ fontSize: "20px", fontWeight: "bold", color: "white", backgroundColor: "#EF5B2B", border: "2px solid white" }}>PLACE ORDER</Link>
             </div>
           </div>
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <div className="card" style={{ backgroundColor: "black", color: "white" }}>
               <div className="card-header">
                 <h5 className="card-title">Delivery Details</h5>
@@ -113,7 +115,7 @@ function Checkout() {
                 <p>Payment Method: Cash on Delivery</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="row mt-3" style={{ paddingTop: "200px" }}>
           <div className="col-md-12">

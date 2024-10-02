@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 function ProductDetails() {
@@ -46,30 +46,30 @@ function ProductDetails() {
     }
 
     return (
-        <div className="container-fluid bg-black text-light py-4" style={{ height: "100vh" }}>
+        <div className="container-fluid bg-white text-light py-4" style={{ height: "100vh" }}>
             <div className="container">
-                <h2 className="text-center font-weight-bold mb-4" style={{ color: "yellow" }}>PRODUCT DETAILS</h2>
-                <div className="card" style={{ backgroundColor: 'black', border: '4px solid white', borderRadius: '10px', width: "800px" }}>
+                <h2 className="text-center font-weight-bold mb-4" style={{ color: "#EF5B2B" }}>PRODUCT DETAILS</h2>
+                <div className="card" style={{ backgroundColor: 'white', border: '1px solid #EF5B2B', borderRadius: '10px', width: "800px" }}>
                     <div className="row no-gutters">
                         <div className="col-md-4">
                             <img src={product.imageUrl} className="card-img" alt={product.name} />
                         </div>
                         <div className="col-md-8">
                             <div className="card-body">
-                                <h5 className="card-title font-weight-bold" style={{ color: "yellow" }}>{product.name}</h5>
-                                <p className="card-text" style={{ color: "white" }}>Price: ${product.price}</p>
-                                <p className="card-text" style={{ color: "white" }}>Category: {product.category}</p>
-                                <p className="card-text" style={{ color: "white" }}>Sizes: {product.sizes.join(', ')}</p>
-                                <p className="card-text" style={{ color: "white" }}>Colors: {product.colors.join(', ')}</p>
-                                <p className="card-text" style={{ color: "white" }}>Quantity: {product.quantity}</p>
-                                <p className="card-text" style={{ color: "white" }}>Latest: {product.latest ? 'Yes' : 'No'}</p>
-                                <p className="card-text" style={{ color: "white" }}>Featured: {product.featured ? 'Yes' : 'No'}</p>
+                                <h5 className="card-title font-weight-bold" style={{ color: "#EF5B2B" }}>{product.name}</h5>
+                                <p className="card-text" style={{ color: "black" }}>Price: ${product.price}</p>
+                                <p className="card-text" style={{ color: "black" }}>Category: {product.category}</p>
+                                <p className="card-text" style={{ color: "black" }}>Sizes: {product.sizes.join(', ')}</p>
+                                <p className="card-text" style={{ color: "black" }}>Colors: {product.colors.join(', ')}</p>
+                                <p className="card-text" style={{ color: "black" }}>Quantity: {product.quantity}</p>
+                                <p className="card-text" style={{ color: "black" }}>Latest: {product.latest ? 'Yes' : 'No'}</p>
+                                <p className="card-text" style={{ color: "black" }}>Featured: {product.featured ? 'Yes' : 'No'}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mt-4">
-                    <h4 style={{ color: "yellow" }}>Reviews</h4>
+                    <h4 style={{ color: "#EF5B2B" }}>Reviews</h4>
                     {reviews.length > 0 ? (
                         <ul>
                             {reviews.map((review) => (

@@ -1,68 +1,61 @@
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
 import { Link } from 'react-router-dom';
-import hero from '../Components/Assets/hero.png';
-import logo from '../Components/Assets/herologo.png';
-import Footer from '../Components/footer.js';
+import hero from './Assets/hero.png';
+import logo from './Assets/herologo.png';
 import Category from './Category.js';
+import Footer from './footer.js';
 
-class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: [],
-            error: null
-        };
+export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+  const counts = {
+    products: 20000,
+    suppliers: 2000,
+    categories: 5900,
+    countries: 200,
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/products/approved/xx');
+      console.log('Fetched products:', response.data);
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      setError('Failed to fetch products');
     }
+  };
 
-    componentDidMount() {
-        this.fetchProducts();
-    }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-    fetchProducts = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/products/approved/xx');
-            console.log('Fetched products:', response.data);
-            this.setState({ products: response.data });
-        } catch (error) {
-            console.error('Error fetching products:', error);
-            this.setState({ error: 'Failed to fetch products' });
-        }
-    };
-
-    render() {
-        const { products, error } = this.state;
-
-        if (error) {
-            return <div>Error: {error}</div>;
-        }
-
-        return (
-            <>
-                {/* Hero Image with Centered Logo and Search Box */}
-                <div
-                    className="home-container"
-                    style={{
-                        backgroundColor: "white",
-                        backgroundImage: `url(${hero})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        height: "90vh",
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column", // Align items in a column
-                        position: "relative",
-                    }}
-                >
-                    {/* Logo */}
-                    <img src={logo} style={{ position: 'relative', zIndex: '100', marginBottom: '20px' }} alt="Logo" />
-
-                    {/* Centered Search Box */}
-                    <div style={{
+  return (
+    <>
+      <div className="home-container"
+        style={{
+          backgroundColor: "white",
+          backgroundImage: `url(${hero})`, // Fixed background image style
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "90vh",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          position: "relative",
+        }}>
+        <img src={logo} style={{ position: 'relative', zIndex: '100', marginBottom: '20px' }} alt="Logo" />
+        <div style={{
                         width: '786px',
                         height: '140px',
                         zIndex: 1,
@@ -111,48 +104,89 @@ class Home extends React.Component {
                             </button>
                         </div>
                     </div>
-                </div>
+      </div>
 
-                <Category />
-                <br />
-                <section className="featured-products">
-                    <div className="container-fluid" style={{ paddingTop: "40px", width: "80%" }}>
-                        {/* <h2 style={{ color: "#EF5B2B", fontWeight: "bold", fontSize: "2rem", textAlign: "center", marginBottom: "40px" }}>
-                            FEATURED PRODUCTS
-                        </h2> */}
-                        <div className="product-list" style={{ width: "100%" }}>
-                            {products.map(product => (
-                                <div className="product-card" key={product.id}>
-                                    <img src={product.imageUrl} alt={product.name} className="product-image" />
-                                    <div className="product-details">
-                                        <h3>{product.name}</h3>
-                                        <p>${product.price.toFixed(2)}</p>
-                                        <Link to={`/products/${product.id}`} className="btn btn-secondary view-details-btn" style={{backgroundColor:'#EF5B2B'}}>
-                                            View Details
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
 
-                <div style={{ paddingLeft: "360px" }}>
-                    <ul>
-                        <a href='https://www.facebook.com' target='blank'><i className="fa-brands fa-facebook" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
-                        <a href='https://www.instagram.com' target='blank'><i className="fa-brands fa-instagram" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
-                        <i className="fa-brands fa-twitter" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
-                        <i className="fa-brands fa-youtube" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
-                        <i className="fa-brands fa-tiktok" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
-                    </ul>
+      <Category />
+
+      {/* Updated Counter Section */}
+      <div className="counter-section" style={{ padding: '80px 0', backgroundColor: '#f1f1f1' }}>
+        <div className="container">
+          <h2 style={{ fontSize: '3rem', fontWeight: '600', marginBottom: '40px', textAlign: 'center', color: '#333' }}>
+            Discover Millions of Offerings
+          </h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '30px',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+            {Object.entries(counts).map(([key, value]) => (
+              <div key={key} style={{
+                textAlign: 'center',
+                padding: '20px',
+                backgroundColor: '#fff',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                borderRadius: '10px',
+                transition: 'transform 0.3s ease-in-out',
+              }}>
+                <div style={{
+                  fontSize: '3.5rem',
+                  fontWeight: '700',
+                  color: '#EF5B2B',
+                }}>
+                  <CountUp end={value} duration={2} separator="," />
+                  {key === 'products' || key === 'suppliers' ? 'M+' : key === 'countries' ? '+' : ''}
                 </div>
-                <br />
-                <br />
-                <br />
-                <Footer />
-            </>
-        );
-    }
+                <p style={{
+                  fontSize: '1.25rem',
+                  fontWeight: '500',
+                  color: '#666',
+                  marginTop: '10px',
+                }}>
+                  {key === 'categories' ? 'Product Categories' :
+                    key === 'countries' ? 'Countries and Regions' : key.charAt(0).toUpperCase() + key.slice(1)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <section className="featured-products">
+        <div className="container-fluid" style={{ paddingTop: "40px", width: "80%" }}>
+          <div className="product-list" style={{ width: "100%" }}>
+            {products.map(product => (
+              <div className="product-card" key={product.id}>
+                <img src={product.imageUrl} alt={product.name} className="product-image" />
+                <div className="product-details">
+                  <h3>{product.name}</h3>
+                  <p>${product.price.toFixed(2)}</p>
+                  {/* Fixed the template literal for Link */}
+                  <Link to={`/products/${product.id}`} className="btn btn-secondary view-details-btn" style={{ backgroundColor: '#EF5B2B' }}>
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div style={{ paddingLeft: "360px" }}>
+        <ul>
+          <a href='https://www.facebook.com' target='blank'><i className="fa-brands fa-facebook" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
+          <a href='https://www.instagram.com' target='blank'><i className="fa-brands fa-instagram" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
+          <i className="fa-brands fa-twitter" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
+          <i className="fa-brands fa-youtube" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
+          <i className="fa-brands fa-tiktok" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
+        </ul>
+      </div>
+      <br />
+      <br />
+      <br />
+      <Footer />
+    </>
+  );
 }
-
-export default Home;

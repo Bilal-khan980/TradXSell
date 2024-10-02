@@ -1,6 +1,10 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext.js';
+
 
 function Cart() {
     const { email } = useContext(AuthContext);
@@ -113,12 +117,16 @@ function Cart() {
                                     ${(item.price * item.quantity).toFixed(2)}
                                 </td>
                                 <td style={styles.removeCell}>
-                                    <button
-                                        style={{ ...styles.button, ...styles.removeButton }}
-                                        onClick={() => removeFromCart(item.productId)}
-                                    >
-                                        Remove
-                                    </button>
+                                <button
+    style={styles.removeButton}
+    onClick={() => removeFromCart(item.productId)}
+>
+    <span style={{ ...styles.icon, marginRight: '8px' }}>
+        <FontAwesomeIcon icon={faTrash} />
+    </span>
+    Remove
+</button>
+
                                 </td>
                             </tr>
                         ))}
@@ -136,7 +144,7 @@ function Cart() {
                     <p style={styles.total}>
                         Total: ${(cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.1).toFixed(2)}
                     </p>
-                    <button style={styles.checkoutButton}>Proceed to Checkout</button>
+                    <Link to="/checkout" className="btn btn-primary" style={{ fontSize: "20px", fontWeight: "bold", color: "white", backgroundColor: "#EF5B2B", border: "2px solid white" }}>CHECKOUT</Link>
                 </div>
             )}
         </div>
@@ -200,6 +208,8 @@ const styles = {
     quantityContainer: {
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '-10px', // Adjusting the position to move it up
     },
     quantityButton: {
         padding: '5px 10px',
@@ -221,16 +231,19 @@ const styles = {
     removeCell: {
         padding: '12px',
     },
-    button: {
+    trashIcon: {
+        marginRight: '5px',
+    },
+    removeButton: {
+        display: 'flex',
+        alignItems: 'center',
         padding: '10px 15px',
-        backgroundColor: '#EF5B2B',
+        backgroundColor: '#ff4d4d', // Changed color to a softer red
         color: 'white',
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
-    },
-    removeButton: {
-        backgroundColor: '#dc3545',
+        fontWeight: 'bold',
     },
     summary: {
         textAlign: 'right',

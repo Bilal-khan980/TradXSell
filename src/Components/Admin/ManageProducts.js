@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthContext.js'; // Import AuthContext
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 class ManageProducts extends Component {
     static contextType = AuthContext; // Use AuthContext to get seller's email
@@ -127,7 +127,7 @@ class ManageProducts extends Component {
         }
 
         return (
-            <div className="home-container bg-black text-light pb-4">
+            <div className="home-container bg-white text-light pb-4">
                 <section className="add-product-form">
                     <div className="container" style={{ paddingTop: '40px' }}>
                         <h2 className="text-left font-weight-bold" style={{ color: "#EF5B2B" }}>ADD NEW PRODUCT</h2>

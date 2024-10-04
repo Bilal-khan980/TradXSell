@@ -4,10 +4,61 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { Link } from 'react-router-dom';
+import calltoaction from './Assets/calltoaction.jpg';
 import hero from './Assets/hero.png';
 import logo from './Assets/herologo.png';
 import Category from './Category.js';
 import Footer from './footer.js';
+
+function CallToAction() {
+  return (
+    <section style={{
+      position: 'relative',
+      color: 'white',
+      padding: '60px 0',
+      textAlign: 'center',
+      backgroundImage: `url(${calltoaction})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      height: '600px', // Adjusted height
+      display: 'flex', // Use flexbox for centering
+      flexDirection: 'column', // Stack items vertically
+      justifyContent: 'center', // Center vertically
+      alignItems: 'center', // Center horizontally
+    }}>
+      {/* Overlay for background image opacity */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        zIndex: 1,
+      }}></div>
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}> {/* Content above the overlay */}
+        <h2 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '20px' }}>Ready to get started?</h2> {/* Increased font size */}
+        <p style={{ fontSize: '1.5rem', marginBottom: '30px' }}> {/* Increased font size */}
+          Explore millions of products from trusted suppliers by signing up today!
+        </p>
+        <button style={{
+          backgroundColor: 'white',
+          color: '#EF5B2B',
+          border: 'none',
+          padding: '12px 30px',
+          fontSize: '1.2rem', // Adjust button font size
+          fontWeight: 'bold',
+          borderRadius: '30px',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+        }}>
+          Sign up
+        </button>
+      </div>
+    </section>
+  );
+}
+
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -32,14 +83,12 @@ export default function Home() {
     }
   };
 
-  // 
-
   return (
     <>
       <div className="home-container"
         style={{
           backgroundColor: "white",
-          backgroundImage: `url(${hero})`, // Fixed background image style
+          backgroundImage: `url(${hero})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "90vh",
@@ -104,7 +153,6 @@ export default function Home() {
 
       <Category />
 
-      {/* Updated Counter Section */}
       <div className="counter-section" style={{ padding: '80px 0', backgroundColor: '#f1f1f1' }}>
         <div className="container">
           <h2 style={{ fontSize: '3rem', fontWeight: '600', marginBottom: '40px', textAlign: 'center', color: '#333' }}>
@@ -175,7 +223,9 @@ export default function Home() {
         </div>
       </section>
 
-      <div style={{ paddingLeft: "360px" }}>
+      <CallToAction />
+
+      <div style={{ paddingLeft: "460px",paddingTop:"100px" }}>
         <ul>
           <a href='https://www.facebook.com' target='blank'><i className="fa-brands fa-facebook" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
           <a href='https://www.instagram.com' target='blank'><i className="fa-brands fa-instagram" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>

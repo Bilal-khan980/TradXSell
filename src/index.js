@@ -31,6 +31,7 @@ import CheckSellers from './Components/MainAdmin/CheckSellers.js';
 
 import SellerDashboard from './Components/Admin/SellerDashboard.js';
 
+import RegisterAdmin from './Components/Admin/Register.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -63,6 +64,8 @@ root.render(
                 <Route path="/category/:categoryName" element={<CategoryPage />} />
 
                <Route path='/admin/sellerdashboard' element={<SellerDashboard></SellerDashboard>}></Route> 
+
+               <Route path='/admin/registers' element={<RegisterAdmin></RegisterAdmin>}></Route> 
 
 
           <Route path='/userdashboard' element={<UserDashboard />} />

@@ -11,7 +11,7 @@ function Navigationbar() {
 
     return (
         <>
-            {role !== "Admin" && role!== "MainAdmin" &&  (
+            {role !== "seller" && role!== "MainAdmin" &&  (
                 // Main Navbar
                 <Navbar bg="white" variant="light" expand="lg" style={{ height: 80, paddingLeft: "20px", zIndex: "1000", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
                     <Navbar.Brand as={Link} to="/">
@@ -60,7 +60,9 @@ function Navigationbar() {
                 </Navbar>
             )}
 
-            {role === "Admin" && (
+
+
+            {role === "seller" && (
                 // Admin-specific Links
                 <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "white" }}>
                     <Navbar.Brand as={Link} to="/">

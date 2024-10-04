@@ -33,7 +33,7 @@ function CallToAction() {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
         zIndex: 1,
       }}></div>
       <div className="container" style={{ position: 'relative', zIndex: 2 }}> {/* Content above the overlay */}
@@ -58,7 +58,6 @@ function CallToAction() {
     </section>
   );
 }
-
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -100,6 +99,23 @@ export default function Home() {
           position: "relative",
         }}>
         <img src={logo} style={{ position: 'relative', zIndex: '100', marginBottom: '20px' }} alt="Logo" />
+        
+        {/* Become a Seller link */}
+        <Link to="/admin/registers" style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          backgroundColor: '#EF5B2B',
+          color: 'white',
+          padding: '10px 20px',
+          borderRadius: '5px',
+          textDecoration: 'none',
+          fontWeight: 'bold',
+          zIndex: 2, // Above other elements
+        }}>
+          Become a Seller
+        </Link>
+
         <div style={{
           width: '786px',
           height: '140px',
@@ -214,9 +230,9 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              <div style={{ textAlign: 'center', padding: '40px 400px' , color: "#EF5B2B" }}>
+              <div style={{ textAlign: 'center', padding: '40px 400px', color: "#EF5B2B" }}>
                 <h2>No Products Available</h2>
-                <p>Sorry, we couldn't find any products. Please check back later!</p>
+                <p>Sorry, we couldn't find any products that match your criteria.</p>
               </div>
             )}
           </div>
@@ -224,19 +240,6 @@ export default function Home() {
       </section>
 
       <CallToAction />
-
-      <div style={{ paddingLeft: "460px",paddingTop:"100px" }}>
-        <ul>
-          <a href='https://www.facebook.com' target='blank'><i className="fa-brands fa-facebook" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
-          <a href='https://www.instagram.com' target='blank'><i className="fa-brands fa-instagram" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i></a>
-          <i className="fa-brands fa-twitter" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
-          <i className="fa-brands fa-youtube" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
-          <i className="fa-brands fa-tiktok" style={{ fontSize: "40px", color: "black", paddingLeft: "90px" }}></i>
-        </ul>
-      </div>
-      <br />
-      <br />
-      <br />
       <Footer />
     </>
   );

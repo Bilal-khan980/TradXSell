@@ -74,7 +74,7 @@ function Navigationbar() {
                             <Nav.Link as={Link} to="/admin/orders" style={{color:'#EF5B2B'}}>MANAGE ORDERS</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
-                            <Nav.Link as={Link} to="/user" style={{color:'#EF5B2B'}}>ACCOUNT</Nav.Link>
+                            <Nav.Link as={Link} to="/admin/sellerdashboard" style={{color:'#EF5B2B'}}>ACCOUNT</Nav.Link>
                             <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
                             <Nav.Link style={{color : 'white'}} onClick={handleLogout} >LOGOUT</Nav.Link>
                             </button>

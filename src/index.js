@@ -28,6 +28,10 @@ import CategoryCarousel from './Components/Category.js';
 
 import CategoryPage from './Components/CaterogyPage.js';
 import CheckSellers from './Components/MainAdmin/CheckSellers.js';
+
+import SellerDashboard from './Components/Admin/SellerDashboard.js';
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -57,6 +61,8 @@ root.render(
 
           <Route path="/" element={<CategoryCarousel />} />
                 <Route path="/category/:categoryName" element={<CategoryPage />} />
+
+               <Route path='/admin/sellerdashboard' element={<SellerDashboard></SellerDashboard>}></Route> 
 
 
           <Route path='/userdashboard' element={<UserDashboard />} />

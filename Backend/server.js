@@ -7,7 +7,6 @@ const cartRoutes = require('../Backend/Routes/CartRoutes.js');
 const Reviewroutes = require('../Backend/Routes/ReviewRoutes.js');
 const orderroutes = require('../Backend/Routes/OrderRoutes.js');
 
-
 const app = express();
 app.use('/uploads/images', express.static('uploads/images'));
 

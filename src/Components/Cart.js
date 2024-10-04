@@ -2,17 +2,25 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext.js';
 
 function Cart() {
     const { email } = useContext(AuthContext);
     const [cartItems, setCartItems] = useState([]);
     const [error, setError] = useState('');
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
+        // Redirect if email is null
+        if (!email) {
+            navigate('/loginpage'); // Redirect to the desired page
+            return; // Exit the effect
+        }
+
         const fetchCartItems = async () => {
             try {
+                console.log('EMAIL', email);
                 const response = await axios.get(`/cart/${email}`);
                 setCartItems(response.data);
             } catch (err) {
@@ -22,7 +30,7 @@ function Cart() {
         };
 
         fetchCartItems();
-    }, [email]);
+    }, [email, navigate]); // Include navigate in dependencies
 
     const increaseQuantity = async (productId) => {
         try {
@@ -78,17 +86,16 @@ function Cart() {
                 <table style={styles.cartTable}>
                     <thead>
                         <tr>
-                        <th style={{...styles.header, paddingLeft: 55}}>PRODUCT</th>
+                            <th style={{ ...styles.header, paddingLeft: 55 }}>PRODUCT</th>
                             <th style={styles.header}>PRICE</th>
-                            <th style={{...styles.header, paddingLeft: 55}}>QUANTITY</th>
-                            {/* <th style={styles.header}>Subtotal</th> */}
-                            <th style={{...styles.header, paddingLeft: 10}}>ACTION</th>
+                            <th style={{ ...styles.header, paddingLeft: 55 }}>QUANTITY</th>
+                            <th style={{ ...styles.header, paddingLeft: 10 }}>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
                         {cartItems.map(item => (
                             <tr key={item.productId} style={styles.cartItemRow}>
-                                <td style={{...styles.productInfo, paddingTop: 10}}>
+                                <td style={{ ...styles.productInfo, paddingTop: 10 }}>
                                     <img
                                         src={item.imageUrl}
                                         alt={item.name}
@@ -96,42 +103,20 @@ function Cart() {
                                     />
                                     <span style={styles.productName}>{item.name}</span>
                                 </td>
-                                
-                                {/* <td style={styles.productPrice}>${item.price.toFixed(2)}</td>
-                                <td style={styles.quantityContainer}>
-                                    <button
-                                        style={styles.quantityButton}
-                                        onClick={() => decreaseQuantity(item.productId)}
-                                    >
-                                        -
-                                    </button>
-                                    <span style={styles.quantityText}>{item.quantity}</span>
-                                    <button
-                                        style={styles.quantityButton}
-                                        onClick={() => increaseQuantity(item.productId)}
-                                    >
-                                        +
-                                    </button>
-                                </td> */}
-                                
                                 <td style={styles.subtotal}>
-                                    
                                     ${(item.price * item.quantity).toFixed(2)}
                                 </td>
-                                <td style={{paddingLeft: 40}}>
-                                <button style={styles.quantityButton}  onClick={() => increaseQuantity(item.productId)}>+</button>
-                                <div style={{paddingRight : 10, display: 'inline-block'}}></div>
-                                    {item.quantity}
-                                    <div style={{paddingRight : 10, display: 'inline-block'}}></div>
+                                <td style={{ paddingLeft: 40 }}>
+                                    <button style={styles.quantityButton} onClick={() => increaseQuantity(item.productId)}>+</button>
+                                    <div style={{ paddingRight: 10, display: 'inline-block' }}>{item.quantity}</div>
                                     <button style={styles.quantityButton} onClick={() => decreaseQuantity(item.productId)}>-</button>
                                 </td>
-                                <td style={{...styles.removeCell, paddingRight: 50}}>
+                                <td style={{ ...styles.removeCell, paddingRight: 50 }}>
                                     <button
                                         style={styles.removeButton}
                                         onClick={() => removeFromCart(item.productId)}
                                     >
-                                        <FontAwesomeIcon icon={faTrash} style={{...styles.icon, paddingLeft: 4}} />
-                                        
+                                        <FontAwesomeIcon icon={faTrash} style={{ ...styles.icon, paddingLeft: 4 }} />
                                     </button>
                                 </td>
                             </tr>
@@ -158,6 +143,7 @@ function Cart() {
         </div>
     );
 }
+
 const styles = {
     container: {
         width: '90%',
@@ -209,31 +195,6 @@ const styles = {
         marginRight: '15px',
     },
     productName: {
-        fontSize: '16px',
-        fontWeight: 'bold',
-    },
-    productPrice: {
-        fontSize: '16px',
-        padding: '12px',
-    },
-    quantityContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center', // Centering quantity buttons
-        padding: '12px',
-    },
-    quantityButton: {
-        padding: '8px 12px',
-        backgroundColor: '#EF5B2B',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontWeight: 'bold',
-        width: '40px',
-    },
-    quantityText: {
-        padding: '0 15px',
         fontSize: '16px',
         fontWeight: 'bold',
     },

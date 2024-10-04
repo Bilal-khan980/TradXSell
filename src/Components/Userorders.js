@@ -1,13 +1,19 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../AuthContext'; // Assuming you have an AuthContext for managing user authentication
+import {  useNavigate } from 'react-router-dom';
 
 function UserOrders() {
     const { email, loggedIn } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState('');
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
+        if (!email) {
+            navigate('/loginpage'); // Redirect to the desired page
+            return; // Exit the effect
+        }
         const fetchOrders = async () => {
             try {
                 const response = await axios.get(`/orders/${email}`);
@@ -20,7 +26,7 @@ function UserOrders() {
         };
 
         fetchOrders();
-    }, [email]);
+    }, [email, navigate]);
 
     if (error) {
         return <div style={{ color: 'white', textAlign: 'center', paddingTop: '20px' }}>Error: {error}</div>;

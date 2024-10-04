@@ -11,7 +11,6 @@ import Footer from './footer.js';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
   const counts = {
     products: 20000,
     suppliers: 2000,
@@ -30,13 +29,10 @@ export default function Home() {
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
-      setError('Failed to fetch products');
     }
   };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // 
 
   return (
     <>
@@ -56,56 +52,55 @@ export default function Home() {
         }}>
         <img src={logo} style={{ position: 'relative', zIndex: '100', marginBottom: '20px' }} alt="Logo" />
         <div style={{
-                        width: '786px',
-                        height: '140px',
-                        zIndex: 1,
-                        opacity: 1,
-                    }}>
-                        <div className="ife-header-search-bar dark pc-home-search" style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            height: '40%',
-                            border: '1px solid #e5e7eb',
-                            borderRadius: '30px',
-                            padding: '0 10px',
-                            backgroundColor: '#fff',
-                            position : 'relative',
-                            top : '-100%',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                        }}>
-                            <input
-                                className="search-bar-input util-ellipsis"
-                                type="text"
-                                maxLength="50"
-                                placeholder="Search for products..."
-                                style={{
-                                    flex: 1,
-                                    border: 'none',
-                                    outline: 'none',
-                                    padding: '10px',
-                                    borderRadius: '30px',
-                                    fontFamily: 'Inter, SF Pro Text, Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC, Microsoft YaHei',
-                                    fontSize: '16px',
-                                }}
-                            />
-                            <button className="fy23-icbu-search-bar-inner-button" style={{
-                                backgroundColor: '#EF5B2B',
-                                color: 'white',
-                                border: 'none',
-                                padding: '10px 20px',
-                                borderRadius: '40px',
-                                width: '130px',
-                                cursor: 'pointer'
-                            }}>
-                                <i className="fa-solid fa-magnifying-glass"></i>
-                                <div style={{ paddingLeft: 10, display: 'inline-block' }}></div>
-                                <span>Search</span>
-                            </button>
-                        </div>
-                    </div>
+          width: '786px',
+          height: '140px',
+          zIndex: 1,
+          opacity: 1,
+        }}>
+          <div className="ife-header-search-bar dark pc-home-search" style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '40%',
+            border: '1px solid #e5e7eb',
+            borderRadius: '30px',
+            padding: '0 10px',
+            backgroundColor: '#fff',
+            position: 'relative',
+            top: '-100%',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          }}>
+            <input
+              className="search-bar-input util-ellipsis"
+              type="text"
+              maxLength="50"
+              placeholder="Search for products..."
+              style={{
+                flex: 1,
+                border: 'none',
+                outline: 'none',
+                padding: '10px',
+                borderRadius: '30px',
+                fontFamily: 'Inter, SF Pro Text, Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC, Microsoft YaHei',
+                fontSize: '16px',
+              }}
+            />
+            <button className="fy23-icbu-search-bar-inner-button" style={{
+              backgroundColor: '#EF5B2B',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '40px',
+              width: '130px',
+              cursor: 'pointer'
+            }}>
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <div style={{ paddingLeft: 10, display: 'inline-block' }}></div>
+              <span>Search</span>
+            </button>
+          </div>
+        </div>
       </div>
-
 
       <Category />
 
@@ -157,19 +152,25 @@ export default function Home() {
       <section className="featured-products">
         <div className="container-fluid" style={{ paddingTop: "40px", width: "80%" }}>
           <div className="product-list" style={{ width: "100%" }}>
-            {products.map(product => (
-              <div className="product-card" key={product.id}>
-                <img src={product.imageUrl} alt={product.name} className="product-image" />
-                <div className="product-details">
-                  <h3>{product.name}</h3>
-                  <p>${product.price.toFixed(2)}</p>
-                  {/* Fixed the template literal for Link */}
-                  <Link to={`/products/${product.id}`} className="btn btn-secondary view-details-btn" style={{ backgroundColor: '#EF5B2B' }}>
-                    View Details
-                  </Link>
+            {products.length > 0 ? (
+              products.map(product => (
+                <div className="product-card" key={product.id}>
+                  <img src={product.imageUrl} alt={product.name} className="product-image" />
+                  <div className="product-details">
+                    <h3>{product.name}</h3>
+                    <p>${product.price.toFixed(2)}</p>
+                    <Link to={`/products/${product.id}`} className="btn btn-secondary view-details-btn" style={{ backgroundColor: '#EF5B2B' }}>
+                      View Details
+                    </Link>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div style={{ textAlign: 'center', padding: '40px 400px' , color: "#EF5B2B" }}>
+                <h2>No Products Available</h2>
+                <p>Sorry, we couldn't find any products. Please check back later!</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>

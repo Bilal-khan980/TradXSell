@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../AuthContext'; // Assuming you have an AuthContext for managing user authentication
 
 function UserOrders() {
@@ -11,6 +11,7 @@ function UserOrders() {
         const fetchOrders = async () => {
             try {
                 const response = await axios.get(`/orders/${email}`);
+                console.log(response.data); 
                 setOrders(response.data);
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -27,12 +28,44 @@ function UserOrders() {
 
     if (!loggedIn) {
         return (
-            <div style={{ backgroundColor: "black", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold" }}>PLEASE LOGIN</h1>
+            <div style={{
+                background: "linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%)",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column"
+            }}>
+                <div style={{
+                    backgroundColor: "#EF5B2B",
+                    padding: "20px 40px",
+                    borderRadius: "15px",
+                    boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)"
+                }}>
+                    <h1 style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        fontSize: "2.5rem",
+                        letterSpacing: "1.5px",
+                        textShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)"
+                    }}>
+                        PLEASE LOGIN
+                    </h1>
+                </div>
+                <p style={{
+                    marginTop: "20px",
+                    color: "#333",
+                    fontSize: "1.2rem",
+                    fontWeight: "500",
+                    textAlign: "center"
+                }}>
+                    Access your orders and account details after logging in.
+                </p>
             </div>
         );
     }
-
+    
     if (orders.length === 0) {
         return (
             <div style={{ backgroundColor: "black", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -52,30 +85,28 @@ function UserOrders() {
                             <p className="mb-0">Order Date: {new Date(order.orderDate).toLocaleDateString()}</p>
                         </div>
                         <div className="card-body" style={{ backgroundColor: 'white', borderRadius: '0 0 12px 12px' }}>
-                            <table className="table table-bordered text-center">
+                            <table className="table table-bordered text-center" style={{ tableLayout: 'fixed', width: '100%' }}>
                                 <thead style={{ backgroundColor: '#EF5B2B', color: 'white' }}>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
+                                        <th style={{ width: '30%' }}>Product</th>
+                                        <th style={{ width: '20%' }}>Quantity</th>
+                                        <th style={{ width: '25%' }}>Total</th>
+                                        <th style={{ width: '25%' }}>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {order.items.map(item => (
                                         <tr key={item.productId}>
                                             <td>
-                                                <div className="d-flex align-items-center">
-                                                    <img src={item.imageUrl} alt={item.name} className="img-fluid rounded" style={{ maxHeight: '60px', marginRight: '10px' }} />
+                                                <div className="d-flex align-items-center justify-content-center">
+                                                    <img src={item.imageUrl} alt={item.name} className="img-fluid rounded" style={{ maxHeight: '60px', marginRight: '10px', width: '50px' }} />
                                                     <span style={{ fontWeight: 'bold', color: '#333' }}>{item.name}</span>
                                                 </div>
                                             </td>
-                                            <td style={{paddingTop : 20}}>{item.quantity}</td>
-                                            <td style={{paddingTop : 20}}>${item.price * item.quantity}</td>
-                                            <td>
-                                                <span className={`badge ${item.status === 'Delivered' ? 'badge-success' : 'badge-warning'}`}>
-                                                    {item.status}
-                                                </span>
+                                            <td style={{ verticalAlign: 'middle' }}>{item.quantity}</td>
+                                            <td style={{ verticalAlign: 'middle' }}>${item.price * item.quantity}</td>
+                                            <td style={{ verticalAlign: 'middle' }}>
+                                                <span>{item.status}</span>
                                             </td>
                                         </tr>
                                     ))}

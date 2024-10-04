@@ -76,6 +76,7 @@ function ManageOrders() {
 
     return (
         <div className="manage-orders">
+            
             <style jsx>{`
                 .manage-orders {
                     background-color: #ffffff;
@@ -168,6 +169,7 @@ function ManageOrders() {
                 }
             `}</style>
             <div className="container">
+
                 <h1 className="page-title">Manage Orders</h1>
                 {orders.map(order => {
                     const sellerItems = order.items.filter(item => productSellerEmails[item.productId] === sellerEmail);

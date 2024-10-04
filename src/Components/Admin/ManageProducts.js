@@ -128,6 +128,7 @@ class ManageProducts extends Component {
 
         return (
             <div className="home-container bg-white text-light pb-4">
+             
                 <section className="add-product-form">
                     <div className="container" style={{ paddingTop: '40px' }}>
                         <h2 className="text-left font-weight-bold" style={{ color: "#EF5B2B" }}>ADD NEW PRODUCT</h2>

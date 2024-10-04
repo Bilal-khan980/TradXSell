@@ -1,33 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import './index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './Components/Home';
-import Details from './Components/Details';
-import Login from './Components/Login';
 import { AuthProvider } from './AuthContext';
-import Navigationbar from './Components/Navigationbar';
-import Cart from './Components/Cart';
-import ManageProducts from './Components/Admin/ManageProducts';
-import Checkout from './Components/Checkout';
-import Order from './Components/Order.js'
-import Userorders from './Components/Userorders.js'
-import Aboutus from './Components/Aboutus.js'
-import Contactus from './Components/Contactus.js'
+import Aboutus from './Components/Aboutus.js';
 import Manageorders from './Components/Admin/Manageorders.js';
+import ManageProducts from './Components/Admin/ManageProducts';
 import ProductDetails from './Components/Admin/ProductDetails.js';
-import UserDashboard from './Components/UserDashboard.js'
-import Mensproducts from './Components/Mens_products.js';
-import WomensProducts from './Components/WomensProducts.js';
-import NewArrivals from './Components/NewArrivals.js';
+import Cart from './Components/Cart';
+import Checkout from './Components/Checkout';
+import Contactus from './Components/Contactus.js';
+import Details from './Components/Details';
+import Home from './Components/Home';
+import Login from './Components/Login';
 import CheckProducts from './Components/MainAdmin/CheckProducts.js';
+import Mensproducts from './Components/Mens_products.js';
+import Navigationbar from './Components/Navigationbar';
+import NewArrivals from './Components/NewArrivals.js';
+import Order from './Components/Order.js';
 import Register from './Components/RegisterPage.js';
+import UserDashboard from './Components/UserDashboard.js';
+import Userorders from './Components/Userorders.js';
+import WomensProducts from './Components/WomensProducts.js';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 import CategoryCarousel from './Components/Category.js';
 
-import CategoryPage
- from './Components/CaterogyPage.js';
+import CategoryPage from './Components/CaterogyPage.js';
+import CheckSellers from './Components/MainAdmin/CheckSellers.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -66,6 +66,7 @@ root.render(
           <Route path='/order' element={<Order />} />
           <Route path='/myorders' element={<Userorders />} />
           <Route path='/admin/checkproducts' element={<CheckProducts />} />
+          <Route path='/admin/checksellers' element={<CheckSellers />} />
 
         </Routes>
       </AuthProvider>

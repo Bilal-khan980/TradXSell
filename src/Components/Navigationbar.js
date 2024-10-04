@@ -68,6 +68,7 @@ function Navigationbar() {
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
+
                         <Nav className="mr-auto">
                             <Nav.Link as={Link} to="/admin/products" style={{color:'#EF5B2B'}}>MANAGE PRODUCTS</Nav.Link>
                             <Nav.Link as={Link} to="/admin/orders" style={{color:'#EF5B2B'}}>MANAGE ORDERS</Nav.Link>
@@ -91,7 +92,8 @@ function Navigationbar() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkproducts">CHECK PRODUCTS</Nav.Link>
+                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checksellers">CHECK SELLERS</Nav.Link>
+                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkproducts">CHECK PRODUCTS</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
                             <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 1100}} as={Link} to="/user">ACCOUNT</Nav.Link>

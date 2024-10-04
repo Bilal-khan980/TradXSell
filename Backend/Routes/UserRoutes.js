@@ -114,4 +114,35 @@ app.get('/total', async (req, res) => {
     }
 });
 
+app.get('/admins', async (req, res) => {
+    try {
+        const admins = await User.find({ role: { $in: ['Admin', 'user'] } });
+
+      res.status(200).json(admins);
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+      res.status(500).json({ error: 'Failed to fetch admins' });
+    }
+});
+
+
+
+
+  app.delete('/admins/:email', async (req, res) => {
+  try {
+    const email = req.params.email;
+    const deletedUser = await User.findOneAndDelete({ email });
+
+    if (!deletedUser) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    res.status(200).send({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).send({ message: 'Server error' });
+  }
+});
+
+
+  
 module.exports = app;

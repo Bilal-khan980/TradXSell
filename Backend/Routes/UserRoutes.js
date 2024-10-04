@@ -34,6 +34,7 @@ app.post('/addnew', async (req, res) => {
     }
 });
 
+
 // Login user
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;

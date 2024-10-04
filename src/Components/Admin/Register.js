@@ -1,9 +1,8 @@
 import { faEnvelope, faHome, faLock, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-
-
-import loginBg from '../../Components/Assets/login-bg.png';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import loginBg from '../Assets/login-bg.png';
 
 function Register({ setIsRegister }) {
     const [email, setEmail] = useState("");
@@ -11,11 +10,14 @@ function Register({ setIsRegister }) {
     const [username, setUsername] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [showAlert, setShowAlert] = useState(false);
+    const [error, setError] = useState(""); // State for error messages
+    const [successMessage, setSuccessMessage] = useState(""); // State for success message
+
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const handleRegisterValidation = async (event) => {
         event.preventDefault();
-    
+
         try {
             const response = await fetch('http://localhost:5000/users/addnew', {
                 method: 'POST',
@@ -25,21 +27,30 @@ function Register({ setIsRegister }) {
                 body: JSON.stringify({ email, password, username, address, phoneNumber, role: 'seller' }),
                 credentials: 'include'
             });
-            const data = await response.json();
-    
+
+            const data = await response.json(); // Get response data
+
             if (response.ok) {
-                setIsRegister(false); // Switch back to login after successful registration
-            } else if (data.error) {
-                setShowAlert(true);
-                setTimeout(() => setShowAlert(false), 5000);
+                // Successful registration
+                setSuccessMessage("You are registered successfully!"); // Set success message
+                setError(""); // Clear any previous error
+                
+                // Remove success message after 3 seconds and redirect
+                setTimeout(() => {
+                    setSuccessMessage(""); // Clear the success message
+                    navigate('/loginpage'); // Redirect to the new page (replace '/new-page' with your desired path)
+                }, 3000);
+            } else {
+                // Handle error if email already exists
+                if (data.error) {
+                    setError(data.error); // Set error message
+                }
             }
         } catch (error) {
             console.error('Error registering:', error);
-            setShowAlert(true);
-            setTimeout(() => setShowAlert(false), 5000);
+            setError("An error occurred. Please try again."); // Handle unexpected errors
         }
     };
-    
 
     const styles = {
         container: {
@@ -126,6 +137,13 @@ function Register({ setIsRegister }) {
             color: '#9b2c2c',
             borderRadius: '0.375rem',
         },
+        success: {
+            marginTop: '1rem',
+            padding: '0.5rem',
+            backgroundColor: '#c6f6d5',
+            color: '#2f855a',
+            borderRadius: '0.375rem',
+        },
         registerMessage: {
             marginTop: '1rem',
             textAlign: 'center',
@@ -138,6 +156,7 @@ function Register({ setIsRegister }) {
         },
     };
 
+
     const keyframes = `
     @keyframes rotateGlobe {
         0% { transform: rotate(0deg); }
@@ -145,17 +164,18 @@ function Register({ setIsRegister }) {
     }
     `;
 
-    
     return (
         <div style={styles.container}>
-            <h1>SELLER REGISTER</h1>
-            <style>{keyframes}</style> 
+            <style>{keyframes}</style>
+            <h1>Seller</h1>
             <div style={styles.imageContainer}></div>
             <div style={styles.formContainer}>
                 <div style={styles.formBox}>
                     <div style={styles.header}>
                         Register
                     </div>
+                    {error && <div style={styles.alert}>{error}</div>} {/* Show error message */}
+                    {successMessage && <div style={styles.success}>{successMessage}</div>} {/* Show success message */}
                     <form onSubmit={handleRegisterValidation} style={styles.form}>
                         <div style={styles.inputContainer}>
                             <input
@@ -226,11 +246,7 @@ function Register({ setIsRegister }) {
                             Register
                         </button>
                     </form>
-                    {showAlert && (
-                        <div style={styles.alert}>
-                            Email already in use.
-                        </div>
-                    )}
+
                     <div style={styles.registerMessage}>
                         Already have an account?{' '}
                         <span style={styles.registerLink} onClick={() => setIsRegister(false)}>
@@ -241,6 +257,6 @@ function Register({ setIsRegister }) {
             </div>
         </div>
     );
-}    
+}
 
 export default Register;

@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { CheckCircle, RefreshCw, Search, Trash2, XCircle } from 'lucide-react';
+import { RefreshCw, Search, Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import ProductDetailsPopup from '../ProductDetailspopup'; // Import the new popup component
+import ProductDetailsPopup from '../ProductDetailspopup';
 
 function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null); // State for the selected product
+  const [selectedProduct, setSelectedProduct] = useState(null); 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -104,8 +104,9 @@ function ManageProducts() {
                         gap: '5px'
                       }}
                     >
-                      {product.status === 'approved' ? <CheckCircle size={16} /> : <XCircle size={16} />}
-                      {product.status === 'approved' ? 'Approved' : 'Not Approved'}
+                      {/* {product.status === 'approved' ? <CheckCircle size={16} /> : <XCircle size={16} />}
+                      {product.status === 'approved' ? 'Approved' : 'Not Approved'} */}
+                      {product.status}
                     </button>
                   </td>
                   <td style={tableCellStyle}>

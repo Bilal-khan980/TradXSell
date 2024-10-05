@@ -20,42 +20,42 @@
 
 
     router.post('/', upload.single('image'), async (req, res) => {
-        const { id, name, price, latest, category, featured, sizes, colors, quantity, description } = req.body;
+        const { id, name, price, latest, category, featured, sizes, colors, quantity, description, type } = req.body;
         const imageUrl = req.file ? `/uploads/images/${req.file.filename}` : null;
-        const sellerEmail = req.body.sellerEmail; // Get the seller's email from the request
-
+        const sellerEmail = req.body.sellerEmail;
+    
         try {
             const existingProduct = await Product.findOne({ id });
-
+    
             if (existingProduct) {
                 return res.status(400).json({ error: 'Product with this id already exists' });
             }
-
-            // Remove spaces from category
+    
             const sanitizedCategory = category.toLowerCase().replace(/\s+/g, '');
-
-
+    
             const newProduct = new Product({
                 id,
                 name,
                 price,
                 imageUrl,
                 latest,
-                category: sanitizedCategory, // Use the sanitized category
+                category: sanitizedCategory,
                 featured,
                 sizes: sizes.split(','),
                 colors: colors.split(','),
                 quantity,
                 sellerEmail,
-                description // Include the description in the product creation
+                description,
+                type // Include the type in the product creation
             });
-
+    
             await newProduct.save();
             return res.status(201).json(newProduct);
         } catch (error) {
             return res.status(500).json({ error: 'Error saving product' });
         }
     });
+    
 
 
     router.use('/uploads/images', express.static(path.join(__dirname, '../uploads/images')));

@@ -12,10 +12,10 @@ const productSchema = new mongoose.Schema({
     colors: [String],
     quantity: { type: Number, required: true },
     sellerEmail: { type: String, required: true },
-    status: { type: String, enum: ['approved', 'not approved' , 'pending'], default: 'pending' },
-    description: { type: String } // New description field
+    status: { type: String, enum: ['approved', 'not approved', 'pending'], default: 'pending' },
+    description: { type: String },
+    type: { type: String, enum: ['local', 'international'], required: true } // New type field
 });
 
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;
-

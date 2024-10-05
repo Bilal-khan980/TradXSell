@@ -20,7 +20,8 @@ class ManageProducts extends Component {
         sizes: '',
         colors: '',
         quantity: '',
-        description: ''
+        description: '',
+        type:'local'
     };
 
     componentDidMount() {
@@ -44,7 +45,7 @@ class ManageProducts extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { id, name, price, imageFile, latest, category, featured, sizes, colors, quantity, description } = this.state;
+        const { id, name, price, imageFile, latest, category, featured, sizes, colors, quantity, description,type:productType } = this.state;
         const { email } = this.context;
 
         const formData = new FormData();
@@ -60,6 +61,7 @@ class ManageProducts extends Component {
         formData.append('quantity', quantity);
         formData.append('description', description);
         formData.append('sellerEmail', email);
+        formData.append('type', productType);
 
         await axios.post('/products', formData, {
             headers: {
@@ -79,7 +81,8 @@ class ManageProducts extends Component {
             sizes: '',
             colors: '',
             quantity: '',
-            description: ''
+            description: '',
+            type:'local'
         });
         this.fetchProducts();
     };
@@ -94,7 +97,7 @@ class ManageProducts extends Component {
     };
 
     render() {
-        const { products, showForm, id, name, price, category, sizes, colors, quantity, description, latest, featured } = this.state;
+        const { products, showForm, id, name, price, category, sizes, colors, quantity, description, latest, featured,type } = this.state;
         const categories = [
             'Jewelry, Eyewear', 'Vehicle Parts & Accessories', 'Industrial Machinery',
             'Luggage, Bags & Cases', 'Construction & Real Estate', 'Personal Care & Household',
@@ -166,6 +169,22 @@ class ManageProducts extends Component {
                                     ))}
                                 </select>
                             </div>
+
+                            <div className="form-group">
+                                <label htmlFor="type">Type (Local/International):</label>
+                                <select
+                                    name="type"
+                                    className="form-control"
+                                    value={type}
+                                    onChange={this.handleChange}
+                                    required
+                                >
+                                    <option value="local">Local</option>
+                                    <option value="international">International</option>
+                                </select>
+                            </div>
+
+                            
                             <div className="form-group">
                                 <input type="text" className="form-control" name="sizes" value={sizes} onChange={this.handleChange} placeholder="Sizes" required />
                             </div>

@@ -54,11 +54,7 @@ const SideNavbar = () => {
                   padding: '10px 15px',
                   borderRadius: '4px',
                   backgroundColor: isActive ? '#34495e' : 'transparent',
-<<<<<<< HEAD
                 //   display: 'flex',
-=======
-                  // display: 'flex',
->>>>>>> 1a8cfcccbc1f82283eec980978a70784f8f7d148
                   alignItems: 'center',
                   gap: '10px' // Gap between icon and text
                 })}

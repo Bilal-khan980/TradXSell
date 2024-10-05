@@ -35,6 +35,12 @@ function Login({ setIsRegister, setIsForgotPassword }) {
                 } else if (data.user.role === 'seller') {
                     window.location.href = '/admin/sellerdashboard';
                 }
+                else if (data.user.role === 'MainAdmin') {
+                    window.location.href = '/admin/checksellers';
+                }
+                else if (data.user.role === 'QualityAssurance') {
+                    window.location.href = '/quality/manageproducts';
+                }
             } else {
                 setShowAlert(true);
                 setTimeout(() => setShowAlert(false), 5000);

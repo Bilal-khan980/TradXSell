@@ -33,6 +33,8 @@ import SellerDashboard from './Components/Admin/SellerDashboard.js';
 
 import RegisterAdmin from './Components/Admin/Register.js';
 
+import ManageProductsQuality from './Components/QualityWale/ManageProductsQuality.js';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -69,6 +71,7 @@ root.render(
 
 
           <Route path='/userdashboard' element={<UserDashboard />} />
+          <Route path='/quality/manageproducts' element={<ManageProductsQuality />} />
           <Route path='/admin/products' element={<ManageProducts />} />
           <Route path='/admin/orders' element={<Manageorders />} />
           <Route path='/checkout' element={<Checkout />} />

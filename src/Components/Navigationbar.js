@@ -11,7 +11,8 @@ function Navigationbar() {
 
     return (
         <>
-            {role !== "seller" && role!== "MainAdmin" &&  (
+            {role !== "seller" && role!== "MainAdmin" &&   role !== "QualityAssurance"  && 
+            (
                 // Main Navbar
                 <Navbar bg="white" variant="light" expand="lg" style={{ height: 80, paddingLeft: "20px", zIndex: "1000", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
                     <Navbar.Brand as={Link} to="/">
@@ -98,7 +99,29 @@ function Navigationbar() {
                         <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkproducts">CHECK PRODUCTS</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
-                            <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 1100}} as={Link} to="/user">ACCOUNT</Nav.Link>
+                            <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 900}} as={Link} to="/user">ACCOUNT</Nav.Link>
+                            <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
+                            <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
+                            </button>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            )}
+
+{role === "QualityAssurance" && (
+                // Admin-specific Links
+                <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "white" }}>
+                    <Navbar.Brand as={Link} to="/">
+                        <img src={logo} height={50} alt="Logo" />
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                        
+                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/quality/manageproducts">CHECK PRODUCTS</Nav.Link>
+                        </Nav>
+                        <Nav className="ml-auto">
+                            <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 950}} as={Link} to="/user">ACCOUNT</Nav.Link>
                             <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
                             <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
                             </button>

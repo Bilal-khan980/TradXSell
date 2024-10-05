@@ -14,7 +14,7 @@ function Login({ setIsRegister, setIsForgotPassword }) {
 
     const handleLoginValidation = async (event) => {
         event.preventDefault();
-
+    
         try {
             const response = await fetch('http://localhost:5000/users/login', {
                 method: 'POST',
@@ -25,10 +25,16 @@ function Login({ setIsRegister, setIsForgotPassword }) {
                 credentials: 'include'
             });
             const data = await response.json();
-
+    
             if (data.success) {
                 handleLogin(data.user.email, data.user.username, data.user.role, data.user.id);
-                window.location.href = '/';
+    
+                // Redirect based on the role
+                if (data.user.role === 'user') {
+                    window.location.href = '/';
+                } else if (data.user.role === 'seller') {
+                    window.location.href = '/admin/sellerdashboard';
+                }
             } else {
                 setShowAlert(true);
                 setTimeout(() => setShowAlert(false), 5000);
@@ -39,6 +45,7 @@ function Login({ setIsRegister, setIsForgotPassword }) {
             setTimeout(() => setShowAlert(false), 5000);
         }
     };
+    
 
     const styles = {
         container: {

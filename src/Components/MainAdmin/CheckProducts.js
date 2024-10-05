@@ -1,12 +1,16 @@
+// ManageProducts.js
 import axios from 'axios';
-import { RefreshCw, Search, Trash2 } from 'lucide-react';
+import { RefreshCw, Search, Trash2, Filter } from 'lucide-react'; // Added Filter icon
 import React, { useEffect, useState } from 'react';
 import ProductDetailsPopup from '../ProductDetailspopup';
+import RemarksPopup from './Remarkspopup.js'; // Import the new RemarksPopup component
 
 function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null); 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [remarksProduct, setRemarksProduct] = useState(null); // State for product requiring remarks
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,19 +29,27 @@ function ManageProducts() {
     const newStatus = currentStatus === 'approved' ? 'not approved' : 'approved';
     try {
       await axios.patch(`/products/updatestatus/${id}`, { status: newStatus });
-      setProducts(prevProducts =>
-        prevProducts.map(product =>
-          product._id === id ? { ...product, status: newStatus } : product
-        )
-      );
+      if (newStatus === 'not approved') {
+        setRemarksProduct(products.find(product => product._id === id)); // Set product for remarks
+      } else {
+        setProducts(prevProducts =>
+          prevProducts.map(product =>
+            product._id === id ? { ...product, status: newStatus } : product
+          )
+        );
+      }
     } catch (error) {
       console.error('Error updating product status:', error);
     }
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleRemarksSubmitted = (id, remarks) => {
+    setProducts(prevProducts =>
+      prevProducts.map(product =>
+        product._id === id ? { ...product, remarks } : product
+      )
+    );
+  };
 
   const handleDetailsClick = (product) => {
     setSelectedProduct(product);
@@ -45,15 +57,22 @@ function ManageProducts() {
 
   const handleClosePopup = () => {
     setSelectedProduct(null);
+    setRemarksProduct(null); // Close remarks popup
   };
+
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (statusFilter ? product.status === statusFilter : true)
+  );
 
   return (
     <div className="manage-products" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '40px 0' }}>
       <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h1 style={{ color: '#ef5b2b', marginBottom: '30px', fontSize: '2.5rem', fontWeight: 'bold' }}>Manage Products</h1>
         
-        <div className="search-bar" style={{ marginBottom: '30px' }}>
-          <div style={{ position: 'relative', maxWidth: '400px' }}>
+        {/* Search bar and filters (unchanged) */}
+        <div className="search-bar" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
+          <div style={{ position: 'relative', maxWidth: '400px', flex: '1' }}>
             <input
               type="text"
               placeholder="Search products..."
@@ -69,6 +88,26 @@ function ManageProducts() {
             />
             <Search style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', color: '#6c757d' }} />
           </div>
+          <Filter size={24} style={{ color: '#6c757d', cursor: 'pointer' }} />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label htmlFor="statusFilter" style={{ marginRight: '10px', fontWeight: 'bold' }}>Status:</label>
+            <select
+              id="statusFilter"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              style={{
+                padding: '10px',
+                borderRadius: '25px',
+                border: '1px solid #ced4da',
+                fontSize: '1rem'
+              }}
+            >
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="not approved">Not Approved</option>
+            </select>
+          </div>
         </div>
 
         <div className="product-list" style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
@@ -78,6 +117,7 @@ function ManageProducts() {
                 <th style={tableHeaderStyle}>Image</th>
                 <th style={tableHeaderStyle}>Name</th>
                 <th style={tableHeaderStyle}>Price</th>
+                <th style={tableHeaderStyle}></th>
                 <th style={tableHeaderStyle}>Status</th>
                 <th style={tableHeaderStyle}>Actions</th>
               </tr>
@@ -90,6 +130,7 @@ function ManageProducts() {
                   </td>
                   <td style={tableCellStyle}>{product.name}</td>
                   <td style={tableCellStyle}>${product.price.toFixed(2)}</td>
+                  <td style={tableCellStyle}></td>
                   <td style={tableCellStyle}>
                     <button
                       style={{
@@ -104,8 +145,6 @@ function ManageProducts() {
                         gap: '5px'
                       }}
                     >
-                      {/* {product.status === 'approved' ? <CheckCircle size={16} /> : <XCircle size={16} />}
-                      {product.status === 'approved' ? 'Approved' : 'Not Approved'} */}
                       {product.status}
                     </button>
                   </td>
@@ -119,10 +158,8 @@ function ManageProducts() {
                         Change Status
                       </button>
                       <button
-                       
-                        onClick={() => handleDetailsClick(product)} // Add details button
-                        style={ {...actionButtonStyle ,color :'#ef5b2b' , backgroundColor : 'white' , border : '3px solid #ef5b2b'}}
-                        
+                        onClick={() => handleDetailsClick(product)}
+                        style={{ ...actionButtonStyle, color: '#ef5b2b', backgroundColor: 'white', border: '3px solid #ef5b2b' }}
                       >
                         Details
                       </button>
@@ -137,39 +174,40 @@ function ManageProducts() {
             </tbody>
           </table>
         </div>
-
-        {selectedProduct && ( // Render the popup if a product is selected
-          <ProductDetailsPopup product={selectedProduct} onClose={handleClosePopup} />
-        )}
       </div>
+
+      {selectedProduct && (
+        <ProductDetailsPopup product={selectedProduct} onClose={handleClosePopup} />
+      )}
+      {remarksProduct && (
+        <RemarksPopup 
+          product={remarksProduct} 
+          onClose={handleClosePopup} 
+          onRemarksSubmitted={handleRemarksSubmitted} 
+        />
+      )}
     </div>
   );
 }
 
 const tableHeaderStyle = {
-  padding: '15px',
+  padding: '10px',
   textAlign: 'left',
-  fontWeight: 'bold',
-  color: '#495057'
+  borderBottom: '2px solid #dee2e6',
 };
 
 const tableCellStyle = {
-  padding: '15px',
-  verticalAlign: 'middle'
+  padding: '10px',
+  borderBottom: '1px solid #dee2e6',
 };
 
 const actionButtonStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '5px',
-  padding: '5px 10px',
-  backgroundColor: '#ef5b2b',
+  backgroundColor: '#007bff',
   color: '#fff',
   border: 'none',
+  padding: '5px 10px',
   borderRadius: '5px',
   cursor: 'pointer',
-  textDecoration: 'none',
-  fontSize: '0.875rem'
 };
 
 export default ManageProducts;

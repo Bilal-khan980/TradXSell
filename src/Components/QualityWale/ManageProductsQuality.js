@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RefreshCw, Search, Trash2 } from 'lucide-react';
+import { RefreshCw, Search, Trash2, Filter } from 'lucide-react'; // Added Filter icon
 import React, { useEffect, useState } from 'react';
 import ProductDetailsPopup from '../ProductDetailspopup';
 
@@ -7,6 +7,8 @@ function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null); 
+  const [typeFilter, setTypeFilter] = useState('');  // Added type filter state
+  const [statusFilter, setStatusFilter] = useState('');  // Added status filter state
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,8 +37,11 @@ function ManageProducts() {
     }
   };
 
+  // Filter products based on search term, type, and status
   const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (typeFilter ? product.type === typeFilter : true) &&
+    (statusFilter ? product.status === statusFilter : true)
   );
 
   const handleDetailsClick = (product) => {
@@ -52,8 +57,9 @@ function ManageProducts() {
       <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h1 style={{ color: '#ef5b2b', marginBottom: '30px', fontSize: '2.5rem', fontWeight: 'bold' }}>Manage Products</h1>
         
-        <div className="search-bar" style={{ marginBottom: '30px' }}>
-          <div style={{ position: 'relative', maxWidth: '400px' }}>
+        <div className="search-bar" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
+          {/* Search input */}
+          <div style={{ position: 'relative', maxWidth: '400px', flex: '1' }}>
             <input
               type="text"
               placeholder="Search products..."
@@ -69,6 +75,50 @@ function ManageProducts() {
             />
             <Search style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', color: '#6c757d' }} />
           </div>
+
+          {/* Filter icon */}
+          <Filter size={24} style={{ color: '#6c757d', cursor: 'pointer' }} />
+
+          {/* Type Filter */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label htmlFor="typeFilter" style={{ marginRight: '10px', fontWeight: 'bold' }}>Type:</label>
+            <select
+              id="typeFilter"
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              style={{
+                padding: '10px',
+                borderRadius: '25px',
+                border: '1px solid #ced4da',
+                fontSize: '1rem'
+              }}
+            >
+              <option value="">All</option>
+              <option value="local">Local</option>
+              <option value="international">International</option>
+            </select>
+          </div>
+
+          {/* Status Filter */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label htmlFor="statusFilter" style={{ marginRight: '10px', fontWeight: 'bold' }}>Status:</label>
+            <select
+              id="statusFilter"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              style={{
+                padding: '10px',
+                borderRadius: '25px',
+                border: '1px solid #ced4da',
+                fontSize: '1rem'
+              }}
+            >
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="not approved">Not Approved</option>
+            </select>
+          </div>
         </div>
 
         <div className="product-list" style={{ backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
@@ -78,6 +128,7 @@ function ManageProducts() {
                 <th style={tableHeaderStyle}>Image</th>
                 <th style={tableHeaderStyle}>Name</th>
                 <th style={tableHeaderStyle}>Price</th>
+                <th style={tableHeaderStyle}>Market</th>
                 <th style={tableHeaderStyle}>Status</th>
                 <th style={tableHeaderStyle}>Actions</th>
               </tr>
@@ -90,6 +141,7 @@ function ManageProducts() {
                   </td>
                   <td style={tableCellStyle}>{product.name}</td>
                   <td style={tableCellStyle}>${product.price.toFixed(2)}</td>
+                  <td style={tableCellStyle}>{product.type}</td>
                   <td style={tableCellStyle}>
                     <button
                       style={{
@@ -104,8 +156,6 @@ function ManageProducts() {
                         gap: '5px'
                       }}
                     >
-                      {/* {product.status === 'approved' ? <CheckCircle size={16} /> : <XCircle size={16} />}
-                      {product.status === 'approved' ? 'Approved' : 'Not Approved'} */}
                       {product.status}
                     </button>
                   </td>
@@ -119,10 +169,8 @@ function ManageProducts() {
                         Change Status
                       </button>
                       <button
-                       
-                        onClick={() => handleDetailsClick(product)} // Add details button
-                        style={ {...actionButtonStyle ,color :'#ef5b2b' , backgroundColor : 'white' , border : '3px solid #ef5b2b'}}
-                        
+                        onClick={() => handleDetailsClick(product)}
+                        style={{ ...actionButtonStyle, color: '#ef5b2b', backgroundColor: 'white', border: '3px solid #ef5b2b' }}
                       >
                         Details
                       </button>
@@ -138,7 +186,7 @@ function ManageProducts() {
           </table>
         </div>
 
-        {selectedProduct && ( // Render the popup if a product is selected
+        {selectedProduct && (
           <ProductDetailsPopup product={selectedProduct} onClose={handleClosePopup} />
         )}
       </div>

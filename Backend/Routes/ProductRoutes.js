@@ -46,7 +46,8 @@
                 quantity,
                 sellerEmail,
                 description,
-                type // Include the type in the product creation
+                type,
+                // No need to include remarks, it will default to an empty string
             });
     
             await newProduct.save();
@@ -55,6 +56,7 @@
             return res.status(500).json({ error: 'Error saving product' });
         }
     });
+    
     
 
 
@@ -231,5 +233,27 @@
     });
 
 
+    router.patch('/updateRemarks/:id', async (req, res) => {
+        const { id } = req.params;
+        const { remarks } = req.body;
+      
+        try {
+          const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            { remarks },
+            { new: true } // Return the updated document
+          );
+      
+          if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+          }
+      
+          res.status(200).json({ message: 'Remarks updated successfully', product: updatedProduct });
+        } catch (error) {
+          console.error('Error updating remarks:', error);
+          res.status(500).json({ message: 'Server error' });
+        }
+      });
+    
 
     module.exports = router;

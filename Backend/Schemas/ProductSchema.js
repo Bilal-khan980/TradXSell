@@ -14,7 +14,8 @@ const productSchema = new mongoose.Schema({
     sellerEmail: { type: String, required: true },
     status: { type: String, enum: ['approved', 'not approved', 'pending'], default: 'pending' },
     description: { type: String },
-    type: { type: String, enum: ['local', 'international'], required: true } // New type field
+    type: { type: String, enum: ['local', 'international'], required: true },
+    remarks: { type: String, default: '' }  // New remarks field with default empty string
 });
 
 const Product = mongoose.model('Product', productSchema);

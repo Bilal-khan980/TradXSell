@@ -6,6 +6,7 @@ const userRoutes = require('../Backend/Routes/UserRoutes.js');
 const cartRoutes = require('../Backend/Routes/CartRoutes.js');
 const Reviewroutes = require('../Backend/Routes/ReviewRoutes.js');
 const orderroutes = require('../Backend/Routes/OrderRoutes.js');
+const sellerroutes = require('../Backend/Routes/SellerRoute.js');
 
 const app = express();
 app.use('/uploads/images', express.static('uploads/images'));
@@ -23,6 +24,7 @@ app.use('/users', userRoutes);
 app.use('/cart', cartRoutes);
 app.use('/review', Reviewroutes);
 app.use('/orders', orderroutes);
+app.use('/seller', sellerroutes);
 
 
 

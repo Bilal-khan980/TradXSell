@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../AuthContext.js';
+import SideNavbar from './SideNavbar'; // Import the SideNavbar component
 
 function ManageOrders() {
     const [orders, setOrders] = useState([]);
@@ -76,17 +77,17 @@ function ManageOrders() {
 
     return (
         <div className="manage-orders">
-            
             <style jsx>{`
                 .manage-orders {
+                    display: flex; /* Use flexbox for layout */
                     background-color: #ffffff;
                     min-height: 100vh;
-                    padding: 2rem 0;
                 }
                 .container {
+                    flex-grow: 1; /* Allow the main content to take available space */
                     max-width: 1200px;
                     margin: 0 auto;
-                    padding: 0 1rem;
+                    padding: 2rem 1rem; /* Add some padding */
                 }
                 .page-title {
                     color: #EF5B2B;
@@ -168,8 +169,8 @@ function ManageOrders() {
                     font-size: 1.2rem;
                 }
             `}</style>
+            <SideNavbar /> {/* Include the SideNavbar component */}
             <div className="container">
-
                 <h1 className="page-title">Manage Orders</h1>
                 {orders.map(order => {
                     const sellerItems = order.items.filter(item => productSellerEmails[item.productId] === sellerEmail);

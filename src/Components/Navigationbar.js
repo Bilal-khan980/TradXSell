@@ -62,7 +62,7 @@ function Navigationbar() {
 
 
 
-            {role === "seller" && (
+            {/* {role === "seller" && (
                 // Admin-specific Links
                 <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "white" }}>
                     <Navbar.Brand as={Link} to="/">
@@ -83,7 +83,7 @@ function Navigationbar() {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-            )}
+            )} */}
 
             {role === "MainAdmin" && (
                 // Admin-specific Links

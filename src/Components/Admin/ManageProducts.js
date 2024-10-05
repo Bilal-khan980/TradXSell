@@ -85,7 +85,7 @@ class ManageProducts extends Component {
     };
 
     handleDeleteProduct = async (productId) => {
-        await axios.delete(`/api/products/${productId}`);
+        await axios.delete(`/products/${productId}`);
         this.fetchProducts();
     };
 

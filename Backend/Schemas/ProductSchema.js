@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     colors: [String],
     quantity: { type: Number, required: true },
     sellerEmail: { type: String, required: true },
-    status: { type: String, enum: ['approved', 'not approved'], default: 'not approved' },
+    status: { type: String, enum: ['approved', 'not approved' , 'pending'], default: 'pending' },
     description: { type: String } // New description field
 });
 

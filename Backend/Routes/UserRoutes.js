@@ -63,6 +63,20 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.get('/products/seller/:email', async (req, res) => {
+    const sellerEmail = req.params.email;
+  
+    try {
+      const seller = await User.findOne({ email: sellerEmail }); // Assuming you have a Seller model
+      if (!seller) {
+        return res.status(404).json({ message: 'Seller not found' });
+      }
+      res.json(seller);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
 
 app.get('/userdetails/:id', async (req, res) => {
     try {

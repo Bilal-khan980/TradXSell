@@ -1,14 +1,16 @@
 import axios from 'axios';
-import { RefreshCw, Search, Trash2, Filter } from 'lucide-react'; // Added Filter icon
+import { RefreshCw, Search, Trash2, Filter } from 'lucide-react'; 
 import React, { useEffect, useState } from 'react';
 import ProductDetailsPopup from '../ProductDetailspopup';
+// import SellerDetailsPopup from './SellerDashboardPopup'; // Import the new SellerDetailsPopup
 
 function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null); 
-  const [typeFilter, setTypeFilter] = useState('');  // Added type filter state
-  const [statusFilter, setStatusFilter] = useState('');  // Added status filter state
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [selectedSeller, setSelectedSeller] = useState(null); // State for seller details
+  const [typeFilter, setTypeFilter] = useState('');  
+  const [statusFilter, setStatusFilter] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -37,7 +39,6 @@ function ManageProducts() {
     }
   };
 
-  // Filter products based on search term, type, and status
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (typeFilter ? product.type === typeFilter : true) &&
@@ -48,15 +49,30 @@ function ManageProducts() {
     setSelectedProduct(product);
   };
 
-  const handleClosePopup = () => {
+  // const handleSellerDetailsClick = async (sellerEmail) => {
+  //   try {
+  //     console.log(sellerEmail);
+  //     const response = await axios.get(`http://localhost:3000/users/products/seller/${sellerEmail}`);
+  //     setSelectedSeller(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching seller details:', error);
+  //   }
+  // };
+
+  const handleCloseProductPopup = () => {
     setSelectedProduct(null);
   };
+
+  // const handleCloseSellerPopup = () => {
+  //   setSelectedSeller(null);
+  // };
 
   return (
     <div className="manage-products" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '40px 0' }}>
       <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h1 style={{ color: '#ef5b2b', marginBottom: '30px', fontSize: '2.5rem', fontWeight: 'bold' }}>Manage Products</h1>
-        
+
         <div className="search-bar" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
           {/* Search input */}
           <div style={{ position: 'relative', maxWidth: '400px', flex: '1' }}>
@@ -128,6 +144,7 @@ function ManageProducts() {
                 <th style={tableHeaderStyle}>Image</th>
                 <th style={tableHeaderStyle}>Name</th>
                 <th style={tableHeaderStyle}>Price</th>
+                <th style={tableHeaderStyle}>Seller</th>
                 <th style={tableHeaderStyle}>Market</th>
                 <th style={tableHeaderStyle}>Status</th>
                 <th style={tableHeaderStyle}>Actions</th>
@@ -141,6 +158,7 @@ function ManageProducts() {
                   </td>
                   <td style={tableCellStyle}>{product.name}</td>
                   <td style={tableCellStyle}>${product.price.toFixed(2)}</td>
+                  <td style={tableCellStyle}>{product.sellerEmail }</td>
                   <td style={tableCellStyle}>{product.type}</td>
                   <td style={tableCellStyle}>
                     <button
@@ -174,6 +192,12 @@ function ManageProducts() {
                       >
                         Details
                       </button>
+                      {/* <button
+                        onClick={() => handleSellerDetailsClick(product.sellerEmail)} // Fetch seller details on click
+                        style={{ ...actionButtonStyle, color: '#007bff', backgroundColor: 'white', border: '3px solid #007bff' }}
+                      >
+                        Seller Details
+                      </button> */}
                       <button style={{ ...actionButtonStyle, backgroundColor: '#dc3545' }}>
                         <Trash2 size={16} />
                         Delete
@@ -187,8 +211,12 @@ function ManageProducts() {
         </div>
 
         {selectedProduct && (
-          <ProductDetailsPopup product={selectedProduct} onClose={handleClosePopup} />
+          <ProductDetailsPopup product={selectedProduct} onClose={handleCloseProductPopup} />
         )}
+
+        {/* {selectedSeller && (
+          <SellerDetailsPopup seller={selectedSeller} onClose={handleCloseSellerPopup} /> // Render seller details popup
+        )} */}
       </div>
     </div>
   );
@@ -198,26 +226,24 @@ const tableHeaderStyle = {
   padding: '15px',
   textAlign: 'left',
   fontWeight: 'bold',
-  color: '#495057'
+  borderBottom: '2px solid #dee2e6',
 };
 
 const tableCellStyle = {
   padding: '15px',
-  verticalAlign: 'middle'
+  borderBottom: '1px solid #dee2e6',
 };
 
 const actionButtonStyle = {
+  backgroundColor: '#007bff',
+  color: '#fff',
+  border: 'none',
+  padding: '5px 10px',
+  borderRadius: '5px',
+  cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   gap: '5px',
-  padding: '5px 10px',
-  backgroundColor: '#ef5b2b',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  fontSize: '0.875rem'
 };
 
 export default ManageProducts;

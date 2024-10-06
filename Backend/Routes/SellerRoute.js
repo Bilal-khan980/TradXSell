@@ -40,4 +40,6 @@ router.get('/total-reviews/:sellerEmail', async (req, res) => {
   }
 });
 
+
+
 module.exports = router;

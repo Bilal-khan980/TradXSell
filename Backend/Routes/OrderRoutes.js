@@ -113,37 +113,6 @@ router.put('/:orderId/items/:productId/status', async (req, res) => {
 });
 
 
-router.get('/seller/orders-last-10-days/:sellerEmail', async (req, res) => {
-    const { sellerEmail } = req.params;
-    
-    try {
-      const today = new Date();
-      const tenDaysAgo = new Date();
-      tenDaysAgo.setDate(today.getDate() - 10);
-  
-      // Query orders in the last 10 days
-      const orders = await Order.aggregate([
-        { 
-          $match: { 
-            email: sellerEmail, 
-            orderDate: { $gte: tenDaysAgo, $lte: today } 
-          } 
-        },
-        {
-          $group: {
-            _id: { $dateToString: { format: '%Y-%m-%d', date: '$orderDate' } },
-            count: { $sum: 1 },
-          }
-        },
-        { $sort: { '_id': 1 } } // Sort by date
-      ]);
-  
-      res.json({ orders: orders.map(order => ({ date: order._id, count: order.count })) });
-    } catch (error) {
-      res.status(500).json({ error: 'Error fetching orders for last 10 days' });
-    }
-  });
 
   
-
 module.exports = router;

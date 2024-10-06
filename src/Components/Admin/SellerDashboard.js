@@ -1,11 +1,12 @@
-// SellerDashboard.js
-
 import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
   LinearScale,
+  LineController,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
 } from 'chart.js';
@@ -13,7 +14,8 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import SideNavbar from './SideNavbar.js'; // Import the SideNavbar component
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// Register the LineChart components
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, LineController, Title, Tooltip, Legend);
 
 const SellerDashboard = () => {
   const sellerEmail = 'seller@g.com'; // Replace with actual logged-in seller's email
@@ -44,7 +46,7 @@ const SellerDashboard = () => {
   }, [sellerEmail]);
 
   // Data for the bar chart
-  const data = {
+  const barData = {
     labels: ['Products', 'Orders', 'Reviews'],
     datasets: [
       {
@@ -57,8 +59,9 @@ const SellerDashboard = () => {
     ],
   };
 
-  const options = {
+  const barOptions = {
     responsive: true,
+    maintainAspectRatio: false, // This will allow the chart to resize
     plugins: {
       legend: {
         position: 'top',
@@ -68,10 +71,37 @@ const SellerDashboard = () => {
         text: 'Dashboard Overview',
       },
     },
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  // Data for the line chart (Orders in the last 10 days)
+  
+
+  const lineOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Orders in the Last 10 Days',
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
   };
 
   return (
-    <div style={{ display: 'flex'}}>
+    <div style={{ display: 'flex' }}>
       <SideNavbar /> {/* Use the SideNavbar component here */}
       <main style={{
         flex: 1,
@@ -137,14 +167,22 @@ const SellerDashboard = () => {
           </div>
         </section>
         <section style={{
+          display: 'flex',
+          gap: '20px',
           marginTop: '20px',
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
         }}>
-          <h2>Overview Chart</h2>
-          <Bar data={data} options={options} />
+          <div style={{
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+            flex: 1,
+            height: '400px',
+          }}>
+            <h2>Overview Chart</h2>
+            <Bar data={barData} options={barOptions} />
+          </div>
+          
         </section>
       </main>
     </div>

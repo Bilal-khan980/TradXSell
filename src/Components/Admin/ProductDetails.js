@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import SideNavbar from './SideNavbar'; // Import the SideNavbar component
 
 function ProductDetails() {
     const { id } = useParams();
@@ -38,17 +39,18 @@ function ProductDetails() {
     }, [id]);
 
     if (error) {
-        return <div style={{ color: 'white', textAlign: 'center', paddingTop: '20px' }}>Error: {error}</div>;
+        return <div style={{ color: 'red', textAlign: 'center', paddingTop: '20px' }}>Error: {error}</div>;
     }
 
     if (!product) {
-        return <div style={{ color: 'white', textAlign: 'center', paddingTop: '20px' }}>Loading product details...</div>;
+        return <div style={{ color: 'black', textAlign: 'center', paddingTop: '20px' }}>Loading product details...</div>;
     }
 
     return (
-        <div className="container-fluid bg-white text-light py-4" style={{ height: "100vh" }}>
-            <div className="container">
-                <h2 className="text-center font-weight-bold mb-4" style={{ color: "#EF5B2B" }}>PRODUCT DETAILS</h2>
+        <div className="bg-light text-dark" style={{ minHeight: "100vh", display: "flex" }}>
+            <SideNavbar /> {/* Include the SideNavbar component */}
+            <div className="flex-grow-1 d-flex flex-column align-items-center">
+                <h2 className="font-weight-bold mb-4" style={{ color: "#EF5B2B" }}>PRODUCT DETAILS</h2>
                 <div className="card" style={{ backgroundColor: 'white', border: '1px solid #EF5B2B', borderRadius: '10px', width: "800px" }}>
                     <div className="row no-gutters">
                         <div className="col-md-4">
@@ -73,7 +75,7 @@ function ProductDetails() {
                     {reviews.length > 0 ? (
                         <ul>
                             {reviews.map((review) => (
-                                <li key={review._id} style={{ color: "white" }}>
+                                <li key={review._id} style={{ color: "black" }}>
                                     <p><strong>{review.username} ({review.userEmail})</strong></p>
                                     <p>{review.review}</p>
                                     <p><small>{new Date(review.createdAt).toLocaleString()}</small></p>
@@ -81,7 +83,7 @@ function ProductDetails() {
                             ))}
                         </ul>
                     ) : (
-                        <p style={{ color: "white" }}>No reviews yet.</p>
+                        <p style={{ color: "black" }}>No reviews yet.</p>
                     )}
                 </div>
             </div>

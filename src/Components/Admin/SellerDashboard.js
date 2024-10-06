@@ -71,7 +71,7 @@ const SellerDashboard = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ display: 'flex'}}>
       <SideNavbar /> {/* Use the SideNavbar component here */}
       <main style={{
         flex: 1,

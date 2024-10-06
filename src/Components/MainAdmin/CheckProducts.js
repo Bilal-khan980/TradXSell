@@ -49,8 +49,10 @@ function ManageProducts() {
       )
     );
     setRemarks(''); // Reset remarks after submission
-    setRemarksProduct(null); // Close remarks popup
+    setRemarksProduct(null);
     window.location.reload(); 
+    // Close remarks popup
+    
   };
 
   const handleDeleteProduct = async (productId) => {

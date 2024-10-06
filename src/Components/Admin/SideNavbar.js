@@ -58,7 +58,7 @@ const SideNavbar = () => {
 const styles = {
   sidebar: {
     width: '250px',
-    backgroundColor: '#000', // Black background
+    background: 'linear-gradient(180deg, #000, #2c3e50)', // Gradient background
     color: 'white', // White text color
     padding: '20px',
     boxShadow: '2px 0 5px rgba(0, 0, 0, 0.5)',
@@ -103,11 +103,14 @@ const styles = {
     color: '#fff',
   },
   logoutContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 'auto',
-    textAlign: 'center',
+    padding: '20px 0',
   },
   logoutButton: {
-    backgroundColor: '#e74c3c', // Red color for logout
+    background: 'linear-gradient(90deg, #ff7e5f, #feb47b)', // Gradient button
     color: 'white',
     border: 'none',
     borderRadius: '4px',
@@ -120,6 +123,10 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: '10px',
+    boxShadow: '0 3px 6px rgba(0, 0, 0, 0.3)',
+  },
+  logoutButtonHover: {
+    background: 'linear-gradient(90deg, #ff7043, #ff9a76)', // Hover effect
   },
 };
 

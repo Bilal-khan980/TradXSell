@@ -1,7 +1,9 @@
 import { faEnvelope, faHome, faLock, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
+import AdminHeader from './AdminHeader'; // Import your AdminHeader component
+import SideNav from './SideNavBar'; // Import your SideNav component
 
 function Register({ setIsRegister }) {
     const [email, setEmail] = useState("");
@@ -9,10 +11,10 @@ function Register({ setIsRegister }) {
     const [username, setUsername] = useState("");
     const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [error, setError] = useState(""); // State for error messages
-    const [successMessage, setSuccessMessage] = useState(""); // State for success message
+    const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const handleRegisterValidation = async (event) => {
         event.preventDefault();
@@ -27,27 +29,24 @@ function Register({ setIsRegister }) {
                 credentials: 'include'
             });
 
-            const data = await response.json(); // Get response data
+            const data = await response.json();
 
             if (response.ok) {
-                // Successful registration
-                setSuccessMessage("You are registered successfully!"); // Set success message
-                setError(""); // Clear any previous error
-                
-                // Remove success message after 3 seconds and redirect
+                setSuccessMessage("You are registered successfully!");
+                setError("");
+
                 setTimeout(() => {
-                    setSuccessMessage(""); // Clear the success message
-                    navigate('/loginpage'); // Redirect to the new page (replace '/new-page' with your desired path)
+                    setSuccessMessage("");
+                    navigate('/loginpage');
                 }, 1000);
             } else {
-                // Handle error if email already exists
                 if (data.error) {
-                    setError(data.error); // Set error message
+                    setError(data.error);
                 }
             }
         } catch (error) {
             console.error('Error registering:', error);
-            setError("An error occurred. Please try again."); // Handle unexpected errors
+            setError("An error occurred. Please try again.");
         }
     };
 
@@ -56,38 +55,33 @@ function Register({ setIsRegister }) {
             display: 'flex',
             minHeight: '100vh',
             backgroundColor: '#f7fafc',
+
         },
-        imageContainer: {
-            flex: 1,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            width: '40%',
-            display: 'flex',
-            justifyContent: 'center',
-            animation: 'rotateGlobe 30s infinite linear',
+        sideNav: {
+            width: '250px',
         },
-        formContainer: {
+        content: {
             flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '2rem',
+            transition: 'margin-left 0.3s ease',
+            backgroundColor:'#121212'
+          
         },
         formBox: {
+            paddingTop:'50px',
             width: '100%',
             maxWidth: '400px',
             padding: '2rem',
             backgroundColor: 'white',
             boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
+            margin: '0 auto',
         },
         header: {
             marginBottom: '2rem',
             textAlign: 'center',
             fontSize: '1.875rem',
             fontWeight: '600',
-            color: '#EF5D2E ',
+            color: '#EF5D2E',
         },
         form: {
             display: 'flex',
@@ -111,12 +105,6 @@ function Register({ setIsRegister }) {
             top: '50%',
             transform: 'translateY(-50%)',
             color: '#a0aec0',
-        },
-        forgotPassword: {
-            textAlign: 'right',
-            fontSize: '0.875rem',
-            color: '#EF5B2B',
-            cursor: 'pointer',
         },
         button: {
             width: '100%',
@@ -154,25 +142,19 @@ function Register({ setIsRegister }) {
         },
     };
 
-
-    const keyframes = `
-    @keyframes rotateGlobe {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    `;
-
     return (
         <div style={styles.container}>
-            <style>{keyframes}</style>
-            <div style={styles.imageContainer}></div>
-            <div style={styles.formContainer}>
+            <div style={styles.sideNav}>
+                <SideNav /> {/* Include SideNav */}
+            </div>
+            <div style={styles.content}>
+                <AdminHeader /> {/* Include AdminHeader */}
                 <div style={styles.formBox}>
                     <div style={styles.header}>
                         Register
                     </div>
-                    {error && <div style={styles.alert}>{error}</div>} {/* Show error message */}
-                    {successMessage && <div style={styles.success}>{successMessage}</div>} {/* Show success message */}
+                    {error && <div style={styles.alert}>{error}</div>}
+                    {successMessage && <div style={styles.success}>{successMessage}</div>}
                     <form onSubmit={handleRegisterValidation} style={styles.form}>
                         <div style={styles.inputContainer}>
                             <input
@@ -243,7 +225,6 @@ function Register({ setIsRegister }) {
                             Register
                         </button>
                     </form>
-
                     <div style={styles.registerMessage}>
                         Already have an account?{' '}
                         <span style={styles.registerLink} onClick={() => setIsRegister(false)}>

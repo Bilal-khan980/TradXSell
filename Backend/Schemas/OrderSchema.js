@@ -10,6 +10,8 @@ const orderSchema = new mongoose.Schema({
             price: Number,
             imageUrl: String,
             quantity: { type: Number, default: 1 },
+            color: { type: String, required: true },  // Added color
+            size: { type: String, required: true },   // Added size
             status: { type: String, enum: ['Pending', 'Shipped', 'Delivered'], default: 'Pending' }  // Status for each item
         }
     ],

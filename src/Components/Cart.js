@@ -89,6 +89,8 @@ function Cart() {
                             <th style={{ ...styles.header, paddingLeft: 55 }}>PRODUCT</th>
                             <th style={styles.header}>PRICE</th>
                             <th style={{ ...styles.header, paddingLeft: 55 }}>QUANTITY</th>
+                            <th style={{ ...styles.header, paddingLeft: 55 }}>SIZE</th>
+                            <th style={{ ...styles.header, paddingLeft: 55 }}>COLOUR</th>
                             <th style={{ ...styles.header, paddingLeft: 10 }}>ACTION</th>
                         </tr>
                     </thead>
@@ -106,12 +108,15 @@ function Cart() {
                                 <td style={styles.subtotal}>
                                     ${(item.price * item.quantity).toFixed(2)}
                                 </td>
-                                <td style={{ paddingLeft: 40 }}>
+                                <td style={{ paddingLeft: 60 }}>
                                     <button style={styles.quantityButton} onClick={() => increaseQuantity(item.productId)}>+</button>
-                                    <div style={{ paddingRight: 10, display: 'inline-block' }}>{item.quantity}</div>
+                                    <div style={{paddingLeft : 5, display: 'inline-block' }}></div>
+                                    <div style={{ paddingRight: 7, display: 'inline-block' }}>{item.quantity}</div>
                                     <button style={styles.quantityButton} onClick={() => decreaseQuantity(item.productId)}>-</button>
                                 </td>
-                                <td style={{ ...styles.removeCell, paddingRight: 50 }}>
+                                <td> <div style={{ paddingLeft: 20}} > <span style={{ ...styles.cartItemRow, paddingLeft: 40 }}>{item.size}</span></div></td>
+                                <td> <div style={{ paddingLeft: 70}} > <span style={styles.cartItemRow}>{item.color}</span></div></td>
+                                <td style={{ ...styles.removeCell, paddingRight: 10 }}>
                                     <button
                                         style={styles.removeButton}
                                         onClick={() => removeFromCart(item.productId)}
@@ -127,14 +132,14 @@ function Cart() {
             {cartItems.length > 0 && (
                 <div style={styles.summary}>
                     <p style={styles.total}>
-                        Subtotal: ${cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+                        Total: ${cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
                     </p>
-                    <p style={styles.total}>
+                    {/* <p style={styles.total}>
                         Tax: ${(cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 0.1).toFixed(2)}
                     </p>
                     <p style={styles.total}>
                         Total: ${(cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * 1.1).toFixed(2)}
-                    </p>
+                    </p> */}
                     <Link to="/checkout" className="btn btn-primary" style={styles.checkoutButton}>
                         CHECKOUT
                     </Link>

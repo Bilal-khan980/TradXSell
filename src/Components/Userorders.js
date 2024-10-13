@@ -96,6 +96,8 @@ function UserOrders() {
                                     <tr>
                                         <th style={{ width: '30%' }}>Product</th>
                                         <th style={{ width: '20%' }}>Quantity</th>
+                                        <th style={{ width: '20%' }}>Colour</th>
+                                        <th style={{ width: '20%' }}>Size</th>
                                         <th style={{ width: '25%' }}>Total</th>
                                         <th style={{ width: '25%' }}>Status</th>
                                     </tr>
@@ -110,6 +112,8 @@ function UserOrders() {
                                                 </div>
                                             </td>
                                             <td style={{ verticalAlign: 'middle' }}>{item.quantity}</td>
+                                            <td style={{ verticalAlign: 'middle' }}>{item.color }</td>
+                                            <td style={{ verticalAlign: 'middle' }}>{item.size}</td>
                                             <td style={{ verticalAlign: 'middle' }}>${item.price * item.quantity}</td>
                                             <td style={{ verticalAlign: 'middle' }}>
                                                 <span>{item.status}</span>

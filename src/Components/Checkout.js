@@ -46,7 +46,7 @@ function Checkout() {
       console.log('Order placed successfully:', response.data);
 
       // Step 2: Delete cart items after placing the order
-      await axios.delete(`/cart/${email}`); // Adjust the API endpoint as per your backend route
+      await axios.delete(`/cart/remove/${email}`); // Adjust the API endpoint as per your backend route
       console.log('Cart items deleted successfully');
 
       // Optionally, you can clear the cartItems state or show a success message to the user
@@ -89,11 +89,12 @@ function Checkout() {
                   {cartItems.map(item => (
                     <li key={item._id} className="list-group-item" style={{ backgroundColor: "white", color: "black" }}>
                       <div className="row">
-                      <div className="col"><img src={item.imageUrl} alt={item.name} style={{height : 100 }}></img></div>
-
+                        <div className="col"><img src={item.imageUrl} alt={item.name} style={{height : 100 }} /></div>
                         <div className="col" style={{paddingTop : 35}}>{item.name}</div>
-                        <div className="col"style={{paddingTop : 35}}>Quantity: {item.quantity}</div>
-                        <div className="col"style={{paddingTop : 35}}>${item.price * item.quantity}</div>
+                        <div className="col" style={{paddingTop : 35}}>Color: {item.color}</div>
+                        <div className="col" style={{paddingTop : 35}}>Size: {item.size}</div>
+                        <div className="col" style={{paddingTop : 35}}>Quantity: {item.quantity}</div>
+                        <div className="col" style={{paddingTop : 35}}>${item.price * item.quantity}</div>
                       </div>
                     </li>
                   ))}
@@ -126,5 +127,4 @@ function Checkout() {
     </div>
   );
 }
-
 export default Checkout;

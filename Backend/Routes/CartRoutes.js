@@ -5,18 +5,17 @@ const app = express.Router();
 
 // Add or update item in cart
 app.post('/add', async (req, res) => {
-    const { email, username, productId, name, price, imageUrl, quantity } = req.body;
+    const { email, username, productId, name, price, imageUrl, quantity, size, color } = req.body;
 
     try {
-        // Check if the item already exists in the cart
         const existingItem = await CartItem.findOne({ email, productId });
 
         if (existingItem) {
-            // If the item exists, update the quantity
             existingItem.quantity += quantity;
+            existingItem.size = size || existingItem.size;  // Update size if provided
+            existingItem.color = color || existingItem.color;  // Update color if provided
             await existingItem.save();
         } else {
-            // If the item does not exist, create a new cart item
             const newItem = new CartItem({
                 email,
                 username,
@@ -24,18 +23,19 @@ app.post('/add', async (req, res) => {
                 name,
                 price,
                 imageUrl,
-                quantity
+                quantity,
+                size: size || "",  // Save size
+                color: color || ""  // Save color
             });
-
             await newItem.save();
         }
 
         return res.status(201).json({ success: true, message: 'Item added to cart' });
     } catch (err) {
-        console.error('Error adding item to cart:', err);
         return res.status(500).json({ success: false, message: 'Failed to add item to cart' });
     }
 });
+
 
 // Get cart items for a user
 app.get('/:email', async (req, res) => {
@@ -89,11 +89,11 @@ app.post('/decrease', async (req, res) => {
 });
 
 // Remove item from cart
-app.delete('/remove/:email/:productId', async (req, res) => {
-    const { email, productId } = req.params;
+app.delete('/remove/:email', async (req, res) => {
+    const { email } = req.params;
 
     try {
-        const result = await CartItem.deleteOne({ email, productId });
+        const result = await CartItem.deleteOne({ email:email });
         if (result.deletedCount === 1) {
             return res.status(200).json({ success: true, message: 'Item removed from cart' });
         } else {

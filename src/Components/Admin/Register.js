@@ -39,7 +39,7 @@ function Register({ setIsRegister }) {
                 setTimeout(() => {
                     setSuccessMessage(""); // Clear the success message
                     navigate('/loginpage'); // Redirect to the new page (replace '/new-page' with your desired path)
-                }, 3000);
+                }, 1000);
             } else {
                 // Handle error if email already exists
                 if (data.error) {

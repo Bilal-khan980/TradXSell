@@ -104,8 +104,6 @@ function Details() {
                 <div className="product-details" style={{ flex: "1 1 40%", maxWidth: "500px" }}>
                     <h1 style={{ color: "#000", fontSize: "24px", marginBottom: "10px" }}>{product.name}</h1>
                     <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-                        <span style={{ marginRight: "5px" }}>{renderStars(averageRating)}</span>
-                        <span style={{ color: "#666", fontSize: "14px" }}>({reviewCount} customer reviews)</span>
                     </div>
                     <p style={{ color: "#EF5B2B", fontSize: "24px", fontWeight: "bold", marginBottom: "20px" }}>${product.price.toFixed(2)} <span style={{ textDecoration: "line-through", color: "#666", fontSize: "18px", marginLeft: "10px" }}>${(product.price * 1.2).toFixed(2)}</span></p>
                     <p style={{ color: "#666", marginBottom: "20px" }}>{product.description}</p>

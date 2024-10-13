@@ -22,9 +22,9 @@ function Navigationbar() {
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
                         <Nav className="mr-auto">
                             <Nav.Link as={Link} to="/">HOME</Nav.Link>
-                            <Nav.Link as={Link} to="/contact">CONTACT</Nav.Link>
                             <Nav.Link as={Link} to="/cart">CART</Nav.Link>
                             <Nav.Link as={Link} to="/myorders">ORDERS</Nav.Link>
+                            <Nav.Link as={Link} to="/customersupport">HELP CENTER</Nav.Link>
                         </Nav>
                         
                         <Nav className="ml-auto">
@@ -86,7 +86,7 @@ function Navigationbar() {
                 </Navbar>
             )} */}
 
-            {role === "MainAdmin" && (
+            {/* {role === "MainAdmin" && (
                 // Admin-specific Links
                 <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "white" }}>
                     <Navbar.Brand as={Link} to="/">
@@ -97,6 +97,7 @@ function Navigationbar() {
                         <Nav className="mr-auto">
                         <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checksellers">CHECK SELLERS</Nav.Link>
                         <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkproducts">CHECK PRODUCTS</Nav.Link>
+                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkcomplaints">CHECK COMPLAINTS</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
                             <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 900}} as={Link} to="/user">ACCOUNT</Nav.Link>
@@ -106,22 +107,23 @@ function Navigationbar() {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-            )}
+            )} */}
 
 {role === "QualityAssurance" && (
                 // Admin-specific Links
-                <Navbar variant="dark" expand="lg" style={{ height: 90, paddingLeft: "20px", zIndex: "1000", backgroundColor: "white" }}>
+                <Navbar variant="dark" expand="lg" style={{ height: 80, paddingLeft: "20px", zIndex: "1000", backgroundColor: "white" }}>
                     <Navbar.Brand as={Link} to="/">
                         <img src={logo} height={50} alt="Logo" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Navbar.Collapse  id="basic-navbar-nav" className="justify-content-between">
                         <Nav className="mr-auto">
                         
                         <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/quality/manageproducts">CHECK PRODUCTS</Nav.Link>
+                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkcomplaints">CHECK COMPLAINTS</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
-                            <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 950}} as={Link} to="/user">ACCOUNT</Nav.Link>
+                            <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 20}} as={Link} to="/user">ACCOUNT</Nav.Link>
                             <button style={{backgroundColor : '#EF5B2B' , borderRadius : 20 , border : 'white' , width : 120}}> 
                             <Nav.Link onClick={handleLogout}>LOGOUT</Nav.Link>
                             </button>

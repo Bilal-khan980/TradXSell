@@ -1,4 +1,4 @@
-import { faBoxOpen, faShoppingCart, faSignOutAlt, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faQuestionCircle, faShoppingCart, faSignOutAlt, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -20,7 +20,9 @@ const SideNavbar = () => {
         {[
           { name: 'Dashboard', icon: faTachometerAlt },
           { name: 'Products', icon: faBoxOpen },
-          { name: 'Orders', icon: faShoppingCart }
+          { name: 'Orders', icon: faShoppingCart },
+          { name: 'Support', icon: faQuestionCircle },
+
         ].map((item, index) => {
           const link = item.name === 'Dashboard' ? 'sellerdashboard' : item.name.toLowerCase();
 
@@ -30,10 +32,9 @@ const SideNavbar = () => {
                 to={`/admin/${link}`}
                 style={({ isActive }) => ({
                   ...styles.navLink,
-                  backgroundColor: isActive ? '#333' : 'transparent',
-                  color: isActive ? '#fff' : '#bbb',
+                  backgroundColor: isActive ? '#2C3E50' : 'transparent',
+                  color: isActive ? '#EF5B2B' : '#E0E0E0',
                 })}
-                activeStyle={styles.activeNavLink}
               >
                 <FontAwesomeIcon icon={item.icon} style={styles.navIcon} />
                 {item.name}
@@ -58,8 +59,8 @@ const SideNavbar = () => {
 const styles = {
   sidebar: {
     width: '250px',
-    background: 'linear-gradient(180deg, #000, #2c3e50)', // Gradient background
-    color: 'white', // White text color
+    backgroundColor: '#1E1E1E',
+    color: '#E0E0E0',
     padding: '20px',
     boxShadow: '2px 0 5px rgba(0, 0, 0, 0.5)',
     display: 'flex',
@@ -85,8 +86,8 @@ const styles = {
   },
   navLink: {
     textDecoration: 'none',
-    color: '#bbb', // Default text color
-    transition: '0.3s',
+    color: '#E0E0E0',
+    transition: 'all 0.3s ease',
     display: 'flex',
     alignItems: 'center',
     padding: '10px 15px',
@@ -98,10 +99,6 @@ const styles = {
   navIcon: {
     fontSize: '18px',
   },
-  activeNavLink: {
-    backgroundColor: '#333', // Darker background for active state
-    color: '#fff',
-  },
   logoutContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -110,23 +107,20 @@ const styles = {
     padding: '20px 0',
   },
   logoutButton: {
-    background: 'linear-gradient(90deg, #ff7e5f, #feb47b)', // Gradient button
-    color: 'white',
+    backgroundColor: '#EF5B2B',
+    color: '#FFFFFF',
     border: 'none',
     borderRadius: '4px',
     padding: '10px 20px',
     cursor: 'pointer',
     fontSize: '16px',
     fontWeight: 'bold',
-    transition: '0.3s',
+    transition: 'all 0.3s ease',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: '10px',
     boxShadow: '0 3px 6px rgba(0, 0, 0, 0.3)',
-  },
-  logoutButtonHover: {
-    background: 'linear-gradient(90deg, #ff7043, #ff9a76)', // Hover effect
   },
 };
 

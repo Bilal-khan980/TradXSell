@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import SideNavbar from './SideNavbar'; // Import the SideNavbar component
+import SideNavbar from './SideNavbar';
 
 function ProductDetails() {
     const { id } = useParams();
@@ -39,56 +39,162 @@ function ProductDetails() {
     }, [id]);
 
     if (error) {
-        return <div style={{ color: 'red', textAlign: 'center', paddingTop: '20px' }}>Error: {error}</div>;
+        return <div style={styles.errorMessage}>Error: {error}</div>;
     }
 
     if (!product) {
-        return <div style={{ color: 'black', textAlign: 'center', paddingTop: '20px' }}>Loading product details...</div>;
+        return <div style={styles.loadingMessage}>Loading product details...</div>;
     }
 
     return (
-        <div className="bg-light text-dark" style={{ minHeight: "100vh", display: "flex" }}>
-            <SideNavbar /> {/* Include the SideNavbar component */}
-            <div className="flex-grow-1 d-flex flex-column align-items-center">
-                <h2 className="font-weight-bold mb-4" style={{ color: "#EF5B2B" }}>PRODUCT DETAILS</h2>
-                <div className="card" style={{ backgroundColor: 'white', border: '1px solid #EF5B2B', borderRadius: '10px', width: "800px" }}>
-                    <div className="row no-gutters">
-                        <div className="col-md-4">
-                            <img src={product.imageUrl} className="card-img" alt={product.name} />
+        <div style={styles.container}>
+            <SideNavbar />
+            <div style={styles.content}>
+                <h2 style={styles.pageTitle}>PRODUCT DETAILS</h2>
+                <div style={styles.card}>
+                    <div style={styles.cardContent}>
+                        <div style={styles.imageContainer}>
+                            <img src={product.imageUrl} alt={product.name} style={styles.image} />
                         </div>
-                        <div className="col-md-8">
-                            <div className="card-body">
-                                <h5 className="card-title font-weight-bold" style={{ color: "#EF5B2B" }}>{product.name}</h5>
-                                <p className="card-text" style={{ color: "black" }}>Price: ${product.price}</p>
-                                <p className="card-text" style={{ color: "black" }}>Category: {product.category}</p>
-                                <p className="card-text" style={{ color: "black" }}>Sizes: {product.sizes.join(', ')}</p>
-                                <p className="card-text" style={{ color: "black" }}>Colors: {product.colors.join(', ')}</p>
-                                <p className="card-text" style={{ color: "black" }}>Quantity: {product.quantity}</p>
-                                <p className="card-text" style={{ color: "black" }}>Latest: {product.latest ? 'Yes' : 'No'}</p>
-                                <p className="card-text" style={{ color: "black" }}>Featured: {product.featured ? 'Yes' : 'No'}</p>
-                            </div>
+                        <div style={styles.details}>
+                            <h5 style={styles.productName}>{product.name}</h5>
+                            <p style={styles.text}>Price: ${product.price}</p>
+                            <p style={styles.text}>Category: {product.category}</p>
+                            <p style={styles.text}>Sizes: {product.sizes.join(', ')}</p>
+                            <p style={styles.text}>Colors: {product.colors.join(', ')}</p>
+                            <p style={styles.text}>Quantity: {product.quantity}</p>
+                            <p style={styles.text}>Latest: {product.latest ? 'Yes' : 'No'}</p>
+                            <p style={styles.text}>Featured: {product.featured ? 'Yes' : 'No'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="mt-4">
-                    <h4 style={{ color: "#EF5B2B" }}>Reviews</h4>
+                <div style={styles.reviewsSection}>
+                    <h4 style={styles.reviewsTitle}>Reviews</h4>
                     {reviews.length > 0 ? (
-                        <ul>
+                        <ul style={styles.reviewsList}>
                             {reviews.map((review) => (
-                                <li key={review._id} style={{ color: "black" }}>
-                                    <p><strong>{review.username} ({review.userEmail})</strong></p>
-                                    <p>{review.review}</p>
-                                    <p><small>{new Date(review.createdAt).toLocaleString()}</small></p>
+                                <li key={review._id} style={styles.reviewItem}>
+                                    <p style={styles.reviewUser}><strong>{review.username} ({review.userEmail})</strong></p>
+                                    <p style={styles.reviewText}>{review.review}</p>
+                                    <p style={styles.reviewDate}><small>{new Date(review.createdAt).toLocaleString()}</small></p>
                                 </li>
                             ))}
                         </ul>
                     ) : (
-                        <p style={{ color: "black" }}>No reviews yet.</p>
+                        <p style={styles.noReviews}>No reviews yet.</p>
                     )}
                 </div>
             </div>
         </div>
     );
 }
+
+const styles = {
+    container: {
+        minHeight: "100vh",
+        display: "flex",
+        backgroundColor: "#121212",
+        color: "#E0E0E0",
+    },
+    content: {
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "20px",
+    },
+    pageTitle: {
+        fontWeight: "bold",
+        marginBottom: "20px",
+        color: "#EF5B2B",
+        fontSize: "24px",
+    },
+    card: {
+        backgroundColor: '#1E1E1E',
+        border: '1px solid #333',
+        borderRadius: '10px',
+        width: "800px",
+        maxWidth: "100%",
+        overflow: "hidden",
+    },
+    cardContent: {
+        display: "flex",
+        flexDirection: "row",
+        '@media (max-width: 768px)': {
+            flexDirection: "column",
+        },
+    },
+    imageContainer: {
+        flex: "0 0 40%",
+        '@media (max-width: 768px)': {
+            flex: "1 0 auto",
+        },
+    },
+    image: {
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+    },
+    details: {
+        flex: "1 1 60%",
+        padding: "20px",
+    },
+    productName: {
+        fontWeight: "bold",
+        color: "#EF5B2B",
+        marginBottom: "10px",
+        fontSize: "20px",
+    },
+    text: {
+        marginBottom: "5px",
+        color: "#E0E0E0",
+    },
+    reviewsSection: {
+        marginTop: "20px",
+        width: "800px",
+        maxWidth: "100%",
+    },
+    reviewsTitle: {
+        color: "#EF5B2B",
+        marginBottom: "10px",
+        fontSize: "20px",
+    },
+    reviewsList: {
+        listStyleType: "none",
+        padding: 0,
+    },
+    reviewItem: {
+        backgroundColor: "#1E1E1E",
+        border: "1px solid #333",
+        borderRadius: "5px",
+        padding: "10px",
+        marginBottom: "10px",
+    },
+    reviewUser: {
+        color: "#EF5B2B",
+        marginBottom: "5px",
+    },
+    reviewText: {
+        color: "#E0E0E0",
+        marginBottom: "5px",
+    },
+    reviewDate: {
+        color: "#888",
+    },
+    noReviews: {
+        color: "#888",
+        fontStyle: "italic",
+    },
+    errorMessage: {
+        color: '#ff6b6b',
+        textAlign: 'center',
+        paddingTop: '20px',
+    },
+    loadingMessage: {
+        color: '#EF5B2B',
+        textAlign: 'center',
+        paddingTop: '20px',
+    },
+};
 
 export default ProductDetails;

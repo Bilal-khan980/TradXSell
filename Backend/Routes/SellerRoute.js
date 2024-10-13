@@ -8,10 +8,11 @@ const Review = require('../Schemas/ReviewsSchema');
 router.get('/recent-reviews/:sellerEmail', async (req, res) => {
   try {
     const products = await Product.find({ sellerEmail: req.params.sellerEmail });
+    
     const productIds = products.map(product => product.id);
     
     // Fetch recent reviews, limit to the latest 5
-    const reviews = await Review.find({ productId: { $in: productIds } })
+    const reviews = await Review.find({ productId : productIds})
       .sort({ createdAt: -1 }) // Sort by created date in descending order
       .limit(5); // Limit to the latest 5 reviews
 

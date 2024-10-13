@@ -131,7 +131,7 @@ app.get('/total', async (req, res) => {
 
 app.get('/admins', async (req, res) => {
     try {
-        const admins = await User.find({ role: { $in: ['seller', 'user'] } });
+        const admins = await User.find({ role: { $in: ['seller', 'user','QualityAssurance'] } });
 
       res.status(200).json(admins);
     } catch (error) {

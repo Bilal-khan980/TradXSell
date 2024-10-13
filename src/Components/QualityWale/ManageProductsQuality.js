@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RefreshCw, Search, Trash2, Filter } from 'lucide-react'; 
+import { Filter, RefreshCw, Search, Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import ProductDetailsPopup from '../ProductDetailspopup';
 // import SellerDetailsPopup from './SellerDashboardPopup'; // Import the new SellerDetailsPopup

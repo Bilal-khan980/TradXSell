@@ -8,7 +8,6 @@ import ManageProducts from './Components/Admin/ManageProducts';
 import ProductDetails from './Components/Admin/ProductDetails.js';
 import Cart from './Components/Cart';
 import Checkout from './Components/Checkout';
-import Contactus from './Components/Contactus.js';
 import Details from './Components/Details';
 import Home from './Components/Home';
 import Login from './Components/Login';
@@ -35,6 +34,12 @@ import RegisterAdmin from './Components/Admin/Register.js';
 
 import ManageProductsQuality from './Components/QualityWale/ManageProductsQuality.js';
 
+import Complains from './Components/Admin/Complains.js';
+
+import Complaints from './Components/UserComplaints.js';
+
+import Checkcomplaints from '../src/Components/MainAdmin/Checkcomplaints.js';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -44,7 +49,8 @@ root.render(
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<Aboutus />} />
-          <Route path="/contact" element={<Contactus />} />
+
+          <Route path="admin/checkcomplaints" element={<Checkcomplaints />} />
 
 
           <Route path="/mens" element={<Mensproducts />} />
@@ -59,8 +65,14 @@ root.render(
 
 
           <Route path="/cart" element={<Cart />} />
+
+          <Route path="/admin/support" element={<Complains />} />
+
+          <Route path="/admin/support" element={<Complains />} />
+
           {/* <Route path='/account' element={<Admin />} /> */}
-          <Route path='/admindashboard' element={<UserDashboard />} />
+          <Route path='/customersupport' element={<Complaints />} />
+          
 
           <Route path="/" element={<CategoryCarousel />} />
                 <Route path="/category/:categoryName" element={<CategoryPage />} />

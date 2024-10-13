@@ -1,30 +1,29 @@
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
   LineController,
   LineElement,
   PointElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
-import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../AuthContext.js'; // Import the AuthContext
-import { Line } from 'react-chartjs-2'; // Import the Line component
+import React, { useContext, useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import { AuthContext } from '../../AuthContext.js';
 import SideNavbar from './SideNavbar.js';
 
-// Register the LineChart components
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, LineController, Title, Tooltip, Legend);
 
 const SellerDashboard = () => {
-  // const sellerEmail = 'seller@g.com'; // Replace with actual logged-in seller's email
   const [totalProducts, setTotalProducts] = useState(0);
   const { email: sellerEmail } = useContext(AuthContext);
+  const { username: sellerusername } = useContext(AuthContext);
   const [recentReviews, setRecentReviews] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
-  const [dailyOrders, setDailyOrders] = useState(new Array(31).fill(0)); // Initialize with zeros for 31 days
+  const [dailyOrders, setDailyOrders] = useState(new Array(31).fill(0));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,41 +32,37 @@ const SellerDashboard = () => {
         const orderResponse = await fetch(`/seller/total-orders/${sellerEmail}`);
         const reviewResponse = await fetch(`/seller/total-reviews/${sellerEmail}`);
         const recentReviewsResponse = await fetch(`/seller/recent-reviews/${sellerEmail}`);
-        
-        // Fetch daily orders data
         const dailyOrdersResponse = await fetch(`/seller/daily-orders/${sellerEmail}`);
         
-        // Handle responses
         const productData = await productResponse.json();
         const orderData = await orderResponse.json();
         const reviewData = await reviewResponse.json();
         const dailyOrdersData = await dailyOrdersResponse.json();
-        const recentReviewsData = await recentReviewsResponse.json();
+      const recentReviewsData = await recentReviewsResponse.json();
 
         setTotalProducts(productData.totalProducts);
         setTotalOrders(orderData.totalOrders);
         setTotalReviews(reviewData.totalReviews);
-        setRecentReviews(recentReviewsData);
-
-        // Directly use the fetched daily orders data as the state
-        setDailyOrders(dailyOrdersData); // Set daily orders data directly
+        setRecentReviews(Array.isArray(recentReviewsData) ? recentReviewsData : []); 
+    
+        setDailyOrders(dailyOrdersData);
       } catch (error) {
         console.error('Error fetching seller data:', error);
       }
     };
 
     fetchData();
-  }, [sellerEmail]);
+  }, [sellerEmail,sellerusername]);
 
-  // Data for the line chart (number of orders vs. days of the current month)
   const lineData = {
-    labels: Array.from({ length: 31 }, (_, i) => i + 1), // Days of the month (1 to 31)
+    labels: Array.from({ length: 31 }, (_, i) => i + 1),
     datasets: [
       {
         label: 'Number of Orders',
-        data: dailyOrders, // Daily orders data
+        data: dailyOrders,
         fill: false,
-        borderColor: '#2196f3',
+        borderColor: '#EF5B2B',
+        backgroundColor: 'rgba(76, 175, 80, 0.1)',
         tension: 0.1,
       },
     ],
@@ -79,129 +74,133 @@ const SellerDashboard = () => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: '#E0E0E0',
+        },
       },
       title: {
         display: true,
         text: 'Number of Orders vs. Day of the Month',
+        color: '#E0E0E0',
       },
     },
     scales: {
       y: {
         beginAtZero: true,
-        min: 0, // Start Y-axis from 0
-        max: Math.max(...dailyOrders) + 1, // Dynamically set Y-axis max to highest order count
+        min: 0,
+        max: Math.max(...dailyOrders) + 1,
+        ticks: {
+          color: '#E0E0E0',
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
       },
       x: {
         title: {
           display: true,
           text: 'Days of the Month',
+          color: '#E0E0E0',
+        },
+        ticks: {
+          color: '#E0E0E0',
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
         },
       },
     },
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', backgroundColor: '#121212', color: '#E0E0E0', minHeight: '100vh' }}>
       <SideNavbar />
       <main style={{
         flex: 1,
         padding: '20px',
-        backgroundColor: '#ecf0f1',
       }}>
         <header style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: '20px',
+          borderBottom: '1px solid #333',
+          paddingBottom: '10px',
         }}>
-          <h1>Welcome to your Dashboard</h1>
+          <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>Seller Dashboard</h1>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span>User Name</span>
-            <img src="/path/to/profile-pic.jpg" alt="Profile" style={{
+            <span style={{ marginRight: '10px' }}>{sellerusername}</span>
+            <div style={{
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              marginLeft: '10px',
-            }} />
+              backgroundColor: '#EF5B2B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+            }}>
+             {sellerusername.charAt(0).toUpperCase()}
+            </div>
           </div>
         </header>
         <section style={{
-          display: 'flex',
-          justifyContent: 'space-between',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '20px',
           marginBottom: '20px',
         }}>
-          <div style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-            flex: '1',
-            marginRight: '10px',
-            textAlign: 'center',
-          }}>
-            <h3>Total Products</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{totalProducts}</p>
-          </div>
-          <div style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-            flex: '1',
-            marginRight: '10px',
-            textAlign: 'center',
-          }}>
-            <h3>Total Orders</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{totalOrders}</p>
-          </div>
-          <div style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-            flex: '1',
-            textAlign: 'center',
-          }}>
-            <h3>Total Reviews</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold' }}>{totalReviews}</p>
-          </div>
+          {[
+            { title: 'Total Products', value: totalProducts },
+            { title: 'Total Orders', value: totalOrders },
+            { title: 'Total Reviews', value: totalReviews },
+          ].map((item, index) => (
+            <div key={index} style={{
+              backgroundColor: '#1E1E1E',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              textAlign: 'center',
+            }}>
+              <h3 style={{ fontSize: '16px', marginBottom: '10px' }}>{item.title}</h3>
+              <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#EF5B2B' }}>{item.value}</p>
+            </div>
+          ))}
         </section>
         <section style={{
-          display: 'flex',
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
           gap: '20px',
-          marginTop: '20px',
         }}>
           <div style={{
-            backgroundColor: 'white',
+            backgroundColor: '#1E1E1E',
             padding: '20px',
             borderRadius: '8px',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-            flex: '1',
-            height: '300px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           }}>
-            <h3>Daily Orders</h3>
-            <div style={{ height: '100%' }}>
-              <Line data={lineData} options={lineOptions} />
+            <h3 style={{ fontSize: '18px', marginBottom: '15px' }}>Daily Orders</h3>
+            <div style={{ height: '300px' }}>
+               <Line data={lineData} options={lineOptions} />
             </div>
-            <div style={{
-            backgroundColor: 'white',
+          </div>
+          <div style={{
+            backgroundColor: '#1E1E1E',
             padding: '20px',
             borderRadius: '8px',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            maxHeight: '380px',
+            overflowY: 'auto',
           }}>
-             <h2>Recent Reviews</h2>
-  {recentReviews.length === 0 ? (
-    <p>No recent reviews.</p>
-  ) : (
-    <div>
-      {recentReviews.map(review => (
-        <div key={review._id} style={{ marginBottom: '10px' }}>
-          <strong>{review.username}</strong>: {review.review}
-        </div>
-      ))}
-    </div>
-  )}
-  </div>
+            <h3 style={{ fontSize: '18px', marginBottom: '15px' }}>Recent Reviews</h3>
+            {recentReviews.length === 0 ? (
+              <p>No recent reviews.</p>
+            ) : (
+              recentReviews.map(review => (
+                <div key={review._id} style={{ marginBottom: '10px', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
+                  <strong style={{ color: '#EF5B2B' }}>{review.username}</strong>: {review.review}
+                </div>
+              ))
+            )} 
           </div>
         </section>
       </main>

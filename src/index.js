@@ -40,6 +40,8 @@ import Complaints from './Components/UserComplaints.js';
 
 import Checkcomplaints from '../src/Components/MainAdmin/Checkcomplaints.js';
 
+import CheckcomplaintsQuality from '../src/Components/QualityWale/Complains.js';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -72,6 +74,8 @@ root.render(
 
           {/* <Route path='/account' element={<Admin />} /> */}
           <Route path='/customersupport' element={<Complaints />} />
+
+          <Route path='/quality/complains' element={<CheckcomplaintsQuality />} />
           
 
           <Route path="/" element={<CategoryCarousel />} />

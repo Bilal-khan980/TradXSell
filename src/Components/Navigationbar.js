@@ -120,7 +120,7 @@ function Navigationbar() {
                         <Nav className="mr-auto">
                         
                         <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/quality/manageproducts">CHECK PRODUCTS</Nav.Link>
-                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/admin/checkcomplaints">CHECK COMPLAINTS</Nav.Link>
+                        <Nav.Link style={{color: '#ef5b2b'}} as={Link} to="/quality/complains">CHECK COMPLAINTS</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
                             <Nav.Link  style={{color: '#ef5b2b' , paddingLeft : 20}} as={Link} to="/user">ACCOUNT</Nav.Link>

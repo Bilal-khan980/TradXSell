@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext'; // Assuming you have an AuthContext for managing user authentication
 import Footer from './footer'; // Assuming you have a Footer component
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 function Checkout() {
   const { loggedIn, email, username } = useContext(AuthContext);
@@ -24,14 +24,6 @@ function Checkout() {
       fetchCartItems();
     }
   }, [loggedIn, email]);
-
-  // Calculate delivery date (5 days from today)
-  // const getDeliveryDate = () => {
-  //   const today = new Date();
-  //   const deliveryDate = new Date(today);
-  //   deliveryDate.setDate(deliveryDate.getDate() + 5);
-  //   return deliveryDate.toDateString();
-  // };
 
   const handleOrder = async () => {
     try {
@@ -76,7 +68,7 @@ function Checkout() {
   };
 
   return (
-    <div className="container-fluid" style={{ backgroundColor: "white", color: "white", minHeight: "100vh", paddingTop: "60px" , alignContent : 'center' , paddingLeft : 400}}>
+    <div className="container-fluid" style={{ backgroundColor: "white", color: "white", minHeight: "100vh", paddingTop: "60px", alignContent: 'center', paddingLeft: 400 }}>
       <div className="container">
         <div className="row">
           <div className="col-md-8">
@@ -89,12 +81,16 @@ function Checkout() {
                   {cartItems.map(item => (
                     <li key={item._id} className="list-group-item" style={{ backgroundColor: "white", color: "black" }}>
                       <div className="row">
-                        <div className="col"><img src={item.imageUrl} alt={item.name} style={{height : 100 }} /></div>
-                        <div className="col" style={{paddingTop : 35}}>{item.name}</div>
-                        <div className="col" style={{paddingTop : 35}}>Color: {item.color}</div>
-                        <div className="col" style={{paddingTop : 35}}>Size: {item.size}</div>
-                        <div className="col" style={{paddingTop : 35}}>Quantity: {item.quantity}</div>
-                        <div className="col" style={{paddingTop : 35}}>${item.price * item.quantity}</div>
+                        <div className="col"><img src={item.imageUrl} alt={item.name} style={{ height: 100 }} /></div>
+                        <div className="col" style={{ paddingTop: 35 }}>{item.name}</div>
+                        {item.color !== 'null' && ( // Only render the color if it's not null
+                          <div className="col" style={{ paddingTop: 35 }}>Color: {item.color}</div>
+                        )}
+                        {item.size !== 'null' && ( // Only render the size if it's not null
+                          <div className="col" style={{ paddingTop: 35 }}>Size: {item.size}</div>
+                        )}
+                        <div className="col" style={{ paddingTop: 35 }}>Quantity: {item.quantity}</div>
+                        <div className="col" style={{ paddingTop: 35 }}>${item.price * item.quantity}</div>
                       </div>
                     </li>
                   ))}
@@ -106,17 +102,6 @@ function Checkout() {
               <Link to="/order" className="btn btn-primary" onClick={handleOrder} style={{ fontSize: "20px", fontWeight: "bold", color: "white", backgroundColor: "#EF5B2B", border: "2px solid white" }}>PLACE ORDER</Link>
             </div>
           </div>
-          {/* <div className="col-md-4">
-            <div className="card" style={{ backgroundColor: "black", color: "white" }}>
-              <div className="card-header">
-                <h5 className="card-title">Delivery Details</h5>
-              </div>
-              <div className="card-body">
-                <p>To be delivered by: {getDeliveryDate()}</p>
-                <p>Payment Method: Cash on Delivery</p>
-              </div>
-            </div>
-          </div> */}
         </div>
         <div className="row mt-3" style={{ paddingTop: "200px" }}>
           <div className="col-md-12">
@@ -127,4 +112,5 @@ function Checkout() {
     </div>
   );
 }
+
 export default Checkout;

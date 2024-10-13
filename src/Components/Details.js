@@ -87,7 +87,8 @@ function Details() {
                     </p>
 
                     {/* Dropdown for Color */}
-                    <div style={{ marginBottom: "20px" }}>
+                    {
+                        product.colors==='null' && <div style={{ marginBottom: "20px" }}>
                         <p style={{ color: "#000", marginBottom: "10px" }}>Color:</p>
                         <select
                             style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
@@ -101,20 +102,27 @@ function Details() {
                         </select>
                     </div>
 
+                    }
+                    
                     {/* Dropdown for Size */}
-                    <div style={{ marginBottom: "20px" }}>
-                        <p style={{ color: "#000", marginBottom: "10px" }}>Size:</p>
-                        <select
-                            style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
-                            value={selectedSize}
-                            onChange={(e) => setSelectedSize(e.target.value)}
-                        >
-                            <option value="">Select Size</option>
-                            {product.sizes && product.sizes.map((size, index) => (
-                                <option key={index} value={size}>{size}</option>
-                            ))}
-                        </select>
-                    </div>
+
+                            {
+                                product.sizes==='null' &&  <div style={{ marginBottom: "20px" }}>
+                                <p style={{ color: "#000", marginBottom: "10px" }}>Size:</p>
+                                <select
+                                    style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
+                                    value={selectedSize}
+                                    onChange={(e) => setSelectedSize(e.target.value)}
+                                >
+                                    <option value="">Select Size</option>
+                                    {product.sizes && product.sizes.map((size, index) => (
+                                        <option key={index} value={size}>{size}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            }
+
+                    
 
                     <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
                         <input

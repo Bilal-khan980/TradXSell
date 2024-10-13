@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../AuthContext'; // Assuming you have an AuthContext for managing user authentication
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function UserOrders() {
     const { email, loggedIn } = useContext(AuthContext);
@@ -112,8 +112,8 @@ function UserOrders() {
                                                 </div>
                                             </td>
                                             <td style={{ verticalAlign: 'middle' }}>{item.quantity}</td>
-                                            <td style={{ verticalAlign: 'middle' }}>{item.color }</td>
-                                            <td style={{ verticalAlign: 'middle' }}>{item.size}</td>
+                                            <td style={{ verticalAlign: 'middle' }}>{item.color!=='null' ? item.color : '-'}</td> {/* Show dash if color is null */}
+                                            <td style={{ verticalAlign: 'middle' }}>{item.size!=='null' ? item.size : '-'}</td> {/* Show dash if size is null */}
                                             <td style={{ verticalAlign: 'middle' }}>${item.price * item.quantity}</td>
                                             <td style={{ verticalAlign: 'middle' }}>
                                                 <span>{item.status}</span>

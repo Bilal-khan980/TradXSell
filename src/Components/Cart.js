@@ -114,8 +114,23 @@ function Cart() {
                                     <div style={{ paddingRight: 7, display: 'inline-block' }}>{item.quantity}</div>
                                     <button style={styles.quantityButton} onClick={() => decreaseQuantity(item.productId)}>-</button>
                                 </td>
-                                <td> <div style={{ paddingLeft: 20}} > <span style={{ ...styles.cartItemRow, paddingLeft: 40 }}>{item.size}</span></div></td>
-                                <td> <div style={{ paddingLeft: 70}} > <span style={styles.cartItemRow}>{item.color}</span></div></td>
+
+                                <td>
+    <div style={{ paddingLeft: 20 }}>
+        <span style={{ ...styles.cartItemRow, paddingLeft: 40 }}>
+            {item.size === 'null' ? '-' : item.size}
+        </span>
+    </div>
+</td>
+<td>
+    <div style={{ paddingLeft: 70 }}>
+        <span style={styles.cartItemRow}>
+            {item.color === 'null' ? '-' : item.color}
+        </span>
+    </div>
+</td>
+
+
                                 <td style={{ ...styles.removeCell, paddingRight: 10 }}>
                                     <button
                                         style={styles.removeButton}

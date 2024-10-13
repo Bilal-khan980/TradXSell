@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../AuthContext'; // Assuming you have an AuthContext for managing user authentication
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContext'; // Assuming you have an AuthContext for managing user authentication
 
 function UserOrders() {
     const { email, loggedIn } = useContext(AuthContext);
@@ -74,9 +74,10 @@ function UserOrders() {
     
     if (orders.length === 0) {
         return (
-            <div style={{ backgroundColor: "black", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <h1 style={{ color: "yellow", textAlign: "center", fontWeight: "bold" }}>NO ORDER PLACED</h1>
-            </div>
+            <div style={{ backgroundColor: "white", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <h1 style={{ color: "#EF5B2B", textAlign: "center", fontWeight: "bold" }}>NO ORDER PLACED</h1>
+        </div>
+        
         );
     }
 

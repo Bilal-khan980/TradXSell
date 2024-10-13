@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AuthContext } from '../../AuthContext';
 import SideNavbar from './SideNavbar';
 
 function ProductDetails() {
@@ -8,6 +9,7 @@ function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [error, setError] = useState('');
+    const { username: sellerusername } = useContext(AuthContext);
 
     const fetchReviews = useCallback(async () => {
         try {
@@ -47,10 +49,37 @@ function ProductDetails() {
     }
 
     return (
+        
         <div style={styles.container}>
             <SideNavbar />
+            <main style={{ flex: 1, padding: '20px' }}>
+                <header style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '20px',
+                    borderBottom: '1px solid #333',
+                    paddingBottom: '10px',
+                }}>
+                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Product Details</h2>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <span style={{ marginRight: '10px' }}>{sellerusername}</span>
+                        <div style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            backgroundColor: '#EF5B2B',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 'bold',
+                        }}>
+                            {sellerusername.charAt(0).toUpperCase()}
+                        </div>
+                    </div>
+                </header>
+
             <div style={styles.content}>
-                <h2 style={styles.pageTitle}>PRODUCT DETAILS</h2>
                 <div style={styles.card}>
                     <div style={styles.cardContent}>
                         <div style={styles.imageContainer}>
@@ -95,7 +124,9 @@ function ProductDetails() {
                     )}
                 </div>
             </div>
+            </main>
         </div>
+       
     );
 }
 const styles = {

@@ -51,7 +51,7 @@ class ManageProducts extends Component {
         e.preventDefault();
         const { id, name, price, imageFile, latest, category, featured, sizes, colors, quantity, description, type: productType } = this.state;
         const { email } = this.context;
-
+    
         const formData = new FormData();
         formData.append('id', id);
         formData.append('name', name);
@@ -60,20 +60,21 @@ class ManageProducts extends Component {
         formData.append('latest', latest);
         formData.append('category', category);
         formData.append('featured', featured);
-        formData.append('sizes', sizes);
-        formData.append('colors', colors);
+        formData.append('sizes', sizes ? sizes : null); // Set to null if empty
+        formData.append('colors', colors ? colors : null); // Set to null if empty
         formData.append('quantity', quantity);
         formData.append('description', description);
         formData.append('sellerEmail', email);
         formData.append('type', productType);
-
+    
         await axios.post('/products', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-
+    
         alert('Product added successfully');
+        // Reset form state
         this.setState({
             id: '',
             name: '',
@@ -90,6 +91,7 @@ class ManageProducts extends Component {
         });
         this.fetchProducts();
     };
+    
 
     handleDeleteProduct = async (productId) => {
         await axios.delete(`/products/${productId}`);
@@ -185,6 +187,7 @@ class ManageProducts extends Component {
                             <div key={product.id} style={styles.card}>
                                 <img src={product.imageUrl} alt={product.name} style={styles.cardImage} />
                                 <div style={styles.cardBody}>
+                                <h5 style={styles.cardID}>{product.id}</h5>
                                     <h5 style={styles.cardTitle}>{product.name}</h5>
                                     <p style={styles.cardPrice}>${product.price}</p>
                                     <p style={styles.cardDescription}>{product.description}</p>
@@ -239,8 +242,8 @@ class ManageProducts extends Component {
                                 <option value="local">Local</option>
                                 <option value="international">International</option>
                             </select>
-                            <input type="text" style={styles.input} name="sizes" value={sizes} onChange={this.handleChange} placeholder="Sizes" required />
-                            <input type="text" style={styles.input} name="colors" value={colors} onChange={this.handleChange} placeholder="Colors" required />
+                            <input type="text" style={styles.input} name="sizes" value={sizes} onChange={this.handleChange} placeholder="Sizes"  />
+                            <input type="text" style={styles.input} name="colors" value={colors} onChange={this.handleChange} placeholder="Colors"  />
                             <input type="number" style={styles.input} name="quantity" value={quantity} onChange={this.handleChange} placeholder="Quantity" required />
                             <textarea style={styles.textarea} name="description" value={description} onChange={this.handleChange} placeholder="Product Description" required />
                             <div style={styles.checkboxContainer}>
@@ -312,6 +315,14 @@ const styles = {
         fontSize: "18px",
         fontWeight: "bold",
         marginBottom: "10px",
+    },
+    cardID: {
+        fontSize: "18px",
+        fontWeight: "bold",
+        marginBottom: "10px",
+        color: '#ef5b2b',
+        paddingBottom: '20px',
+        textAlign: "center"  // This centers the text
     },
     cardPrice: {
         fontSize: "16px",

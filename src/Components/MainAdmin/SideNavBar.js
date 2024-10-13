@@ -1,11 +1,11 @@
-import { AlertCircle, LogOut, Package, Users } from 'lucide-react';
+import { AlertCircle, LogOut, Package, Users, CheckCircle } from 'lucide-react'; // Import CheckCircle for Quality Assurance
 import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../AuthContext';
 import logo from '../Assets/logo-without-bg.png'; // Update to your logo path
 
 const SideNavbar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed] = useState(false);
   const location = useLocation();
   const { handleLogout } = useContext(AuthContext);
 
@@ -13,6 +13,7 @@ const SideNavbar = () => {
     { name: 'Manage Products', icon: Package, path: '/admin/checkproducts' },
     { name: 'Manage Users', icon: Users, path: '/admin/checksellers' },
     { name: 'Manage Complaints', icon: AlertCircle, path: '/admin/checkcomplaints' },
+    { name: 'Quality Assurance', icon: CheckCircle, path: '/admin/qualityassuranceadd' }, // Add Quality Assurance option
   ];
 
   const styles = {
@@ -82,7 +83,7 @@ const SideNavbar = () => {
       color: '#ffffff',
       cursor: 'pointer',
       transition: 'background-color 0.3s ease',
-      marginLeft:'50px'
+      marginLeft: '50px',
     },
   };
 

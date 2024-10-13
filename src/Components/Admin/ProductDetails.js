@@ -84,11 +84,20 @@ function ProductDetails() {
                         <p style={styles.noReviews}>No reviews yet.</p>
                     )}
                 </div>
+                <div style={styles.reviewsSection}>
+                    {product.remarks && (
+                        <>
+                            <h4 style={styles.reviewsTitle}>Remarks (Not Approved)</h4>
+                            <div style={styles.reviewItem}>
+                                <p style={styles.text}>{product.remarks}</p>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
 }
-
 const styles = {
     container: {
         minHeight: "100vh",

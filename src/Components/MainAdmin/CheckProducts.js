@@ -45,16 +45,29 @@ function ManageProducts() {
     }
   };
 
-  const handleRemarksSubmitted = (id) => {
-    setProducts(prevProducts =>
-      prevProducts.map(product =>
-        product._id === id ? { ...product, remarks } : product
-      )
-    );
-    setRemarks('');
-    setRemarksProduct(null);
-    window.location.reload();
+  const handleRemarksSubmitted = async (id) => {
+    try {
+      // Make an API request to update the remarks in the backend
+      await axios.patch(`/products/remarks/${id}`, { remarks });
+  
+      // Update the local state to reflect the updated remarks
+      setProducts(prevProducts =>
+        prevProducts.map(product =>
+          product._id === id ? { ...product, remarks } : product
+        )
+      );
+  
+      // Clear the remarks and close the popup
+      setRemarks('');
+      setRemarksProduct(null);
+  
+      // Optionally reload the page to reflect the updated data
+      window.location.reload();
+    } catch (error) {
+      console.error('Error submitting remarks:', error);
+    }
   };
+  
 
   const handleDeleteProduct = async (productId) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this product?');

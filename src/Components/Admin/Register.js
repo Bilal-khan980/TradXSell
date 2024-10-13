@@ -171,7 +171,7 @@ function Register({ setIsRegister }) {
             <div style={styles.formContainer}>
                 <div style={styles.formBox}>
                     <div style={styles.header}>
-                        Register
+                        Seller Register
                     </div>
                     {error && <div style={styles.alert}>{error}</div>} {/* Show error message */}
                     {successMessage && <div style={styles.success}>{successMessage}</div>} {/* Show success message */}

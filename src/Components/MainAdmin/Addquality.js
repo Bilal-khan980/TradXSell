@@ -71,7 +71,7 @@ function Register({ setIsRegister }) {
             width: '100%',
             maxWidth: '400px',
             padding: '2rem',
-            backgroundColor: 'black',
+            backgroundColor: '#1A1A1A',
             boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
             margin: '0 auto',

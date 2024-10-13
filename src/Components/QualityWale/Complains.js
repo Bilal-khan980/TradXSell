@@ -1,144 +1,67 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../AuthContext.js';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 function Complains() {
-    const [complaint, setComplaint] = useState('');
-    const { email } = useContext(AuthContext);
-    const [message, setMessage] = useState('');
-    
-    const { username: sellerusername } = useContext(AuthContext);
+    const [complaints, setComplaints] = useState([]);
 
-
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-       
-
-        try {
-
-            const response = await fetch('http://localhost:5000/complaints/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, complaint })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setMessage('Complaint submitted successfully');
-            } else {
-                setMessage(data.message || 'Failed to submit complaint');
+    useEffect(() => {
+        const fetchComplaints = async () => {
+            try {
+                const response = await axios.get('/complaints');
+                setComplaints(response.data);
+            } catch (error) {
+                console.error('Error fetching complaints:', error);
             }
-        } catch (error) {
-            setMessage('Server error. Please try again later.');
-        }
+        };
 
-        setComplaint('');
-    };
+        fetchComplaints();
+    }, []);
 
     return (
-        <div style={styles.container}>
-            <main style={{ flex: 1, padding: '20px' }}>
-                <header style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '20px',
-                    borderBottom: '1px solid #333',
-                    paddingBottom: '10px',
-                }}>
-                    <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Complaint QUality</h2>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <span style={{ marginRight: '10px' }}>{sellerusername}</span>
-                        <div style={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '50%',
-                            backgroundColor: '#EF5B2B',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontWeight: 'bold',
-                        }}>
-                            {sellerusername.charAt(0).toUpperCase()}
-                        </div>
+        <div style={{ display: 'flex', backgroundColor: 'white', minHeight: '100vh', color: '#000000' }}>
+            <div style={{
+                flex: 1,
+                transition: 'margin-left 0.3s ease', // Smooth transition
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+                <div style={{ padding: '20px', width: '100%' }}>
+                    <h1 style={{ color: '#EF5B2B', marginBottom: '20px', fontSize: '2rem', fontWeight: 'bold' }}>Complaints</h1>
+                    <div style={{ overflowX: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0 }}>
+                            <thead>
+                                <tr style={{ backgroundColor: '#EF5B2B' }}>
+                                    <th style={tableHeaderStyle}>Email</th>
+                                    <th style={tableHeaderStyle}>Complaint</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {complaints.map((complaint, index) => (
+                                    <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
+                                        <td style={tableCellStyle}>{complaint.email}</td>
+                                        <td style={tableCellStyle}>{complaint.complaint}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                </header>
-            <div style={styles.content}>
-                <h1 style={styles.title}>Submit a Complaint</h1>
-                <form onSubmit={handleSubmit} style={styles.form}>
-                    <textarea
-                        placeholder="Enter your complaint"
-                        value={complaint}
-                        onChange={(e) => setComplaint(e.target.value)}
-                        rows="5"
-                        style={styles.textarea}
-                    />
-                    <button type="submit" style={styles.button}>Submit</button>
-                </form>
-                {message && <p style={styles.message}>{message}</p>}
+                </div>
             </div>
-            </main>
         </div>
     );
 }
 
-const styles = {
-    container: {
-        display: 'flex',
-        minHeight: '100vh',
-        backgroundColor: '#121212',
-        color: '#E0E0E0',
-    },
-    content: {
-        flex: 1,
-        padding: '2rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    title: {
-        color: '#EF5D28',
-        fontSize: '2rem',
-        marginBottom: '2rem',
-    },
-    form: {
-        width: '100%',
-        maxWidth: '600px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    textarea: {
-        width: '100%',
-        padding: '1rem',
-        marginBottom: '1rem',
-        backgroundColor: '#1E1E1E',
-        color: '#E0E0E0',
-        border: '1px solid #333',
-        borderRadius: '4px',
-        resize: 'vertical',
-    },
-    button: {
-        padding: '0.5rem 1rem',
-        backgroundColor: '#EF5D28',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '1rem',
-        transition: 'background-color 0.3s',
-    },
-    message: {
-        marginTop: '1rem',
-        padding: '0.5rem',
-        borderRadius: '4px',
-        backgroundColor: '#1E1E1E',
-        border: '1px solid #333',
-    },
+const tableHeaderStyle = {
+    padding: '16px',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    color: '#ffffff',
+    borderBottom: '2px solid #ffffff',
+};
+
+const tableCellStyle = {
+    padding: '14px',
+    color: '#333333',
 };
 
 export default Complains;

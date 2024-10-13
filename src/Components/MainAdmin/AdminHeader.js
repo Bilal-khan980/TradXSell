@@ -1,4 +1,4 @@
-import { Bell, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import React from 'react';
 
 const AdminHeader = () => {
@@ -113,10 +113,7 @@ const AdminHeader = () => {
         </div>
         <div style={styles.headerRight}>
           
-          <button style={styles.iconButton}>
-            <Bell size={20} />
-            <span style={styles.notificationBadge}>3</span>
-          </button>
+        
           <button style={styles.iconButton}>
             <div style={styles.userProfile}>
               <User size={20} />

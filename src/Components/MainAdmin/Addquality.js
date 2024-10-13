@@ -58,7 +58,7 @@ function Register({ setIsRegister }) {
 
         },
         sideNav: {
-            width: '250px',
+            width: '240px',
         },
         content: {
             flex: 1,
@@ -154,7 +154,7 @@ function Register({ setIsRegister }) {
                 <div style={{ padding: '2rem' }}>
                 <div style={{...styles.formBox }}>
                     <div style={styles.header}>
-                        Register
+                        Add Q/A
                     </div>
                     {error && <div style={styles.alert}>{error}</div>}
                     {successMessage && <div style={styles.success}>{successMessage}</div>}
@@ -229,12 +229,7 @@ function Register({ setIsRegister }) {
                             Register
                         </button>
                     </form>
-                    <div style={styles.registerMessage}>
-                        Already have an account?{' '}
-                        <span style={styles.registerLink} onClick={() => setIsRegister(false)}>
-                            Login
-                        </span>
-                    </div>
+                    
                 </div>
                 </div>
             </div>

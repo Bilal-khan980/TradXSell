@@ -2,13 +2,11 @@ import axios from 'axios';
 import { Filter, RefreshCw, Search, Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import ProductDetailsPopup from '../ProductDetailspopup';
-// import SellerDetailsPopup from './SellerDashboardPopup'; // Import the new SellerDetailsPopup
 
 function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  // const [selectedSeller, setSelectedSeller] = useState(null); // State for seller details
   const [typeFilter, setTypeFilter] = useState('');  
   const [statusFilter, setStatusFilter] = useState('');
 
@@ -27,17 +25,36 @@ function ManageProducts() {
 
   const handleStatusChange = async (id, currentStatus) => {
     const newStatus = currentStatus === 'approved' ? 'not approved' : 'approved';
+    let remarks = '';
+  
+    if (newStatus === 'not approved') {
+      remarks = prompt('Please provide a reason for not approving the product:');
+      if (!remarks) {
+        alert('Remarks are required when changing the status to "not approved".');
+        return; // Exit if no remarks are provided
+      }
+    }
+  
     try {
+      // Update the status of the product
       await axios.patch(`/products/updatestatus/${id}`, { status: newStatus });
+      
+      // If the status is "not approved" and remarks are provided, update the remarks
+      if (newStatus === 'not approved' && remarks) {
+        await axios.patch(`/products/remarks/${id}`, { remarks });
+      }
+  
+      // Update the local product list to reflect the changes
       setProducts(prevProducts =>
         prevProducts.map(product =>
-          product._id === id ? { ...product, status: newStatus } : product
+          product._id === id ? { ...product, status: newStatus, remarks } : product
         )
       );
     } catch (error) {
-      console.error('Error updating product status:', error);
+      console.error('Error updating product status or remarks:', error);
     }
   };
+  
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -49,24 +66,9 @@ function ManageProducts() {
     setSelectedProduct(product);
   };
 
-  // const handleSellerDetailsClick = async (sellerEmail) => {
-  //   try {
-  //     console.log(sellerEmail);
-  //     const response = await axios.get(`http://localhost:3000/users/products/seller/${sellerEmail}`);
-  //     setSelectedSeller(response.data);
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error('Error fetching seller details:', error);
-  //   }
-  // };
-
   const handleCloseProductPopup = () => {
     setSelectedProduct(null);
   };
-
-  // const handleCloseSellerPopup = () => {
-  //   setSelectedSeller(null);
-  // };
 
   return (
     <div className="manage-products" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '40px 0' }}>
@@ -74,7 +76,6 @@ function ManageProducts() {
         <h1 style={{ color: '#ef5b2b', marginBottom: '30px', fontSize: '2.5rem', fontWeight: 'bold' }}>Manage Products</h1>
 
         <div className="search-bar" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
-          {/* Search input */}
           <div style={{ position: 'relative', maxWidth: '400px', flex: '1' }}>
             <input
               type="text"
@@ -92,10 +93,8 @@ function ManageProducts() {
             <Search style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', color: '#6c757d' }} />
           </div>
 
-          {/* Filter icon */}
           <Filter size={24} style={{ color: '#6c757d', cursor: 'pointer' }} />
 
-          {/* Type Filter */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <label htmlFor="typeFilter" style={{ marginRight: '10px', fontWeight: 'bold' }}>Type:</label>
             <select
@@ -115,7 +114,6 @@ function ManageProducts() {
             </select>
           </div>
 
-          {/* Status Filter */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <label htmlFor="statusFilter" style={{ marginRight: '10px', fontWeight: 'bold' }}>Status:</label>
             <select
@@ -192,12 +190,6 @@ function ManageProducts() {
                       >
                         Details
                       </button>
-                      {/* <button
-                        onClick={() => handleSellerDetailsClick(product.sellerEmail)} // Fetch seller details on click
-                        style={{ ...actionButtonStyle, color: '#007bff', backgroundColor: 'white', border: '3px solid #007bff' }}
-                      >
-                        Seller Details
-                      </button> */}
                       <button style={{ ...actionButtonStyle, backgroundColor: '#dc3545' }}>
                         <Trash2 size={16} />
                         Delete
@@ -213,10 +205,6 @@ function ManageProducts() {
         {selectedProduct && (
           <ProductDetailsPopup product={selectedProduct} onClose={handleCloseProductPopup} />
         )}
-
-        {/* {selectedSeller && (
-          <SellerDetailsPopup seller={selectedSeller} onClose={handleCloseSellerPopup} /> // Render seller details popup
-        )} */}
       </div>
     </div>
   );

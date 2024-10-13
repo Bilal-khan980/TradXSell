@@ -37,7 +37,7 @@ function Register({ setIsRegister }) {
 
                 setTimeout(() => {
                     setSuccessMessage("");
-                    navigate('/loginpage');
+                    navigate('/admin/checksellers');
                 }, 1000);
             } else {
                 if (data.error) {
@@ -71,7 +71,7 @@ function Register({ setIsRegister }) {
             width: '100%',
             maxWidth: '400px',
             padding: '2rem',
-            backgroundColor: 'white',
+            backgroundColor: 'black',
             boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
             margin: '0 auto',
@@ -143,18 +143,22 @@ function Register({ setIsRegister }) {
     };
 
     return (
+        <>
         <div style={styles.container}>
             <div style={styles.sideNav}>
                 <SideNav /> {/* Include SideNav */}
             </div>
-            <div style={styles.content}>
+
+            <div style={{...styles.content}}>
                 <AdminHeader /> {/* Include AdminHeader */}
-                <div style={styles.formBox}>
+                <div style={{ padding: '2rem' }}>
+                <div style={{...styles.formBox }}>
                     <div style={styles.header}>
                         Register
                     </div>
                     {error && <div style={styles.alert}>{error}</div>}
                     {successMessage && <div style={styles.success}>{successMessage}</div>}
+                    
                     <form onSubmit={handleRegisterValidation} style={styles.form}>
                         <div style={styles.inputContainer}>
                             <input
@@ -232,9 +236,10 @@ function Register({ setIsRegister }) {
                         </span>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
+        </>
     );
 }
-
 export default Register;

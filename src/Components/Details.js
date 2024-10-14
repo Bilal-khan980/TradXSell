@@ -86,41 +86,44 @@ function Details() {
                         ${product.price.toFixed(2)}
                     </p>
 
-                    {/* Dropdown for Color */}
-                    {
-                        product.colors==='null' && <div style={{ marginBottom: "20px" }}>
-                        <p style={{ color: "#000", marginBottom: "10px" }}>Color:</p>
-                        <select
-                            style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
-                            value={selectedColor}
-                            onChange={(e) => setSelectedColor(e.target.value)}
-                        >
-                            <option value="">Select Color</option>
-                            {product.colors && product.colors.map((color, index) => (
-                                <option key={index} value={color}>{color}</option>
-                            ))}
-                        </select>
-                    </div>
+              {/* Dropdown for Color */}
+{
+    product.colors[0] !== 'null' && product.colors && product.colors.length > 0 && (
+    <div style={{ marginBottom: "20px" }}>
+        <p style={{ color: "#000", marginBottom: "10px" }}>Color:</p>
+        <select
+            style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
+            value={selectedColor}
+            onChange={(e) => setSelectedColor(e.target.value)}
+        >
+            <option value="">Select Color</option>
+            {product.colors.map((color, index) => (
+                <option key={index} value={color}>{color}</option>
+            ))}
+        </select>
+    </div>
+    )
+}
 
-                    }
-                    
-                    {/* Dropdown for Size */}
+{/* Dropdown for Size */}
+{
+    product.sizes[0] !== 'null' && product.sizes && product.sizes.length > 0 && (
+    <div style={{ marginBottom: "20px" }}>
+        <p style={{ color: "#000", marginBottom: "10px" }}>Size:</p>
+        <select
+            style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
+            value={selectedSize}
+            onChange={(e) => setSelectedSize(e.target.value)}
+        >
+            <option value="">Select Size</option>
+            {product.sizes.map((size, index) => (
+                <option key={index} value={size}>{size}</option>
+            ))}
+        </select>
+    </div>
+    )
+}
 
-                            {
-                                product.sizes==='null' &&  <div style={{ marginBottom: "20px" }}>
-                                <p style={{ color: "#000", marginBottom: "10px" }}>Size:</p>
-                                <select
-                                    style={{ padding: "10px", width: "100%", border: "1px solid #ccc", borderRadius: "4px" }}
-                                    value={selectedSize}
-                                    onChange={(e) => setSelectedSize(e.target.value)}
-                                >
-                                    <option value="">Select Size</option>
-                                    {product.sizes && product.sizes.map((size, index) => (
-                                        <option key={index} value={size}>{size}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            }
 
                     
 
